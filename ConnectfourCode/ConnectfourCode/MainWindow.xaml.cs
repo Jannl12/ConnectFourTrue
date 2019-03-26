@@ -30,7 +30,7 @@ namespace ConnectfourCode
             Grid gameGrid = new Grid();
             this.Width = 100 * columnCount; this.Height = 100 * rowCount;
             gameGrid.Height = this.Height; gameGrid.Width = this.Width;
-
+            //testComment
             yellowColor = new SolidColorBrush();
             yellowColor.Color = Color.FromArgb(255, 255, 0, 0);
             redColor = new SolidColorBrush();
