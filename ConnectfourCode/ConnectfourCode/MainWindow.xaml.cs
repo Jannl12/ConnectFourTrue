@@ -22,14 +22,14 @@ namespace ConnectfourCode
     {
         Ellipse[,] gameBoard;
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
-        const int rowCount = 6, columnCount = 7;
+        const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         int moves = 0;
         bitBoard gameBitBoard = new bitBoard();
         public MainWindow()
         {
             InitializeComponent();
             Grid gameGrid = new Grid();
-            this.Width = 100 * columnCount; this.Height = 100 * rowCount;
+            this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
             gameGrid.Height = this.Height; gameGrid.Width = this.Width;
 
             yellowColor = new SolidColorBrush();
@@ -119,6 +119,7 @@ namespace ConnectfourCode
                 MessageBox.Show(((moves % 2 == 1) ? "Player one" : "Player two") + " won!");
                 resetBoard();
             }
+
         }
         private void resetBoard()
         {
@@ -126,6 +127,7 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
+            gameBitBoard.resetBoard();
             moves = 0;
         }
     }
