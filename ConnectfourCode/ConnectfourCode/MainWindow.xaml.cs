@@ -23,7 +23,8 @@ namespace ConnectfourCode
         Ellipse[,] gameBoard;
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7;
-        bool Playerturn = true;
+        int moves = 0;
+        bitBoard gameBitBoard = new bitBoard();
         public MainWindow()
         {
             InitializeComponent();
@@ -42,6 +43,8 @@ namespace ConnectfourCode
             gameBoard = new Ellipse[rowCount, columnCount];
             ColumnDefinition[] columns = new ColumnDefinition[columnCount];
             RowDefinition[] rows = new RowDefinition[rowCount];
+
+
             foreach (ColumnDefinition col in columns)
             {
                 ColumnDefinition bufferCol = new ColumnDefinition();
@@ -87,7 +90,7 @@ namespace ConnectfourCode
         {
             for (int i = 0; i < rowCount; i++)
             {
-                gameBoard[i, targetColumn].Stroke = Playerturn ? redColor : yellowColor;
+                gameBoard[i, targetColumn].Stroke = (moves % 2 == 0) ? redColor : yellowColor;
             }
         }
         private void mouseLeaveHandler(object sender, EventArgs e, int targetColumn)
@@ -99,15 +102,22 @@ namespace ConnectfourCode
         }
         private void columnClick(object sender, EventArgs e, int targetColumn)
         {
+            
             for (int i = rowCount - 1; i >= 0; i--)
             {
                 if (gameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    gameBoard[i, targetColumn].Fill = Playerturn ? redColor : yellowColor;
-                    Playerturn = !Playerturn;
+                    gameBoard[i, targetColumn].Fill = (moves % 2 == 0) ? redColor : yellowColor;
+                    moves++;
                     mouseEnterHandler(sender, e, targetColumn);
                     break;
                 }
+            }
+            gameBitBoard.makeMove(targetColumn, moves);
+            if(gameBitBoard.isWin(moves))
+            {
+                MessageBox.Show(((moves % 2 == 1) ? "Player one" : "Player two") + " won!");
+                resetBoard();
             }
         }
         private void resetBoard()
@@ -116,7 +126,7 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
-            Playerturn = true;
+            moves = 0;
         }
     }
 
