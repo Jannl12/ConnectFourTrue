@@ -11,25 +11,82 @@ namespace ConnectfourCode
 {
     class bitBoard
     {
-        long[] BitGameBoard = { 0, 0 };
-        int[] columnHeight = { 0, 0, 0, 0, 0, 0, 0 };
+        ulong[] BitGameBoard = { 0, 0 };
+        int[] columnHeight = new int[7];
         List<int> moveHistory = new List<int>();
 
         public void makeMove(int coloumnInput, int moveInput)
+        {   
+                ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
+                Console.WriteLine("here");
+                BitGameBoard[(moveInput & 1)] ^= moveBuffer;
+                moveHistory.Add(coloumnInput);
+        }
+
+        public void resetBitBoard ()       
         {
-            long moveBuffer = 1L << columnHeight[coloumnInput]++;
-            BitGameBoard[moveInput % 2] ^= moveBuffer;
-            moveHistory.Add(coloumnInput);
+            BitGameBoard[0] = 0;
+            BitGameBoard[1] = 0;
+            for(int i = 0; i < columnHeight.Length; i++)
+            {
+                columnHeight[i] = i * 7;
+            }
         }
 
         public bool isWin(int moves)
         {
-            long bitboard = BitGameBoard[moves % 2];
-            if ((bitboard & (bitboard >> 6) & (bitboard >> 12) & (bitboard >> 18)) != 0) return true; // diagonal \
-            if ((bitboard & (bitboard >> 8) & (bitboard >> 16) & (bitboard >> 24)) != 0) return true; // diagonal /
-            if ((bitboard & (bitboard >> 7) & (bitboard >> 14) & (bitboard >> 21)) != 0) return true; // horizontal
-            if ((bitboard & (bitboard >> 1) & (bitboard >> 2) & (bitboard >> 3)) != 0) return true; // vertical
+            ulong bitboard = BitGameBoard[moves & 1];
+            int[] directions = { 1, 7, 6, 8 };
+            for (int i = 0; i < directions.Length; i++)
+            {
+                if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    return true;
+                }
+            }
             return false;
+        }
+
+        public int evaluateBoard(int moves)
+        {
+            ulong emptySlotsBitBoard = ulong.MaxValue ^ (BitGameBoard[0] | BitGameBoard[1]);
+            ulong bitboard = BitGameBoard[moves & 1];
+            int[] directions = { 1, 7, 6, 8 };
+            for (int i = 0; i < directions.Length; i++)
+            {
+                if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    return int.MaxValue;
+                }
+            }
+
+            for (int i = 0; i < directions.Length; i++)
+            {
+                if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    return 9;
+                }
+            }
+            for (int i = 0; i < directions.Length; i++)
+            {
+                if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    return 4;
+                }
+            }
+            for (int i = 0; i < directions.Length; i++)
+            {
+                if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    return 1;
+                }
+            }
+            return int.MinValue;
         }
     }
 }
