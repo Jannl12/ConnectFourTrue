@@ -16,8 +16,6 @@ namespace ConnectfourCode
 
             return returnvalue;
         }
-
-    }
-  
+    }  
    
 }
