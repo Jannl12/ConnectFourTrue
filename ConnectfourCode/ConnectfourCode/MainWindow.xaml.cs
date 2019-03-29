@@ -24,7 +24,7 @@ namespace ConnectfourCode
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         int moves = 0;
-        bitBoard gameBitBoard = new bitBoard();
+        Position gameBitBoard = new Position();
         public MainWindow()
         {
             InitializeComponent();
@@ -108,6 +108,7 @@ namespace ConnectfourCode
             {
                 if (gameBoard[i, targetColumn].Fill == emptyColor)
                 {
+                    gameBitBoard.NegaMax(gameBitBoard, -50, 50, 0);
                     gameBoard[i, targetColumn].Fill = ((++moves & 1) == 1) ? redColor : yellowColor;
                     gameBitBoard.makeMove(targetColumn, moves);
                     if (gameBitBoard.isWin(moves))
