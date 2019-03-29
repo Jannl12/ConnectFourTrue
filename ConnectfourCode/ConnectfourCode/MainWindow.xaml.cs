@@ -23,13 +23,15 @@ namespace ConnectfourCode
     {
         Ellipse[,] gameBoard;
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
-        const int rowCount = 6, columnCount = 7;
-        bool Playerturn = true;
+        const int rowCount = 6, columnCount = 7, ellipseSize = 100;
+        int moves = 0;
+        bitBoard gameBitBoard = new bitBoard();
         public MainWindow()
         {
             InitializeComponent();
+            gameBitBoard.resetBitBoard();
             Grid gameGrid = new Grid();
-            this.Width = 100 * columnCount; this.Height = 100 * rowCount;
+            this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
             gameGrid.Height = this.Height; gameGrid.Width = this.Width;
 
             yellowColor = new SolidColorBrush();
@@ -43,6 +45,8 @@ namespace ConnectfourCode
             gameBoard = new Ellipse[rowCount, columnCount];
             ColumnDefinition[] columns = new ColumnDefinition[columnCount];
             RowDefinition[] rows = new RowDefinition[rowCount];
+
+
             foreach (ColumnDefinition col in columns)
             {
                 ColumnDefinition bufferCol = new ColumnDefinition();
@@ -88,7 +92,7 @@ namespace ConnectfourCode
         {
             for (int i = 0; i < rowCount; i++)
             {
-                gameBoard[i, targetColumn].Stroke = Playerturn ? redColor : yellowColor;
+                gameBoard[i, targetColumn].Stroke = ((moves & 1) == 0) ? redColor : yellowColor;
             }
         }
         private void mouseLeaveHandler(object sender, EventArgs e, int targetColumn)
@@ -100,24 +104,32 @@ namespace ConnectfourCode
         }
         private void columnClick(object sender, EventArgs e, int targetColumn)
         {
+            
             for (int i = rowCount - 1; i >= 0; i--)
             {
                 if (gameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    gameBoard[i, targetColumn].Fill = Playerturn ? redColor : yellowColor;
-                    Playerturn = !Playerturn;
+                    gameBoard[i, targetColumn].Fill = ((++moves & 1) == 1) ? redColor : yellowColor;
+                    gameBitBoard.makeMove(targetColumn, moves);
+                    if (gameBitBoard.isWin(moves))
+                    {
+                        MessageBox.Show(((moves & 1) == 1 ? "Player one" : "Player two") + " won!");
+                        resetBoard();
+                    }
                     mouseEnterHandler(sender, e, targetColumn);
                     break;
                 }
             }
         }
+
         private void resetBoard()
         {
             foreach (Ellipse ellipse in gameBoard)
             {
                 ellipse.Fill = emptyColor;
             }
-            Playerturn = true;
+            gameBitBoard.resetBitBoard();
+            moves = 0;
         }
     }
 
