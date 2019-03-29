@@ -11,8 +11,8 @@ namespace ConnectfourCode
 {
     class bitBoard
     {
-        ulong[] BitGameBoard = { 0, 0 };
-        int[] columnHeight = new int[7];
+        protected ulong[] BitGameBoard = { 0, 0 };
+        int[] columnHeight = new int[7]; 
         List<int> moveHistory = new List<int>();
 
         public void makeMove(int coloumnInput, int moveInput)
