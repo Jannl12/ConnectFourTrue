@@ -108,7 +108,6 @@ namespace ConnectfourCode
             {
                 if (gameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    gameBitBoard.NegaMax(gameBitBoard, -50, 50, 0);
                     gameBoard[i, targetColumn].Fill = ((++moves & 1) == 1) ? redColor : yellowColor;
                     gameBitBoard.makeMove(targetColumn, moves);
                     if (gameBitBoard.isWin(moves))
