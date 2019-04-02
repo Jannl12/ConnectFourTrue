@@ -24,7 +24,7 @@ namespace ConnectfourCode
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         int moves = 0;
-        Position gameBitBoard = new Position();
+        bitBoard gameBitBoard = new bitBoard();
         public MainWindow()
         {
             InitializeComponent();

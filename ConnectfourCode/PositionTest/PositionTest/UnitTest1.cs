@@ -5,12 +5,13 @@ using ConnectfourCode;
 namespace PositionTest
 {
     [TestClass]
-    public class PositionTest
+    public class BitboardTest
     {
         [TestMethod]
         public void TestCanPlay7SameColumn()
         {
-            ulong[] Bitmap = {0x55, 0x15};
+            bitBoard test = new bitBoard();
+            test.BitGameBoard = {0x55, 0x15};
             bool expectedBool = false;
             bool calcValue = Position.CanPlay(Bitmap,0);
 

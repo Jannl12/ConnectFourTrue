@@ -15,6 +15,7 @@ namespace ConnectfourCode
         int[] columnHeight = new int[7]; 
         List<int> moveHistory = new List<int>();
         int height = 6;
+        int width = 7;
 
         public void makeMove(int coloumnInput, int moveInput)
         {   
@@ -27,6 +28,15 @@ namespace ConnectfourCode
         {
             ulong moveBuffer = 1UL << (height *(coloumnInput+1));
             BitGameBoard[(moveInput & 1)] ^= moveBuffer;
+        }
+
+        public bool CanPlay( int coulumn)
+        {
+            ulong mask = 1;
+            ulong boardstate = BitGameBoard[0] ^ BitGameBoard[1];
+            if (((boardstate >> ((coulumn * width) + height)) & mask) == mask)
+                return false;
+            else return true;
         }
 
         public void resetBitBoard ()       
