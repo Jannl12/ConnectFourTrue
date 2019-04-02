@@ -6,32 +6,30 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    public class Negamax : bitBoard
+    public class Negamax : BitBoard
     {
         
-        const int height = 6, width = 7;
-
-       
-        public int NegaMax(bitBoard node, int alpha, int beta, int moves)
+        const int height = 6, width = 7;       
+        public int NegaMax(BitBoard node, int alpha, int beta, int moveCounter)
+            //TODO: Skal med i implementeringen
         {
-            if (node.isWin(moves))
-                return 22 - moves; // TODO: Add heuristic score
-            moves++;
-            for(int i = 0; i < height; i++)
+            //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
+            if (node.IsWin(moveCounter))
+                return 22 - moveCounter; // TODO: Add heuristic score JAN OG MAYOH
+            moveCounter++;
+            for(int i = 0; i < width; i++)
             {
-                node.makeMove(i, moves);
+                node.MakeMove(i, moveCounter);
                 if (node.CanPlay(i))
                 {
-                    int value = -NegaMax(node, -beta, -alpha, moves);
+                    int value = -NegaMax(node, -beta, -alpha, moveCounter);
 
                     if (value >= beta)
                         return value;
                     if (value >= alpha)
                         alpha = value;
-                }
-                else {
-                    node.UndoMove(i, moves);
-                     }
+                }                
+                node.UndoMove(i, moveCounter);
             }
             return alpha;
         }        

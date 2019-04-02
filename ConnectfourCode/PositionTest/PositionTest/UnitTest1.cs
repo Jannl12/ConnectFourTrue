@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ConnectfourCode;
 
-namespace PositionTest
+namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
     [TestClass]
     public class BitboardTest
@@ -10,8 +10,8 @@ namespace PositionTest
         [TestMethod]
         public void TestCanPlay7SameColumn()
         {
-            bitBoard test = new bitBoard();
-            test.BitGameBoard = {0x55, 0x15};
+            BitBoard test = new BitBoard();
+            test.bitGameBoard = {0x55, 0x15};
             bool expectedBool = false;
             bool calcValue = Position.CanPlay(Bitmap,0);
 

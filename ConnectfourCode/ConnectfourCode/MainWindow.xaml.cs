@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 
 namespace ConnectfourCode
 {
+    // TODO: Code needs commment. ALLE
+    // TODO: Check om det er muligt at lave en klasse med handlers
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -24,11 +26,11 @@ namespace ConnectfourCode
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         int moves = 0;
-        bitBoard gameBitBoard = new bitBoard();
+        BitBoard gameBitBoard = new BitBoard();
         public MainWindow()
         {
             InitializeComponent();
-            gameBitBoard.resetBitBoard();
+            gameBitBoard.ResetBitBoard();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
             gameGrid.Height = this.Height; gameGrid.Width = this.Width;
@@ -71,15 +73,15 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseEnter += delegate (object sender, MouseEventArgs e)
                     {
-                        mouseEnterHandler(sender, e, g);
+                        MouseEnterHandler(sender, e, g);
                     };
                     bufferEllipse.MouseLeave += delegate (object sender, MouseEventArgs e)
                     {
-                        mouseLeaveHandler(sender, e, g);
+                        MouseLeaveHandler(sender, e, g);
                     };
                     bufferEllipse.MouseDown += delegate (object sender, MouseButtonEventArgs e)
                     {
-                        columnClick(sender, e, g);
+                        ColumnClick(sender, e, g);
                     };
                     gameBoard[i, j] = bufferEllipse;
                     gameGrid.Children.Add(bufferEllipse);
@@ -87,21 +89,21 @@ namespace ConnectfourCode
             }
             this.Content = gameGrid;
         }
-        private void mouseEnterHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseEnterHandler(object sender, EventArgs e, int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
                 gameBoard[i, targetColumn].Stroke = ((moves & 1) == 0) ? redColor : yellowColor;
             }
         }
-        private void mouseLeaveHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseLeaveHandler(object sender, EventArgs e, int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
                 gameBoard[i, targetColumn].Stroke = blackColor;
             }
         }
-        private void columnClick(object sender, EventArgs e, int targetColumn)
+        private void ColumnClick(object sender, EventArgs e, int targetColumn)
         {
             
             for (int i = rowCount - 1; i >= 0; i--)
@@ -109,25 +111,26 @@ namespace ConnectfourCode
                 if (gameBoard[i, targetColumn].Fill == emptyColor)
                 {
                     gameBoard[i, targetColumn].Fill = ((++moves & 1) == 1) ? redColor : yellowColor;
-                    gameBitBoard.makeMove(targetColumn, moves);
-                    if (gameBitBoard.isWin(moves))
+                    gameBitBoard.MakeMove(targetColumn, moves);
+                    if (gameBitBoard.IsWin(moves))
                     {
                         MessageBox.Show(((moves & 1) == 1 ? "Player one" : "Player two") + " won!");
-                        resetBoard();
+                        ResetBoard();
                     }
-                    mouseEnterHandler(sender, e, targetColumn);
+                   // MessageBox.Show(gameBitBoard.EvaluateBoard(moves).ToString());
+                    MouseEnterHandler(sender, e, targetColumn);
                     break;
                 }
             }
         }
 
-        private void resetBoard()
+        private void ResetBoard()
         {
             foreach (Ellipse ellipse in gameBoard)
             {
                 ellipse.Fill = emptyColor;
             }
-            gameBitBoard.resetBitBoard();
+            gameBitBoard.ResetBitBoard();
             moves = 0;
         }
     }
