@@ -14,13 +14,61 @@ namespace ConnectfourCode
         ulong[] BitGameBoard = { 0, 0 };
         int[] columnHeight = new int[7];
         List<int> moveHistory = new List<int>();
+        ulong[,] zArray = new ulong[49, 2];
+        ulong zobristKey = 0;
+
+        public void randomZobristNumbers(ulong[,] zArray)
+        {
+            for (int i = 0; i < 49; i++)
+            {
+                zArray[i, 0] = Get64BitRandom(ulong.MinValue, ulong.MaxValue);
+                zArray[i, 1] = Get64BitRandom(ulong.MinValue, ulong.MaxValue);
+            }
+        }
+
+        private readonly Random rnd = new Random(); // create it just once and reuse
+
+        private ulong Get64BitRandom(ulong minValue, ulong maxValue)
+        {
+            // Get a random array of 8 bytes. 
+            // As an option, you could also use the cryptography namespace stuff to generate a random byte[8]
+            byte[] buffer = new byte[sizeof(ulong)];
+            rnd.NextBytes(buffer);
+            return BitConverter.ToUInt64(buffer, 0) % (maxValue - minValue + 1) + minValue;
+        }
+        /// https://social.msdn.microsoft.com/Forums/vstudio/en-US/cb9c7f4d-5f1e-4900-87d8-013205f27587/64-bit-strong-random-function?forum=csharpgeneral
+        /// burde måske omskrives til noget der ligner det her
+        /// https://stackoverflow.com/questions/677373/generate-random-values-in-c-sharp
+
+        public ulong GetZobristHash(ulong [,] zArray, ulong[] bitGameBoard)
+        {
+            ulong zkey = 0; /// hash return value
+
+            /// for each position in the bitboard, if there is a 1 present, 
+            /// the corresponding random value (generated in method randomZobristNumbers)
+            /// will be XOR'ed and assigned to hash return value zkey
+            for (int position = 0; position < 49; position++)
+            {
+                if (((bitGameBoard[0] >> position) & 1) == 1)
+                {
+                    zkey ^= zArray[position, 0];
+                }
+                else if((((bitGameBoard[1] >> position) & 1) == 1))
+                {
+                    zkey ^= zArray[position, 1];
+                }                
+            }
+
+            return zkey;
+        }
 
         public void makeMove(int coloumnInput, int moveInput)
         {   
-                ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
-                Console.WriteLine("here");
-                BitGameBoard[(moveInput & 1)] ^= moveBuffer;
-                moveHistory.Add(coloumnInput);
+            ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
+            Console.WriteLine("here");
+            BitGameBoard[(moveInput & 1)] ^= moveBuffer;
+            moveHistory.Add(coloumnInput);
+            this.zobristKey = GetZobristHash(this.zArray, this.BitGameBoard);
         }
 
         public void resetBitBoard ()       
