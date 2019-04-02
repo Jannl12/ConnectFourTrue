@@ -53,6 +53,8 @@ namespace ConnectfourCode
             ulong emptySlotsBitBoard = ulong.MaxValue ^ (BitGameBoard[0] | BitGameBoard[1]);
             ulong bitboard = BitGameBoard[moves & 1];
             int[] directions = { 1, 7, 6, 8 };
+
+            //Check for four connected.
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
@@ -61,7 +63,7 @@ namespace ConnectfourCode
                     return int.MaxValue;
                 }
             }
-
+            //Check for three connected and space for the possibility of adding a fourth.
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
@@ -70,20 +72,14 @@ namespace ConnectfourCode
                     return 9;
                 }
             }
+
+            //Check for two connected and empty slots for adding the third and fourth.
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
                     return 4;
-                }
-            }
-            for (int i = 0; i < directions.Length; i++)
-            {
-                if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-                {
-                    return 1;
                 }
             }
             return int.MinValue;

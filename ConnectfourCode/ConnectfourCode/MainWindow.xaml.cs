@@ -110,6 +110,7 @@ namespace ConnectfourCode
                 {
                     gameBoard[i, targetColumn].Fill = ((++moves & 1) == 1) ? redColor : yellowColor;
                     gameBitBoard.makeMove(targetColumn, moves);
+                    MessageBox.Show(gameBitBoard.evaluateBoard(moves).ToString());
                     if (gameBitBoard.isWin(moves))
                     {
                         MessageBox.Show(((moves & 1) == 1 ? "Player one" : "Player two") + " won!");
