@@ -9,50 +9,51 @@ using System.Threading.Tasks;
  */
 namespace ConnectfourCode
 {
-    public class bitBoard
+    public class BitBoard
+        //TODO: Add moveCounter to BitBoard Class
     {
-        public ulong[] BitGameBoard = { 0, 0 };
+        public ulong[] bitGameBoard = { 0, 0 };
         int[] columnHeight = new int[7]; 
         List<int> moveHistory = new List<int>();
         int height = 6;
         int width = 7;
+        int[] directions = { 1, 7, 6, 8 };
 
-        public void makeMove(int coloumnInput, int moveInput)
+        public void MakeMove(int coloumnInput, int moveInput)
         {   
                 ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
-                BitGameBoard[(moveInput & 1)] ^= moveBuffer;
-                moveHistory.Add(coloumnInput);
+                bitGameBoard[(moveInput & 1)] ^= moveBuffer;
+                moveHistory.Add(coloumnInput); // TODO: Find out how we are going to use movehistory
         }
 
         public void UndoMove(int coloumnInput, int moveInput)
         {
-            ulong moveBuffer = 1UL << (height *(coloumnInput+1));
-            BitGameBoard[(moveInput & 1)] ^= moveBuffer;
+            ulong moveBuffer = 1UL << --columnHeight[coloumnInput];
+            bitGameBoard[(moveInput & 1)] ^= moveBuffer;
         }
 
         public bool CanPlay( int coulumn)
         {
             ulong mask = 1;
-            ulong boardstate = BitGameBoard[0] ^ BitGameBoard[1];
+            ulong boardstate = bitGameBoard[0] ^ bitGameBoard[1];
             if (((boardstate >> ((coulumn * width) + height)) & mask) == mask)
                 return false;
             else return true;
         }
 
-        public void resetBitBoard ()       
+        public void ResetBitBoard ()     // TODO: Make constructor for bitboard HVID
         {
-            BitGameBoard[0] = 0;
-            BitGameBoard[1] = 0;
+            bitGameBoard[0] = 0;
+            bitGameBoard[1] = 0;
             for(int i = 0; i < columnHeight.Length; i++)
             {
-                columnHeight[i] = i * 7;
+                columnHeight[i] = i * width;
             }
         }
 
-        public bool isWin(int moves)
-        {
-            ulong bitboard = BitGameBoard[moves & 1];
-            int[] directions = { 1, 7, 6, 8 };
+        public bool IsWin(int moves)
+        { //TODO: Should be described in Implemention, use figur
+            ulong bitboard = bitGameBoard[moves & 1];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
@@ -64,11 +65,11 @@ namespace ConnectfourCode
             return false;
         }
 
-        public int evaluateBoard(int moves)
+        public int EvaluateBoard(int moves) //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
         {
-            ulong emptySlotsBitBoard = ulong.MaxValue ^ (BitGameBoard[0] | BitGameBoard[1]);
-            ulong bitboard = BitGameBoard[moves & 1];
-            int[] directions = { 1, 7, 6, 8 };
+            ulong emptySlotsBitBoard = ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1]);
+            ulong bitboard = bitGameBoard[moves & 1];
+            
 
             //Check for four connected.
             for (int i = 0; i < directions.Length; i++)
