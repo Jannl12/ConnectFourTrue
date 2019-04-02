@@ -10,50 +10,61 @@ using System.Threading.Tasks;
 namespace ConnectfourCode
 {
     public class BitBoard
-        //TODO: Add moveCounter to BitBoard Class
     {
-        public ulong[] bitGameBoard = { 0, 0 };
-        int[] columnHeight = new int[7]; 
+        public ulong[] bitGameBoard;
+        int[] columnHeight;
         List<int> moveHistory = new List<int>();
-        int height = 6;
-        int width = 7;
-        int[] directions = { 1, 7, 6, 8 };
-
-        public void MakeMove(int coloumnInput, int moveInput)
-        {   
-                ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
-                bitGameBoard[(moveInput & 1)] ^= moveBuffer;
-                moveHistory.Add(coloumnInput); // TODO: Find out how we are going to use movehistory
+        int boardHeight = 6, boardWidth = 7, moveCount;
+        public int MoveCount {
+            get { return moveCount; }
         }
 
-        public void UndoMove(int coloumnInput, int moveInput)
+        int[] directions = { 1, 7, 6, 8 };
+
+        public BitBoard()
         {
-            ulong moveBuffer = 1UL << --columnHeight[coloumnInput];
-            bitGameBoard[(moveInput & 1)] ^= moveBuffer;
+            ResetBitBoard();
+        }
+        public void MakeMove(int coloumnInput)
+        {   
+                ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
+                bitGameBoard[(moveCount++ & 1)] ^= moveBuffer;
+                moveHistory.Add(coloumnInput);
+
+        }
+
+        public void UndoMove()
+        {
+            ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
+            moveHistory.RemoveAt(moveHistory.Count - 1);
+            bitGameBoard[(moveCount-- & 1)] ^= moveBuffer;
         }
 
         public bool CanPlay( int coulumn)
         {
             ulong mask = 1;
             ulong boardstate = bitGameBoard[0] ^ bitGameBoard[1];
-            if (((boardstate >> ((coulumn * width) + height)) & mask) == mask)
+            if (((boardstate >> ((coulumn * boardWidth) + boardHeight)) & mask) == mask)
                 return false;
             else return true;
         }
 
-        public void ResetBitBoard ()     // TODO: Make constructor for bitboard HVID
+        public void ResetBitBoard()   
         {
-            bitGameBoard[0] = 0;
-            bitGameBoard[1] = 0;
+            bitGameBoard = new ulong[2];
+            bitGameBoard[0] = 0; bitGameBoard[1] = 0;
+
+            columnHeight = new int[boardWidth];
             for(int i = 0; i < columnHeight.Length; i++)
             {
-                columnHeight[i] = i * width;
+                columnHeight[i] = i * boardWidth;
             }
+            moveCount = 0;
         }
 
-        public bool IsWin(int moves)
+        public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[moves & 1];
+            ulong bitboard = bitGameBoard[moveCount - 1 & 1];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
@@ -65,11 +76,11 @@ namespace ConnectfourCode
             return false;
         }
 
-        public int EvaluateBoard(int moves) //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
+        public int EvaluateBoard(int player) //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
         {
             ulong emptySlotsBitBoard = ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1]);
-            ulong bitboard = bitGameBoard[moves & 1];
-            
+            ulong bitboard = bitGameBoard[0];
+            int returnValue = int.MinValue;
 
             //Check for four connected.
             for (int i = 0; i < directions.Length; i++)
@@ -77,29 +88,26 @@ namespace ConnectfourCode
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
                         (bitboard >> (3 * directions[i]))) != 0)
                 {
-                    return int.MaxValue;
+                     returnValue = int.MaxValue;
+                }
+                 else if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue = returnValue > 9 ? returnValue : 9;
+                }
+                else if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue = returnValue > 4 ? returnValue : 4; ;
+                }
+                else if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue = returnValue > 1 ? returnValue : 1; ;
                 }
             }
             //Check for three connected and space for the possibility of adding a fourth.
-            for (int i = 0; i < directions.Length; i++)
-            {
-                if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-                {
-                    return 9;
-                }
-            }
-
-            //Check for two connected and empty slots for adding the third and fourth.
-            for (int i = 0; i < directions.Length; i++)
-            {
-                if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-                {
-                    return 4;
-                }
-            }
-            return int.MinValue;
+            return returnValue;
         }
     }
 }
