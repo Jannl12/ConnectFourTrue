@@ -9,18 +9,24 @@ using System.Threading.Tasks;
  */
 namespace ConnectfourCode
 {
-    class bitBoard
+    public class bitBoard
     {
-        ulong[] BitGameBoard = { 0, 0 };
-        int[] columnHeight = new int[7];
+        public ulong[] BitGameBoard = { 0, 0 };
+        int[] columnHeight = new int[7]; 
         List<int> moveHistory = new List<int>();
+        int height = 6;
 
         public void makeMove(int coloumnInput, int moveInput)
         {   
                 ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
-                Console.WriteLine("here");
                 BitGameBoard[(moveInput & 1)] ^= moveBuffer;
                 moveHistory.Add(coloumnInput);
+        }
+
+        public void UndoMove(int coloumnInput, int moveInput)
+        {
+            ulong moveBuffer = 1UL << (height *(coloumnInput+1));
+            BitGameBoard[(moveInput & 1)] ^= moveBuffer;
         }
 
         public void resetBitBoard ()       

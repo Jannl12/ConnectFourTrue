@@ -24,7 +24,7 @@ namespace ConnectfourCode
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         int moves = 0;
-        bitBoard gameBitBoard = new bitBoard();
+        Position gameBitBoard = new Position();
         public MainWindow()
         {
             InitializeComponent();
@@ -32,7 +32,7 @@ namespace ConnectfourCode
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
             gameGrid.Height = this.Height; gameGrid.Width = this.Width;
-
+            //testComment
             yellowColor = new SolidColorBrush();
             yellowColor.Color = Color.FromArgb(255, 255, 0, 0);
             redColor = new SolidColorBrush();
