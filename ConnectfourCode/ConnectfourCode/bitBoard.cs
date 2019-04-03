@@ -17,6 +17,7 @@ namespace ConnectfourCode
         int boardHeight = 6, boardWidth = 7, moveCount;
         public int MoveCount {
             get { return moveCount; }
+            set { moveCount = value; }
         }
 
         int[] directions = { 1, 7, 6, 8 };
@@ -76,38 +77,105 @@ namespace ConnectfourCode
             return false;
         }
 
-        public int EvaluateBoard(int player) //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
+        public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
         {
             ulong emptySlotsBitBoard = ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1]);
             ulong bitboard = bitGameBoard[0];
-            int returnValue = int.MinValue;
+            int returnValue = 0;
+            ulong mask = 1;
 
-            //Check for four connected.
-            for (int i = 0; i < directions.Length; i++)
+            if (IsWin())
             {
+                return int.MaxValue;
+            }
+                //Check for four connected.
+            for (int i = 0; i < directions.Length; i++)
+            {   //111x
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue = Three1(returnValue);
+                } //11x1
+                if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (bitboard >> (3 * directions[i]))) != 0)
                 {
-                     returnValue = int.MaxValue;
-                }
-                 else if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                    returnValue = Three1(returnValue);
+                } //1x11
+                /*if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue += returnValue > 9 ? returnValue : 9;
+                } //x111
+                if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue += returnValue > 9 ? returnValue : 9;
+                } *///11xx
+                if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = returnValue > 9 ? returnValue : 9;
-                }
-                else if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                    returnValue = Two1(returnValue);
+
+                } //1x1x
+                if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = returnValue > 4 ? returnValue : 4; ;
-                }
-                else if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                    returnValue = Two1(returnValue);
+                } //1xx1
+                if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue = Two1(returnValue);
+                } //x11x
+                if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = returnValue > 1 ? returnValue : 1; ;
-                }
+                    returnValue = Two1(returnValue);
+                } //x1x1
+/*                if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue += returnValue > 4 ? returnValue : 4;
+                } //xx11
+                if ((emptySlotsBitBoard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue += returnValue > 4 ? returnValue : 4;
+                } //1xxx */
+                if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) & (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue = One1(returnValue);
+                } //x1xx
+                if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue = One1(returnValue);
+                } //xx1x
+               /* if ((emptySlotsBitBoard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
+                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue += returnValue > 1 ? returnValue : 1;
+                } //xxx1
+                if ((emptySlotsBitBoard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
+                        (bitboard >> (3 * directions[i]))) != 0)
+                {
+                    returnValue += returnValue > 1 ? returnValue : 1;
+                }*/
             }
-            //Check for three connected and space for the possibility of adding a fourth.
             return returnValue;
         }
-    }
+        private int Three1(int val)
+        {
+            return val + 9;
+        }
+        private int Two1(int val)
+        {
+            return val + 4;
+        }
+        private int One1(int val)
+        {
+            return val + 1;
+        }
+            }
+    
 }

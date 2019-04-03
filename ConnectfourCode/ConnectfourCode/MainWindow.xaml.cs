@@ -28,6 +28,11 @@ namespace ConnectfourCode
         BitBoard gameBitBoard = new BitBoard();
         public MainWindow()
         {
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x7;
+            test.bitGameBoard[1] = 0x380;
+            test.EvaluateBoard();
+
             InitializeComponent();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
