@@ -8,7 +8,6 @@ namespace ConnectfourCode
 {
     public class Negamax : BitBoard
     {
-        public Negamax(ulong player1, ulong player2) : base(player1, player2){}
         
         private const int height = 6, width = 7;       
         public int NegaMax(BitBoard node, int alpha, int beta, int maxDepth, int moveCounter)

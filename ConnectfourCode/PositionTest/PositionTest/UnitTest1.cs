@@ -5,12 +5,15 @@ using ConnectfourCode;
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
     [TestClass]
-    public class BitboardTest
+    public class CanPlayTest
     {
         [TestMethod]
         public void TestCanPlay7SameColumn()
         {
-            BitBoard test = new BitBoard(0x55, 0x15);
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x55;
+            test.bitGameBoard[1] = 0x15;
+
             bool expectedBool = false;
             bool calcValue = test.CanPlay(0);
 
@@ -20,7 +23,9 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         [TestMethod]
         public void CanPlay6SamnCoulmn()
         {
-            BitBoard test = new BitBoard(63, 0);
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0;
+            test.bitGameBoard[1] = 63;
             bool expectedBool = true;
             bool calcValue = test.CanPlay(0);
 
@@ -30,8 +35,12 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         [TestMethod]
         public void CanPlay7SamnColumn7()
         {
-            BitBoard test = new BitBoard(0x1FC0000000000, 0); //Hexa decimal for 7 in the 7th column
+     
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x1FC0000000000;  //Hexa decimal for 7 in the 7th column
+            test.bitGameBoard[1] = 0;
             bool expectedBool = false;
+
             bool calcValue = test.CanPlay(6);
 
             Assert.AreEqual(expectedBool, calcValue);
@@ -40,12 +49,14 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         [TestMethod]
         public void CanPlay6SamnColumn7()
         {
-            BitBoard test = new BitBoard(0xFC0000000000, 0);//Hexa decimal for 7 in the 7th column
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0xFC0000000000;
+            test.bitGameBoard[0] = 0;  //Hexa decimal for 7 in the 7th column
             bool expectedBool = true;
+
             bool calcValue = test.CanPlay(6);
 
             Assert.AreEqual(expectedBool, calcValue);
-
         }
     }
 }
