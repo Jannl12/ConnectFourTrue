@@ -76,6 +76,16 @@ namespace ConnectfourCode
             return false;
         }
 
+        public ulong createHashCode()
+        {
+            ulong bufferLong = 0; 
+            foreach(ulong inputLong in bitGameBoard)
+            {
+                bufferLong ^= inputLong;
+            }
+            return bufferLong + bitGameBoard[moveCount & 1];
+        }
+
         public int EvaluateBoard(int player) //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
         {
             ulong emptySlotsBitBoard = ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1]);
