@@ -26,8 +26,20 @@ namespace ConnectfourCode
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         BitBoard gameBitBoard = new BitBoard();
+        
         public MainWindow()
         {
+            Negamax nega = new Negamax();
+            nega.bitGameBoard[1] = 0x140b74009aa;
+            nega.bitGameBoard[0] = 0x4bb40a01615;
+            nega.MoveCount = 31;
+            nega.columnHeight[0] += 6;//, 13, 14, 27, 34, 41, 43};
+            nega.columnHeight[1] += 6;
+            nega.columnHeight[3] += 6;
+            nega.columnHeight[4] += 6;
+            nega.columnHeight[5] += 6;
+            nega.columnHeight[6] += 1;
+            nega.NegaMax(nega, -10000, 10000, 8);
             InitializeComponent();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
