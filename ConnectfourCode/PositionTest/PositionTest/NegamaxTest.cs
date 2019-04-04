@@ -14,15 +14,17 @@ namespace PositionTest
             test.bitGameBoard[0] = 0x4BB4A01615; //blå (lige)
             test.bitGameBoard[1] = 0x140bB74009A4; //rød (ulige)
             test.MoveCount = 31;
-            test.columnHeight[0] = 4;
-            test.columnHeight[1] = 13;
-            test.columnHeight[2] = 14;
-            test.columnHeight[3] = 27;
-            test.columnHeight[4] = 34;
-            test.columnHeight[5] = 41;
-            test.columnHeight[6] = 43;
-            int expectedInt = 4;
-            int calcValue = test.NegaMax(test, -1000, 1000, 8);
+            test.columnHeight[0] += 6;
+            test.columnHeight[1] += 6;
+            test.columnHeight[2] += 0;
+            test.columnHeight[3] += 6;
+            test.columnHeight[4] += 6;
+            test.columnHeight[5] += 6;
+            test.columnHeight[6] += 1;
+            int expectedInt = 2;
+
+            test.NegaMax(test, int.MinValue, int.MaxValue, 9, 1);
+            int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);
 
