@@ -12,12 +12,12 @@ namespace ConnectfourCode
         public int bestMove = 0;
 
         private const int height = 6, width = 7;       
-        public int NegaMax(BitBoard node, int alpha, int beta, int maxDepth)
+        public int NegaMax(BitBoard node, int alpha, int beta, int maxDepth, int color)
             //TODO: Skal med i implementeringen
         {
             //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
             if (node.IsWin())
-                return 44 - node.MoveCount; // TODO: Add heuristic score JAN OG MAYOH
+                return (43 - node.MoveCount)*color; // TODO: Add heuristic score JAN OG MAYOH
             else if (maxDepth == 0)
                 return 0;
 
@@ -26,9 +26,10 @@ namespace ConnectfourCode
                 node.MakeMove(i);
                 if (node.CanPlay(i))
                 {
-                    int value = -NegaMax(node, -beta, -alpha, maxDepth - 1);
+                    int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
 
                     if (value >= beta)
+
                         return value;
                     if (value >= alpha)
                     {
