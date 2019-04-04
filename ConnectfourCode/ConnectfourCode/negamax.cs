@@ -15,7 +15,7 @@ namespace ConnectfourCode
         {
             //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
             if (node.IsWin())
-                return 22 - node.MoveCount; // TODO: Add heuristic score JAN OG MAYOH (Mækir og Helgi)
+                return 44 - node.MoveCount; // TODO: Add heuristic score JAN OG MAYOH
             else if (maxDepth == 0)
                 return 0;
 

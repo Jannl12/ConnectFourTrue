@@ -15,7 +15,10 @@ namespace ConnectfourCode
         public int[] columnHeight;
         List<int> moveHistory = new List<int>();
         int boardHeight = 6, boardWidth = 7, moveCount;
-        public int MoveCount { get; set; }
+        public int MoveCount {
+            get { return moveCount; }
+            set { this.moveCount = value; }
+        }
 
         int[] directions = { 1, 7, 6, 8 };
 
