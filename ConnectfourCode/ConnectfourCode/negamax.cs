@@ -26,6 +26,7 @@ namespace ConnectfourCode
                 node.MakeMove(i);
                 if (node.CanPlay(i))
                 {
+                    //recursive call of negamax
                     int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
 
                     if (value >= beta)
