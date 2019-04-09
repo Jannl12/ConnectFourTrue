@@ -12,12 +12,13 @@ namespace ConnectfourCode
     public class BitBoard
     {
         public ulong[] bitGameBoard;
-        int[] columnHeight;
+        public int[] columnHeight;
         List<int> moveHistory = new List<int>();
         int boardHeight = 6, boardWidth = 7, moveCount;
         public int MoveCount {
             get { return moveCount; }
             set { moveCount = value; }
+
         }
 
         int[] directions = { 1, 7, 6, 8 };
@@ -38,7 +39,7 @@ namespace ConnectfourCode
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
             moveHistory.RemoveAt(moveHistory.Count - 1);
-            bitGameBoard[(moveCount-- & 1)] ^= moveBuffer;
+            bitGameBoard[(--moveCount & 1)] ^= moveBuffer;
         }
 
         public bool CanPlay( int coulumn)
