@@ -8,8 +8,8 @@ namespace ConnectfourCode
 {
     public class Negamax : BitBoard
     {
-        
-        const int height = 6, width = 7;       
+
+        const int height = 6, width = 7, depth = 7;
         public int NegaMax(BitBoard node, int alpha, int beta, int moveCounter)
             //TODO: Skal med i implementeringen
         {
