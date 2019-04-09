@@ -5,6 +5,25 @@ using ConnectfourCode;
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
     [TestClass]
+    public class EvaluateBoardTest
+    {
+        [TestMethod]
+        public void EvaluateBoard()
+        {
+            //Initialize
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x55;
+            test.bitGameBoard[1] = 0x15;
+
+            //...
+            int expectedValue = 15;
+            int calcValue = test.EvaluateBoard();
+
+            //Assert
+            Assert.AreEqual(expectedValue, calcValue);
+        }
+    }
+    [TestClass]
     public class CanPlayTest
     {
         [TestMethod]

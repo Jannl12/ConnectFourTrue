@@ -91,11 +91,10 @@ namespace ConnectfourCode
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
             ulong bitboard = bitGameBoard[0];
             int returnValue = 0;
-            ulong mask = 1;
 
             if (IsWin())
             {
-                return int.MaxValue;
+                return 10000;
             }
                 //Check for four connected.
             for (int i = 0; i < directions.Length; i++)
@@ -103,58 +102,45 @@ namespace ConnectfourCode
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = Three1(returnValue);
+                    returnValue += 9;
                 } //11x1
                 if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (bitboard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = Three1(returnValue);
+                    returnValue += 9;
                 } //11xx
                 if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = Two1(returnValue);
+                    returnValue += 4;
 
                 } //1x1x
                 if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = Two1(returnValue);
+                    returnValue += 4;
                 } //1xx1
                 if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (bitboard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = Two1(returnValue);
+                    returnValue += 4;
                 } //x11x
                 if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = Two1(returnValue);
+                    returnValue += 4;
                 } //1xxx
                 if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) & (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = One1(returnValue);
+                    returnValue += 1;
                 } //x1xx
                 if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
-                    returnValue = One1(returnValue);
+                    returnValue += 1;
                 } 
             }
             return returnValue;
-        }
-        private int Three1(int val)
-        {
-            return val + 9;
-        }
-        private int Two1(int val)
-        {
-            return val + 4;
-        }
-        private int One1(int val)
-        {
-            return val + 1;
-        }
-            }
-    
+        }    
+    }
 }
