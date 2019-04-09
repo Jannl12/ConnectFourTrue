@@ -39,9 +39,9 @@ namespace PositionTest
         {
             //intialize
             BitBoard testPoint = new BitBoard();
-            testPoint.bitGameBoard[0] = 0x380;
-            testPoint.bitGameBoard[1] = 0x3;
-            int expectedValue = int.MaxValue;
+            testPoint.bitGameBoard[0] = 0x3;
+            testPoint.bitGameBoard[1] = 0x380;
+            int expectedValue = 5;
             //act
             int calcValue = testPoint.EvaluateBoard();
             //assert
@@ -52,9 +52,23 @@ namespace PositionTest
         {
             //intialize
             BitBoard testPoint = new BitBoard();
-            testPoint.bitGameBoard[0] = 0x380;
-            testPoint.bitGameBoard[1] = 0x1;
-            int expectedValue = int.MaxValue;
+            testPoint.bitGameBoard[0] = 0x1;
+            testPoint.bitGameBoard[1] = 0;
+            int expectedValue = 1;
+            //act
+            int calcValue = testPoint.EvaluateBoard();
+            //assert
+            Assert.AreEqual(expectedValue, calcValue);
+        }
+        [TestMethod]
+        public void TestOneOneZeroOneScore()
+        {
+            //intialize
+            BitBoard testPoint = new BitBoard();
+            testPoint.MoveCount = 1;
+            testPoint.bitGameBoard[0] = 0x1400105;
+            testPoint.bitGameBoard[1] = 0xA00082;
+            int expectedValue = 26;
             //act
             int calcValue = testPoint.EvaluateBoard();
             //assert
