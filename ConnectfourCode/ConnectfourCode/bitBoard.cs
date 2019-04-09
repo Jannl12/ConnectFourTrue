@@ -14,12 +14,10 @@ namespace ConnectfourCode
         public ulong[] bitGameBoard;
         int[] columnHeight;
         List<int> moveHistory = new List<int>();
-        int boardHeight = 6, boardWidth = 7, moveCount;
-        public int MoveCount {
-            get { return moveCount; }
-        }
+        int boardHeight = 6, boardWidth = 7;
+        public int MoveCount { get; private set; }
 
-        int[] directions = { 1, 7, 6, 8 };
+        
 
         public BitBoard()
         {
@@ -28,7 +26,7 @@ namespace ConnectfourCode
         public void MakeMove(int coloumnInput)
         {   
                 ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
-                bitGameBoard[(moveCount++ & 1)] ^= moveBuffer;
+                bitGameBoard[(MoveCount++ & 1)] ^= moveBuffer;
                 moveHistory.Add(coloumnInput);
 
         }
@@ -37,7 +35,7 @@ namespace ConnectfourCode
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
             moveHistory.RemoveAt(moveHistory.Count - 1);
-            bitGameBoard[(moveCount-- & 1)] ^= moveBuffer;
+            bitGameBoard[(MoveCount-- & 1)] ^= moveBuffer;
         }
 
         public bool CanPlay( int coulumn)
@@ -59,12 +57,12 @@ namespace ConnectfourCode
             {
                 columnHeight[i] = i * boardWidth;
             }
-            moveCount = 0;
+            MoveCount = 0;
         }
 
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[moveCount - 1 & 1];
+            ulong bitboard = bitGameBoard[MoveCount - 1 & 1];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
@@ -81,8 +79,8 @@ namespace ConnectfourCode
             ulong emptySlotsBitBoard = ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1]);
             ulong bitboard = bitGameBoard[0];
             int returnValue = int.MinValue;
+            int[] directions = { 1, 7, 6, 8 };
 
-            //Check for four connected.
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
@@ -106,7 +104,6 @@ namespace ConnectfourCode
                     returnValue = returnValue > 1 ? returnValue : 1; ;
                 }
             }
-            //Check for three connected and space for the possibility of adding a fourth.
             return returnValue;
         }
     }
