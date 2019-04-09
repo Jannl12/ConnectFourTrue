@@ -12,8 +12,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         {
             //Initialize
             BitBoard test = new BitBoard();
-            test.bitGameBoard[0] = 0x55;
-            test.bitGameBoard[1] = 0x15;
+            test.bitGameBoard[0] = 0x7;
+            test.bitGameBoard[1] = 0x380;
 
             //...
             int expectedValue = 15;
