@@ -13,6 +13,7 @@ namespace ConnectfourCode
 
         private const int height = 6, width = 7;       
         public int NegaMax(BitBoard node, int alpha, int beta, int maxDepth, int color)
+
             //TODO: Skal med i implementeringen
         {
             //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH

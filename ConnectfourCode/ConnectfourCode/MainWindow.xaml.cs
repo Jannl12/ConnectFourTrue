@@ -29,7 +29,6 @@ namespace ConnectfourCode
         
         public MainWindow()
         {
-            
             InitializeComponent();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
