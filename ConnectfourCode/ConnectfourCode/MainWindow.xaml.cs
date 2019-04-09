@@ -27,13 +27,9 @@ namespace ConnectfourCode
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         BitBoard gameBitBoard = new BitBoard();
+        
         public MainWindow()
         {
-            BitBoard test = new BitBoard();
-            test.bitGameBoard[0] = 0x7;
-            test.bitGameBoard[1] = 0x380;
-            test.EvaluateBoard();
-
             InitializeComponent();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
