@@ -79,7 +79,15 @@ namespace ConnectfourCode
 
         public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
         {
-            ulong emptySlotsBitBoard = ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1]);
+            int[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
+                                  53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
+            ulong outerFrameBuffer = 0;
+            foreach(int frameIn in frameRemover)
+            {
+                outerFrameBuffer += (ulong)(Math.Pow(2, frameIn));
+            }
+
+            ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
             ulong bitboard = bitGameBoard[0];
             int returnValue = 0;
             ulong mask = 1;
@@ -100,17 +108,7 @@ namespace ConnectfourCode
                         (bitboard >> (3 * directions[i]))) != 0)
                 {
                     returnValue = Three1(returnValue);
-                } //1x11
-                /*if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-                        (bitboard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue += returnValue > 9 ? returnValue : 9;
-                } //x111
-                if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-                        (bitboard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue += returnValue > 9 ? returnValue : 9;
-                } *///11xx
+                } //11xx
                 if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
@@ -131,17 +129,7 @@ namespace ConnectfourCode
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
                     returnValue = Two1(returnValue);
-                } //x1x1
-/*                if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-                        (bitboard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue += returnValue > 4 ? returnValue : 4;
-                } //xx11
-                if ((emptySlotsBitBoard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-                        (bitboard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue += returnValue > 4 ? returnValue : 4;
-                } //1xxx */
+                } //1xxx
                 if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) & (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
                     returnValue = One1(returnValue);
@@ -150,17 +138,7 @@ namespace ConnectfourCode
                         (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
                 {
                     returnValue = One1(returnValue);
-                } //xx1x
-               /* if ((emptySlotsBitBoard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue += returnValue > 1 ? returnValue : 1;
-                } //xxx1
-                if ((emptySlotsBitBoard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-                        (bitboard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue += returnValue > 1 ? returnValue : 1;
-                }*/
+                } 
             }
             return returnValue;
         }
