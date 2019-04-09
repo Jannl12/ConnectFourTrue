@@ -183,13 +183,26 @@ namespace ConnectfourCode
             int retval = 0;
             for (int i = 0; i < directions.Length; i++)
             {
-                if ((b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i])) &
-                        (b4 >> (3 * directions[i]))) != 0)
+                ulong AndBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i])) 
+                    & (b4 >> (3 * directions[i])));
+                if (AndBitBoards != 0)
                 {
-                    retval = score(retval); 
+                    retval = score(retval)*CountSetBits(AndBitBoards); 
                 }
             }
             return retval;
+        }
+
+        public int CountSetBits(ulong x)
+        {
+            int count = 0;
+            while (x > 0)
+            {
+                if ((x & 1) == 1)
+                    count++;
+                x >>= 1;
+            }
+            return count;
         }
     }
     
