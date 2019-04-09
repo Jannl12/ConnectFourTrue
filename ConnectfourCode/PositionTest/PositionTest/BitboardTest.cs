@@ -54,7 +54,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         [TestMethod]
         public void CanPlay7SamnColumn7()
         {
-     
+
             BitBoard test = new BitBoard();
             test.bitGameBoard[0] = 0x1FC0000000000;  //Hexa decimal for 7 in the 7th column
             test.bitGameBoard[1] = 0;
@@ -76,6 +76,23 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             bool calcValue = test.CanPlay(6);
 
             Assert.AreEqual(expectedBool, calcValue);
+        }
+    }
+    [TestClass]
+    public class TestCountSetBits
+    {
+        [TestMethod]
+        public void TestCSB3Bit()
+        {
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x55;
+            test.bitGameBoard[1] = 0x15;
+            int expectedValue = 3;
+
+            int calcValue = test.CountSetBits(0x7);
+
+            Assert.AreEqual(expectedValue, calcValue);
+
         }
     }
 }
