@@ -15,25 +15,31 @@ using System.Windows.Shapes;
 
 namespace ConnectfourCode
 {
+    // TODO: Code needs commment. ALLE
+    // TODO: Check om det er muligt at lave en klasse med handlers
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// //test
     public partial class MainWindow : Window
     {
-        Ellipse[,] gameBoard;
+        Ellipse[,] ellipseGameBoard;
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
-        int moves = 0;
-        bitBoard gameBitBoard = new bitBoard();
+        BitBoard gameBitBoard = new BitBoard();
         public MainWindow()
         {
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x7;
+            test.bitGameBoard[1] = 0x380;
+            test.EvaluateBoard();
+
             InitializeComponent();
-            gameBitBoard.resetBitBoard();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
             gameGrid.Height = this.Height; gameGrid.Width = this.Width;
-
+            
+            //Define colours used for the users. 
             yellowColor = new SolidColorBrush();
             yellowColor.Color = Color.FromArgb(255, 255, 0, 0);
             redColor = new SolidColorBrush();
@@ -42,7 +48,11 @@ namespace ConnectfourCode
             emptyColor.Color = Color.FromArgb(0, 0, 0, 0);
             blackColor = new SolidColorBrush();
             blackColor.Color = Color.FromArgb(255, 0, 0, 0);
-            gameBoard = new Ellipse[rowCount, columnCount];
+
+            //Intializes the array of ellipses, that are put into the Grid.
+            ellipseGameBoard = new Ellipse[rowCount, columnCount];
+
+            //Creates the rows and columns for the Grid, which are added using the two loops.
             ColumnDefinition[] columns = new ColumnDefinition[columnCount];
             RowDefinition[] rows = new RowDefinition[rowCount];
 
@@ -57,6 +67,12 @@ namespace ConnectfourCode
                 RowDefinition bufferRow = new RowDefinition();
                 gameGrid.RowDefinitions.Add(bufferRow);
             }
+
+            /*Defines and specializes the Ellipses, which are put into the Grid. 
+             * Here the colours, width, height and the eventhandlers are added to the
+             * Ellipses using delegates, since it is required to target af specific
+             * column (bit of a workaround). Finally adds the the Grid to the Form.
+             * */
             for (int i = 0; i < rowCount; i++)
             {
                 for (int j = 0; j < columnCount; j++)
@@ -72,64 +88,66 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseEnter += delegate (object sender, MouseEventArgs e)
                     {
-                        mouseEnterHandler(sender, e, g);
+                        MouseEnterHandler(sender, e, g);
                     };
                     bufferEllipse.MouseLeave += delegate (object sender, MouseEventArgs e)
                     {
-                        mouseLeaveHandler(sender, e, g);
+                        MouseLeaveHandler(sender, e, g);
                     };
                     bufferEllipse.MouseDown += delegate (object sender, MouseButtonEventArgs e)
                     {
-                        columnClick(sender, e, g);
+                        ColumnClick(sender, e, g);
                     };
-                    gameBoard[i, j] = bufferEllipse;
+                    ellipseGameBoard[i, j] = bufferEllipse;
                     gameGrid.Children.Add(bufferEllipse);
                 }
             }
             this.Content = gameGrid;
         }
-        private void mouseEnterHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseEnterHandler(object sender, EventArgs e, int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
-                gameBoard[i, targetColumn].Stroke = ((moves & 1) == 0) ? redColor : yellowColor;
+                ellipseGameBoard[i, targetColumn].Stroke = ((gameBitBoard.MoveCount & 1) == 0) ? redColor : yellowColor;
             }
         }
-        private void mouseLeaveHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseLeaveHandler(object sender, EventArgs e, int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
-                gameBoard[i, targetColumn].Stroke = blackColor;
+                ellipseGameBoard[i, targetColumn].Stroke = blackColor;
             }
         }
-        private void columnClick(object sender, EventArgs e, int targetColumn)
+        /*Loops from the bottom of the column, and if it finds an empty cell, it fills it with 
+         * the current players color. Also makes a move on the bitboard.
+         */
+        private void ColumnClick(object sender, EventArgs e, int targetColumn)
         {
             
             for (int i = rowCount - 1; i >= 0; i--)
             {
-                if (gameBoard[i, targetColumn].Fill == emptyColor)
+                if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    gameBoard[i, targetColumn].Fill = ((++moves & 1) == 1) ? redColor : yellowColor;
-                    gameBitBoard.makeMove(targetColumn, moves);
-                    if (gameBitBoard.isWin(moves))
+                    ellipseGameBoard[i, targetColumn].Fill = ((gameBitBoard.MoveCount & 1) == 0) ? redColor : yellowColor;
+                    gameBitBoard.MakeMove(targetColumn);
+                    if (gameBitBoard.IsWin())
                     {
-                        MessageBox.Show(((moves & 1) == 1 ? "Player one" : "Player two") + " won!");
-                        resetBoard();
+                        MessageBox.Show(((gameBitBoard.MoveCount & 1) == 1 ? "Player one" : "Player two") + " won!");
+                        ResetBoard();
                     }
-                    mouseEnterHandler(sender, e, targetColumn);
+                    MouseEnterHandler(sender, e, targetColumn);
                     break;
                 }
             }
         }
 
-        private void resetBoard()
+        private void ResetBoard()
         {
-            foreach (Ellipse ellipse in gameBoard)
+            foreach (Ellipse ellipse in ellipseGameBoard)
             {
                 ellipse.Fill = emptyColor;
             }
-            gameBitBoard.resetBitBoard();
-            moves = 0;
+            gameBitBoard.ResetBitBoard();
         }
     }
 
