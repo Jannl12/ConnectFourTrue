@@ -27,7 +27,7 @@ namespace ConnectfourCode
                 if (node.CanPlay(i))
                 {
                     int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
-
+                    //comment
                     if (value >= beta)
 
                         return value;
