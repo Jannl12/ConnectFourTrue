@@ -11,8 +11,7 @@ namespace ConnectfourCode
     {
 
         public int bestMove = 0;
-        private int thisIsMaxDepth = 5;
-        int[] testArray = { 10, 10, 10, 10 };//, 10, 10, 10, 10, 10, 10, 10 };
+        private int thisIsMaxDepth = 9;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         
 
@@ -35,7 +34,7 @@ namespace ConnectfourCode
                 node.MakeMove(i);
                 if (node.CanPlay(i))
                 {
-                    //testArray[maxDepth] = i; 
+
                     int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
 
                     if (value >= beta)

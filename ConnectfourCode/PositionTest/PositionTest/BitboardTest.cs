@@ -58,11 +58,11 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         {
             //Arrange
             BitBoard test = new BitBoard();
-            test.bitGameBoard[0] = 0x1C1002400095;
-            test.bitGameBoard[1] = 0x801A0C10A;
+            test.bitGameBoard[0] = 0x540802400107;
+            test.bitGameBoard[1] = 0x281031a00080;
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
-            int expectedValue = -18;                    // | | | |o| | |o| 5
+            int expectedValue = -6;                     // | | | |o| | |o| 5
             int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
                                                         // |o| | |x| | |o| 3
             //Assert                                    // |o|o| |o|x|x|x| 2
