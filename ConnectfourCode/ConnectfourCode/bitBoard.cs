@@ -9,7 +9,6 @@ using System.Threading.Tasks;
  */
 namespace ConnectfourCode
 {
-    public delegate int Score(int x);
     public class BitBoard
     {
         public ulong[] bitGameBoard;
@@ -90,13 +89,12 @@ namespace ConnectfourCode
             }
 
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
-            ulong bitboard = bitGameBoard[0];
-            int returnValue = 0;
-            ulong mask = 1;
+            ulong[] bitboard = bitGameBoard;
+            int[] returnValue = { 0, 0 };
 
-            Score Three1 = v => v + 9;
-            Score Two1 = v => v + 4;
-            Score One1 = v => v + 1;
+            int Three1 = 9;
+            int Two1 = 4;
+            int One1 = 1;
 
             if (IsWin()) //Check for four connected.
             {
@@ -104,90 +102,63 @@ namespace ConnectfourCode
             }
             else
             {
-                //111x
-                returnValue += Eval(bitboard, bitboard, bitboard, emptySlotsBitBoard, Three1);
+                for (int i = 0; i < 2; i++)
+                {
+                    //111x
+                    returnValue[i] += Eval(bitboard[i], bitboard[i], bitboard[i], emptySlotsBitBoard, Three1);
 
-                //11x1
-                returnValue += Eval(bitboard, bitboard, emptySlotsBitBoard, bitboard, Three1);
+                    //11x1
+                    returnValue[i] += Eval(bitboard[i], bitboard[i], emptySlotsBitBoard, bitboard[i], Three1);
 
-                //11xx
-                returnValue += Eval(bitboard, bitboard, emptySlotsBitBoard, emptySlotsBitBoard, Two1);
+                    //1x11
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, bitboard[i], bitboard[i], Three1);
 
-                //1x1x
-                returnValue += Eval(bitboard, emptySlotsBitBoard, bitboard, emptySlotsBitBoard, Two1);
+                    //x111
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], bitboard[i], bitboard[i], Three1);
 
-                //1xx1
-                returnValue += Eval(bitboard, emptySlotsBitBoard, emptySlotsBitBoard, bitboard, Two1);
+                    //11xx
+                    returnValue[i] += Eval(bitboard[i], bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, Two1);
 
-                //x11x
-                returnValue += Eval(emptySlotsBitBoard, bitboard, bitboard, emptySlotsBitBoard, Two1);
+                    //1x1x
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, Two1);
 
-                //1xxx
-                returnValue += Eval(bitboard, emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, One1);
+                    //1xx1
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], Two1);
 
-                //x1xx
-                returnValue += Eval(emptySlotsBitBoard, bitboard, emptySlotsBitBoard, bitboard, One1);
+                    //x11x
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], bitboard[i], emptySlotsBitBoard, Two1);
+
+                    //x1x1
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, bitboard[i], Two1);
+
+                    //xx11
+                    returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], bitboard[i], Two1);
+
+                    //1xxx
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, One1);
+
+                    //x1xx
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, One1);
+
+                    //xx1x
+                    returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, One1);
+
+                    //xxx1
+                    returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], One1);
+                }
             }
-            return returnValue;
-
-            //    for (int i = 0; i < directions.Length; i++)
-            //    {   //111x
-            //        if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-            //                (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = Three1(returnValue);
-            //        } //11x1
-            //        if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-            //                (bitboard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = Three1(returnValue);
-            //        } //11xx
-            //        if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-            //                (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = Two1(returnValue);
-
-            //        } //1x1x
-            //        if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-            //                (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = Two1(returnValue);
-            //        } //1xx1
-            //        if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-            //                (bitboard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = Two1(returnValue);
-            //        } //x11x
-            //        if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-            //                (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = Two1(returnValue);
-            //        } //1xxx
-            //        if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) & (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = One1(returnValue);
-            //        } //x1xx
-            //        if ((emptySlotsBitBoard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-            //                (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-            //        {
-            //            returnValue = One1(returnValue);
-            //        } 
-            //    }
-            //    return returnValue;
-            //}
-
-
+            return returnValue[0] - returnValue[1];
         }
-        private int Eval(ulong b1, ulong b2, ulong b3, ulong b4, Score score)
+        private int Eval(ulong b1, ulong b2, ulong b3, ulong b4, int score)
         {
             int retval = 0;
             for (int i = 0; i < directions.Length; i++)
             {
-                ulong AndBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i])) 
+                ulong andBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i])) 
                     & (b4 >> (3 * directions[i])));
-                if (AndBitBoards != 0)
+                if (andBitBoards != 0)
                 {
-                    retval = score(retval)*CountSetBits(AndBitBoards); 
+                    retval += score*CountSetBits(andBitBoards); 
                 }
             }
             return retval;
