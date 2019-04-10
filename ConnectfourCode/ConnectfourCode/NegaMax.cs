@@ -11,8 +11,8 @@ namespace ConnectfourCode
     {
 
         public int bestMove = 0;
-        private int thisIsMaxDepth = 9;
-        int[] testArray = { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 };
+        private int thisIsMaxDepth = 5;
+        int[] testArray = { 10, 10, 10, 10 };//, 10, 10, 10, 10, 10, 10, 10 };
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         
 
@@ -29,13 +29,13 @@ namespace ConnectfourCode
                 int test =node.EvaluateBoard() * color;
                 return node.EvaluateBoard() * color; // TODO: Add heuristic score JAN OG MAYOH
             }
-            for(int i = 0; i < width; i++)
+            for(int i = 6; i >= 0; i--)
             //foreach(int i in turnArray)
             {
                 node.MakeMove(i);
                 if (node.CanPlay(i))
                 {
-                    testArray[maxDepth] = i; 
+                    //testArray[maxDepth] = i; 
                     int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
 
                     if (value >= beta)

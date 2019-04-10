@@ -23,7 +23,7 @@ namespace PositionTest
             test.columnHeight[6] += 1;
             int expectedInt = 2;
 
-            test.NegaMax(test, int.MinValue, int.MaxValue, 9, 1);
+            test.NegaMax(test, int.MinValue, int.MaxValue, 5, 1);
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);

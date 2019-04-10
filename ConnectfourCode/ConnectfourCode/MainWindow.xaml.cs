@@ -31,10 +31,10 @@ namespace ConnectfourCode
         public MainWindow()
         {
             Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x4007; //gul (lige)
-            test.bitGameBoard[1] = 0x380; //rød (ulige)
+            test.bitGameBoard[0] = 0x1C1002400095; //gul (lige)
+            test.bitGameBoard[1] = 0x801A0C10A; //rød (ulige)
             test.EvaluateBoard();
-            //test.NegaMax(test, int.MinValue, int.MaxValue, 9, 1);
+            //test.NegaMax(test, int.MinValue, int.MaxValue, 3, 1);
 
             InitializeComponent();
             Grid gameGrid = new Grid();
