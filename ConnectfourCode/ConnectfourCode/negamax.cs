@@ -22,29 +22,13 @@ namespace ConnectfourCode
         {
             //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
             if (node.IsWin() || maxDepth == 0)
-            {
-                //ConsoleManager.Show();
-                //Console.WriteLine("test");
-                int test =node.EvaluateBoard() * color;
-                /*using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(@"C:\Users\jan_n\Desktop\GameTreeData.txt", true))
-                    
-                {
-                    foreach (int i in moveHistory)
-                        file.Write(i + ",");
-                    file.WriteLine(test);
-                    //file.AutoFlush = true;
-                }*/
-                    return node.EvaluateBoard() * color; // TODO: Add heuristic score JAN OG MAYOH
-            }
-            //for(int i = 6; i >= 0; i--)
-            //foreach(int i in turnArray)
-            for(int i = 0; i < 7; i++)
+                return node.EvaluateBoard()*color; // TODO: Add heuristic score JAN OG MAYOH
+
+            for(int i = 0; i < width; i++)
             {
                 node.MakeMove(i);
                 if (node.CanPlay(i))
                 {
-
                     int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
 
                     if (value >= beta)

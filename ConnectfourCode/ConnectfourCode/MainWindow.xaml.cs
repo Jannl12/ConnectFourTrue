@@ -31,19 +31,10 @@ namespace ConnectfourCode
         public MainWindow()
         {
             Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x4BB40A01615; //blå (lige)
-            test.bitGameBoard[1] = 0x140B74009AA; //rød (ulige)
-            test.MoveCount = 31;
-            test.thisIsMaxDepth = 9;
-            test.columnHeight[0] += 6;
-            test.columnHeight[1] += 6;
-            test.columnHeight[2] += 0;
-            test.columnHeight[3] += 6;
-            test.columnHeight[4] += 6;
-            test.columnHeight[5] += 6;
-            test.columnHeight[6] += 1;
-
-            test.NegaMax(test, int.MinValue + 1, int.MaxValue, test.thisIsMaxDepth, 1);
+            test.bitGameBoard[0] = 0x4081; //gul (lige)
+            test.bitGameBoard[1] = 0x70008102; //rød (ulige)
+            test.EvaluateBoard();
+            //test.NegaMax(test, int.MinValue, int.MaxValue, 3, 1);
 
             InitializeComponent();
             Grid gameGrid = new Grid();
