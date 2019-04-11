@@ -76,14 +76,26 @@ namespace ConnectfourCode
             return false;
         }
 
-        public ulong createHashCode()
+        public override int GetHashCode()
         {
-            ulong bufferLong = 0; 
-            foreach(ulong inputLong in bitGameBoard)
+            int buffer = 0; 
+            foreach(ulong inputLong in this.bitGameBoard)
             {
-                bufferLong ^= inputLong;
+                buffer ^= inputLong.GetHashCode();
             }
-            return bufferLong + bitGameBoard[moveCount & 1];
+            return buffer + bitGameBoard[moveCount & 1].GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj == null || this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                return this.GetHashCode() == obj.GetHashCode();
+            }
         }
 
         public int EvaluateBoard(int player) //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
