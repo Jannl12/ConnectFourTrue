@@ -67,7 +67,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             test.bitGameBoard[1] = 0x281031A00080; // 0 0010 1000 0001 0000 0011 0001 1010 0000 0000 0000 1000 0000
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
-            int expectedValue = -6;                     // | | | |o| | |o| 5
+            int expectedValue = -6; // 45 - 51          // | | | |o| | |o| 5
             int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
                                                         // |o| | |x| | |o| 3
             //Assert                                    // |o|o| |o|x|x|x| 2
@@ -118,7 +118,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
-            int expectedValue = -37;                    // | | | | | | | | 5
+            int expectedValue = -47; // 9 - 56          // | | | | | | | | 5
             int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
                                                         // | | | | |x| | | 3
             //Assert                                    // |x|x|x| |x| | | 2
@@ -133,9 +133,9 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             test.bitGameBoard[0] = 0x102040004081; // 0|0001|00 00|0010|0 000|0100| 0000|000 0|0000|01 00|0000|1 000|0001
             test.bitGameBoard[1] = 0xEDDBB003870E; // 0|1110|11 01|1101|1 011|1011| 0000|000 0|0011|10 00|0111|0 000|1110
 
-                                                        //  1 2 3 4 5 6 7
+            //  1 2 3 4 5 6 7
             //Act                                       // | | | | |x|x|x| 6
-            int expectedValue = -37;                    // | | | | |x|x|x| 5
+            int expectedValue = -257; // 19 - 276       // | | | | |x|x|x| 5
             int calcValue = test.EvaluateBoard();       // |x|x|x| |x|x|x| 4
                                                         // |x|x|x| |o|o|o| 3
             //Assert                                    // |x|x|x| |x|x|x| 2
