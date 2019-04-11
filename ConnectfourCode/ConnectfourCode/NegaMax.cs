@@ -11,7 +11,7 @@ namespace ConnectfourCode
     {
 
         public int bestMove = 0;
-        private int thisIsMaxDepth = 9;
+        public int thisIsMaxDepth = 9;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         
 
