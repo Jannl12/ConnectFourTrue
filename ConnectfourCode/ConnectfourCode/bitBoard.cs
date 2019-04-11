@@ -66,7 +66,7 @@ namespace ConnectfourCode
 
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[moveCount - 1 & 1];
+            ulong bitboard = bitGameBoard[(moveCount-1) & 1];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
@@ -92,13 +92,15 @@ namespace ConnectfourCode
             ulong[] bitboard = bitGameBoard;
             int[] returnValue = { 0, 0 };
 
+            returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*4;
+
             int Three1 = 9;
             int Two1 = 4;
             int One1 = 1;
 
             if (IsWin()) //Check for four connected.
             {
-                return 10000;
+                return 10000 - MoveCount;
             }
             else
             {
