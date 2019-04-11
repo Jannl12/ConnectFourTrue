@@ -12,11 +12,13 @@ namespace ConnectfourCode
     public class BitBoard
     {
         public ulong[] bitGameBoard;
-        int[] columnHeight;
+        public int[] columnHeight;
         List<int> moveHistory = new List<int>();
         int boardHeight = 6, boardWidth = 7, moveCount;
         public int MoveCount {
             get { return moveCount; }
+            set { moveCount = value; }
+
         }
 
         int[] directions = { 1, 7, 6, 8 };
@@ -37,7 +39,7 @@ namespace ConnectfourCode
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
             moveHistory.RemoveAt(moveHistory.Count - 1);
-            bitGameBoard[(moveCount-- & 1)] ^= moveBuffer;
+            bitGameBoard[(--moveCount & 1)] ^= moveBuffer;
         }
 
         public bool CanPlay( int coulumn)
@@ -64,7 +66,7 @@ namespace ConnectfourCode
 
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[moveCount - 1 & 1];
+            ulong bitboard = bitGameBoard[(moveCount-1) & 1];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
@@ -75,6 +77,7 @@ namespace ConnectfourCode
             }
             return false;
         }
+
 
         public override int GetHashCode()
         {
@@ -98,38 +101,106 @@ namespace ConnectfourCode
             }
         }
 
-        public int EvaluateBoard(int player) //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
-        {
-            ulong emptySlotsBitBoard = ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1]);
-            ulong bitboard = bitGameBoard[0];
-            int returnValue = int.MinValue;
+        public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
 
-            //Check for four connected.
-            for (int i = 0; i < directions.Length; i++)
+        {
+            int[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
+                                  53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
+            ulong outerFrameBuffer = 0;
+            foreach (int frameIn in frameRemover)
             {
-                if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-                        (bitboard >> (3 * directions[i]))) != 0)
+                outerFrameBuffer += (ulong)(Math.Pow(2, frameIn));
+            }
+
+            ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
+            ulong[] bitboard = bitGameBoard;
+            int[] returnValue = { 0, 0 };
+
+            returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*4;
+
+            int Three1 = 9;
+            int Two1 = 4;
+            int One1 = 1;
+
+            if (IsWin()) //Check for four connected.
+            {
+                return 10000 - MoveCount;
+            }
+            else
+            {
+                for (int i = 0; i < 2; i++)
                 {
-                     returnValue = int.MaxValue;
-                }
-                 else if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
-                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue = returnValue > 9 ? returnValue : 9;
-                }
-                else if ((bitboard & (bitboard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue = returnValue > 4 ? returnValue : 4; ;
-                }
-                else if ((bitboard & (emptySlotsBitBoard >> directions[i]) & (emptySlotsBitBoard >> (2 * directions[i])) &
-                        (emptySlotsBitBoard >> (3 * directions[i]))) != 0)
-                {
-                    returnValue = returnValue > 1 ? returnValue : 1; ;
+                    //111x
+                    returnValue[i] += Eval(bitboard[i], bitboard[i], bitboard[i], emptySlotsBitBoard, Three1);
+
+                    //11x1
+                    returnValue[i] += Eval(bitboard[i], bitboard[i], emptySlotsBitBoard, bitboard[i], Three1);
+
+                    //1x11
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, bitboard[i], bitboard[i], Three1);
+
+                    //x111
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], bitboard[i], bitboard[i], Three1);
+
+                    //11xx
+                    returnValue[i] += Eval(bitboard[i], bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, Two1);
+
+                    //1x1x
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, Two1);
+
+                    //1xx1
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], Two1);
+
+                    //x11x
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], bitboard[i], emptySlotsBitBoard, Two1);
+
+                    //x1x1
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, bitboard[i], Two1);
+
+                    //xx11
+                    returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], bitboard[i], Two1);
+
+                    //1xxx
+                    returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, One1);
+
+                    //x1xx
+                    returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, One1);
+
+                    //xx1x
+                    returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, One1);
+
+                    //xxx1
+                    returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], One1);
                 }
             }
-            //Check for three connected and space for the possibility of adding a fourth.
-            return returnValue;
+            return returnValue[0] - returnValue[1];
+        }
+        private int Eval(ulong b1, ulong b2, ulong b3, ulong b4, int score)
+        {
+            int retval = 0;
+            for (int i = 0; i < directions.Length; i++)
+            {
+                ulong andBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i])) 
+                    & (b4 >> (3 * directions[i])));
+                if (andBitBoards != 0)
+                {
+                    retval += score*CountSetBits(andBitBoards); 
+                }
+            }
+            return retval;
+        }
+
+        public int CountSetBits(ulong x)
+        {
+            int count = 0;
+            while (x > 0)
+            {
+                if ((x & 1) == 1)
+                    count++;
+                x >>= 1;
+            }
+            return count;
         }
     }
+    
 }
