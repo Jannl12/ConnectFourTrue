@@ -78,7 +78,31 @@ namespace ConnectfourCode
             return false;
         }
 
+
+        public override int GetHashCode()
+        {
+            int buffer = 0; 
+            foreach(ulong inputLong in this.bitGameBoard)
+            {
+                buffer ^= inputLong.GetHashCode();
+            }
+            return buffer + bitGameBoard[moveCount & 1].GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj == null || this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                return this.GetHashCode() == obj.GetHashCode();
+            }
+        }
+
         public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
+
         {
             int[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
                                   53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };

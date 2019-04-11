@@ -65,7 +65,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="bitBoard.cs" />
-    <Compile Include="ConsoleManager.cs" />
+    <Compile Include="CreateEvalutionHashTabel.cs" />
+    <Compile Include="TranspositionTabel.cs" />
+
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
