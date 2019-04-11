@@ -31,8 +31,8 @@ namespace ConnectfourCode
         public MainWindow()
         {
             Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x1C1002400095; //gul (lige)
-            test.bitGameBoard[1] = 0x801A0C10A; //rød (ulige)
+            test.bitGameBoard[0] = 0x4081; //gul (lige)
+            test.bitGameBoard[1] = 0x70008102; //rød (ulige)
             test.EvaluateBoard();
             //test.NegaMax(test, int.MinValue, int.MaxValue, 3, 1);
 

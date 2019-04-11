@@ -21,7 +21,7 @@ namespace ConnectfourCode
 
         }
 
-        int[] directions = { 1, 7, 6, 8 };
+        int[] directions = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
 
         public BitBoard()
         {
