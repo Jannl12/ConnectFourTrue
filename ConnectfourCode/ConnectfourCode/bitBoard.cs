@@ -13,7 +13,7 @@ namespace ConnectfourCode
     {
         public ulong[] bitGameBoard;
         public int[] columnHeight;
-        List<int> moveHistory = new List<int>();
+        protected List<int> moveHistory = new List<int>();
         int boardHeight = 6, boardWidth = 7, moveCount;
         public int MoveCount {
             get { return moveCount; }
@@ -21,7 +21,7 @@ namespace ConnectfourCode
 
         }
 
-        int[] directions = { 1, 7, 6, 8 };
+        int[] directions = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
 
         public BitBoard()
         {
@@ -92,7 +92,7 @@ namespace ConnectfourCode
             ulong[] bitboard = bitGameBoard;
             int[] returnValue = { 0, 0 };
 
-            returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*4;
+            returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*2;
 
             int Three1 = 9;
             int Two1 = 4;
