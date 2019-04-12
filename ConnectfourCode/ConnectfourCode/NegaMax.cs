@@ -11,7 +11,8 @@ namespace ConnectfourCode
     {
 
         public int bestMove = 0;
-        public int thisIsMaxDepth = 9;
+        private int thisIsMaxDepth = 5;
+        int[] testArray = { 10, 10, 10, 10 };//, 10, 10, 10, 10, 10, 10, 10 };
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         
 
@@ -22,15 +23,31 @@ namespace ConnectfourCode
         {
             //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
             if (node.IsWin() || maxDepth == 0)
-                return node.EvaluateBoard()*color; // TODO: Add heuristic score JAN OG MAYOH
-
-            for(int i = 0; i < width; i++)
+            {
+                //ConsoleManager.Show();
+                //Console.WriteLine("test");
+                int test =node.EvaluateBoard() * color;
+                /*using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(@"C:\Users\jan_n\Desktop\GameTreeData.txt", true))
+                    
+                {
+                    foreach (int i in moveHistory)
+                        file.Write(i + ",");
+                    file.WriteLine(test);
+                    //file.AutoFlush = true;
+                }*/
+                    return node.EvaluateBoard() * color; // TODO: Add heuristic score JAN OG MAYOH
+            }
+            //for(int i = 6; i >= 0; i--)
+            //foreach(int i in turnArray)
+            for(int i = 0; i < 7; i++)
             {
                 node.MakeMove(i);
                 if (node.CanPlay(i))
                 {
+                    //testArray[maxDepth] = i; 
                     int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
-
+                    //comment
                     if (value >= beta)
                     {
                         node.UndoMove();
