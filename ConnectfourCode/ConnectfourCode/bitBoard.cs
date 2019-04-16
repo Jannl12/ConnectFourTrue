@@ -117,19 +117,16 @@ namespace ConnectfourCode
             int[] returnValue = { 0, 0 };
 
             //returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*2;
-
-            int Three1 = 9;
-            int Two1 = 4;
+            int Four1 = 1000000;
+            int Three1 = 10000;
+            int Two1 = 100;
             int One1 = 1;
 
-            if (IsWin()) //Check for four connected.
-            {
-                return 10000 - MoveCount;
-            }
-            else
-            {
-                for (int i = 0; i < 2; i++)
+for (int i = 0; i < 2; i++)
                 {
+                    //1111
+                    returnValue[i] += Eval(bitboard[i], bitboard[i], bitboard[i], bitboard[i], Four1);
+
                     //111x
                     returnValue[i] += Eval(bitboard[i], bitboard[i], bitboard[i], emptySlotsBitBoard, Three1);
 
@@ -172,7 +169,7 @@ namespace ConnectfourCode
                     //xxx1
                     returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], One1);
                 }
-            }
+       
             return returnValue[0] - returnValue[1];
         }
         private int Eval(ulong b1, ulong b2, ulong b3, ulong b4, int score)
