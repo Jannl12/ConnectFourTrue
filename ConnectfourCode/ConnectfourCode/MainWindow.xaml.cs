@@ -30,12 +30,6 @@ namespace ConnectfourCode
         
         public MainWindow()
         {
-            Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x4081; //gul (lige)
-            test.bitGameBoard[1] = 0x70008102; //rød (ulige)
-            test.EvaluateBoard();
-            //test.NegaMax(test, int.MinValue, int.MaxValue, 3, 1);
-
             InitializeComponent();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;

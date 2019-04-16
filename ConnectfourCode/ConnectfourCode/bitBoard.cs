@@ -116,7 +116,7 @@ namespace ConnectfourCode
             ulong[] bitboard = bitGameBoard;
             int[] returnValue = { 0, 0 };
 
-            returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*2;
+            //returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*2;
 
             int Three1 = 9;
             int Two1 = 4;
