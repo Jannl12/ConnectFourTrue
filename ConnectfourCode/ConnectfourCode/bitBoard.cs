@@ -78,16 +78,25 @@ namespace ConnectfourCode
             return false;
         }
 
-
-        public override int GetHashCode()
+        public ulong GetBoardKey()
         {
-            int buffer = 0; 
-            foreach(ulong inputLong in this.bitGameBoard)
+            ulong buffer = 0;
+            foreach(ulong inputlong in this.bitGameBoard)
             {
-                buffer ^= inputLong.GetHashCode();
+                buffer ^= inputlong;
             }
-            return buffer + bitGameBoard[moveCount & 1].GetHashCode();
+            return buffer + bitGameBoard[moveCount & 1];
         }
+
+        //public override int GetHashCode()
+        //{
+        //    int buffer = 0; 
+        //    foreach(ulong inputLong in this.bitGameBoard)
+        //    {
+        //        buffer ^= inputLong.GetHashCode();
+        //    }
+        //    return buffer + bitGameBoard[moveCount & 1].GetHashCode();
+        //}
 
         public override bool Equals(object obj)
         {
