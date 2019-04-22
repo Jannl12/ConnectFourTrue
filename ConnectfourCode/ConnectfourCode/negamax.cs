@@ -12,8 +12,8 @@ namespace ConnectfourCode
         public int bestMove = 3;
         public int thisIsMaxDepth = 9;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
-        Dictionary<int, int> TranspositionTable = new Dictionary<int, int>();
-
+        Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
+         
 
         public void ResetBestMove() 
         {
@@ -26,15 +26,24 @@ namespace ConnectfourCode
 
             //TODO: Skal med i implementeringen
         {
-            int lookuphashCode = bitGameBoard.GetHashCode();
+            ulong lookuphashCode = this.GetBoardKey();
+            int evalBuffer = 0;
 
             //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
             if (IsWin() || maxDepth == 0)
             {
-                    int evalBuffer = EvaluateBoard();
-                    //TranspositionTable.Add(lookuphashCode, evalBuffer * color);
+                if(TranspositionTable.TryGetValue(lookuphashCode, out evalBuffer))
+                {
                     return evalBuffer * color; // TODO: Add heuristic score JAN OG MAYOH
-               
+                }
+                else
+                {
+                    evalBuffer = EvaluateBoard();
+                    TranspositionTable[lookuphashCode] = evalBuffer;
+                    return evalBuffer * color;
+                }
+
+
             }
 
             foreach(int i in turnArray)
