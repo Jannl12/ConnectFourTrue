@@ -13,37 +13,52 @@ namespace ConnectfourCode
         public int bestMove = 0;
         public int thisIsMaxDepth = 9;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
-        
+        Dictionary<int, int> TranspositionTable = new Dictionary<int, int>();
+
+
+        public void ResetBestMove() 
+        {
+            bestMove = 3;
+            TranspositionTable.Clear();
+        }
 
         private const int height = 6, width = 7;       
-        public int NegaMax(BitBoard node, int alpha, int beta, int maxDepth, int color)
+        public int NegaMax(int alpha, int beta, int maxDepth, int color)
 
             //TODO: Skal med i implementeringen
         {
-            //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
-            if (node.IsWin() || maxDepth == 0)
-                return node.EvaluateBoard()*color; // TODO: Add heuristic score JAN OG MAYOH
+            int lookuphashCode = bitGameBoard.GetHashCode();
 
-            for(int i = 0; i < width; i++)
+            //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
+            if (IsWin() || maxDepth == 0)
             {
-                node.MakeMove(i);
-                if (node.CanPlay(i))
+                    int evalBuffer = EvaluateBoard();
+                    //TranspositionTable.Add(lookuphashCode, evalBuffer * color);
+                    return evalBuffer * color; // TODO: Add heuristic score JAN OG MAYOH
+               
+            }
+
+            foreach(int i in turnArray)
+            {
+                MakeMove(i);
+                if (CanPlay(i))
                 {
-                    int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
+                    int value = -NegaMax(-beta, -alpha, maxDepth - 1, -color);
 
                     if (value >= beta)
                     {
-                        node.UndoMove();
+                        UndoMove();
                         return value;
                     }
                     if (value > alpha)
                     {
                         alpha = value;
-                        if(thisIsMaxDepth == maxDepth)
+                        if (thisIsMaxDepth == maxDepth)
                             bestMove = i;
+
                     }
-                }                
-                node.UndoMove();
+                }
+                UndoMove();
             }
             return alpha;
         }        

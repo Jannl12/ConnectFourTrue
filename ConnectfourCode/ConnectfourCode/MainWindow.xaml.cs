@@ -26,7 +26,7 @@ namespace ConnectfourCode
         Ellipse[,] ellipseGameBoard;
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
-        BitBoard gameBitBoard = new BitBoard();
+        Negamax negamaxTest = new Negamax();
         
         public MainWindow()
         {
@@ -84,30 +84,33 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseEnter += delegate (object sender, MouseEventArgs e)
                     {
-                        MouseEnterHandler(sender, e, g);
+                        MouseEnterHandler(g);
                     };
                     bufferEllipse.MouseLeave += delegate (object sender, MouseEventArgs e)
                     {
-                        MouseLeaveHandler(sender, e, g);
+                        MouseLeaveHandler(g);
                     };
                     bufferEllipse.MouseDown += delegate (object sender, MouseButtonEventArgs e)
                     {
-                        ColumnClick(sender, e, g);
+                        ColumnClick(g, true);
                     };
                     ellipseGameBoard[i, j] = bufferEllipse;
                     gameGrid.Children.Add(bufferEllipse);
                 }
             }
             this.Content = gameGrid;
+            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1);
+            ColumnClick(negamaxTest.bestMove, false);
+            negamaxTest.ResetBestMove();
         }
-        private void MouseEnterHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseEnterHandler(int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
-                ellipseGameBoard[i, targetColumn].Stroke = ((gameBitBoard.MoveCount & 1) == 0) ? redColor : yellowColor;
+                ellipseGameBoard[i, targetColumn].Stroke = ((negamaxTest.MoveCount & 1) == 0) ? redColor : yellowColor;
             }
         }
-        private void MouseLeaveHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseLeaveHandler(int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
@@ -117,24 +120,29 @@ namespace ConnectfourCode
         /*Loops from the bottom of the column, and if it finds an empty cell, it fills it with 
          * the current players color. Also makes a move on the bitboard.
          */
-        private void ColumnClick(object sender, EventArgs e, int targetColumn)
+        private void ColumnClick(int targetColumn, bool playerMove)
         {
             
             for (int i = rowCount - 1; i >= 0; i--)
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    ellipseGameBoard[i, targetColumn].Fill = ((gameBitBoard.MoveCount & 1) == 0) ? redColor : yellowColor;
-                    gameBitBoard.MakeMove(targetColumn);
-                    if (gameBitBoard.IsWin())
+                    ellipseGameBoard[i, targetColumn].Fill = ((negamaxTest.MoveCount & 1) == 0) ? redColor : yellowColor;
+                    negamaxTest.MakeMove(targetColumn);
+                    if (negamaxTest.IsWin())
                     {
-                        MessageBox.Show(((gameBitBoard.MoveCount & 1) == 1 ? "Player one" : "Player two") + " won!");
+                        MessageBox.Show(((negamaxTest.MoveCount & 1) == 1 ? "Player one" : "Player two") + " won!");
                         ResetBoard();
                     }
-                    MouseEnterHandler(sender, e, targetColumn);
+                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1);
+                    if (playerMove)
+                    {
+                        ColumnClick(negamaxTest.bestMove, false);
+                    }
+                    negamaxTest.ResetBestMove();
                     break;
                 }
-            }
+            }   
         }
 
         private void ResetBoard()
@@ -143,7 +151,7 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
-            gameBitBoard.ResetBitBoard();
+            negamaxTest.ResetBitBoard();
         }
     }
 
