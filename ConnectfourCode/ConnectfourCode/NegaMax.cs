@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ConnectfourCode
 {
     public class Negamax : BitBoard
     {
 
         public int bestMove = 0;
-        private int thisIsMaxDepth = 9;
+        public int thisIsMaxDepth = 9;
+        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
+        
 
         private const int height = 6, width = 7;       
         public int NegaMax(BitBoard node, int alpha, int beta, int maxDepth, int color)
@@ -27,10 +30,12 @@ namespace ConnectfourCode
                 if (node.CanPlay(i))
                 {
                     int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
-                    //comment
-                    if (value >= beta)
 
+                    if (value >= beta)
+                    {
+                        node.UndoMove();
                         return value;
+                    }
                     if (value > alpha)
                     {
                         alpha = value;
