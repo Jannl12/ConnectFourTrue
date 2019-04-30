@@ -105,7 +105,7 @@ namespace ConnectfourCode
                 }
             }
             this.Content = gameGrid;
-            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 30, 1);
+            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 10, 1);
             ColumnClick(negamaxTest.bestMove, false);
             negamaxTest.ResetBestMove();
         }

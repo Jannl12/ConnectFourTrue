@@ -67,7 +67,7 @@ namespace ConnectfourCode
                 moveHistory.Push(latestTuple);
                 gameboard[latestTuple.Item1, latestTuple.Item2] = moveCount % 2;
 
-                moveCount++; (columnHeight[coloumnInput])++;
+                moveCount++; (columnHeight[latestTuple.Item1])++;
             }
         }
 
@@ -77,7 +77,7 @@ namespace ConnectfourCode
             {
                 Tuple<int, int> latestTuple = moveHistory.Pop();
                 gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
-                moveCount--; (columnHeight[moveHistory.Last().Item1])--;
+                moveCount--; columnHeight[latestTuple.Item1]--;
             }
         }
 
@@ -117,7 +117,7 @@ namespace ConnectfourCode
             int buffer = 0;
             foreach (int i in gameboard)
             {
-                buffer = checked(buffer + i.GetHashCode());
+                buffer += i.GetHashCode();
             }
             return buffer;
         }
