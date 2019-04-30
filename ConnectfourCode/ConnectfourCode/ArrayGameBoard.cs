@@ -8,10 +8,14 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
+
     public class ArrayGameBoard
     {
         int[,] gameboard = new int[7, 6];
-        List<int> moveHistory = new List<int>();
+        int moveCount = 0;
+        int[] columnHeight = { 0, 0, 0, 0, 0, 0, 0 };
+        Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
+
         Dictionary<int, int> sevenSlotsScores = new Dictionary<int, int>();
         Dictionary<int, int> sixSlotsScores = new Dictionary<int, int>();
         Dictionary<int, int> fiveSlotsScores = new Dictionary<int, int>();
@@ -52,33 +56,34 @@ namespace ConnectfourCode
 
         public bool IsPlayerMove()
         {
-            return moveHistory.Count % 2 == 0;
+            return moveCount % 2 == 0;
         }
 
         public void MakeMove(int coloumnInput)
         {
-            for(int i = gameboard.GetLength(1) - 1; i > 0; i--)
+            if (CanPlay(coloumnInput) && columnHeight[coloumnInput] < 6)
             {
-                gameboard[coloumnInput, i] = gameboard[coloumnInput, i] == 0 ? moveHistory.Count() % 2 : 0; 
+                Tuple<int, int> latestTuple = new Tuple<int, int>(coloumnInput, (columnHeight[coloumnInput]));
+                moveHistory.Push(latestTuple);
+                gameboard[latestTuple.Item1, latestTuple.Item2] = moveCount % 2;
+
+                moveCount++; (columnHeight[coloumnInput])++;
             }
-            moveHistory.Add(coloumnInput);
         }
 
         public void UndoMove()
         {
-            for (int i = 0; i > gameboard.GetLength(1); i++)
+            if (moveHistory.Count > 0)
             {
-                if(gameboard[moveHistory.Last(), i] != 0)
-                {
-                    gameboard[moveHistory.Last(), i] = 0;
-                }
+                Tuple<int, int> latestTuple = moveHistory.Pop();
+                gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
+                moveCount--; (columnHeight[moveHistory.Last().Item1])--;
             }
-            moveHistory.RemoveAt(moveHistory.Count - 1);
         }
 
         public bool CanPlay(int column)
         {
-            if(gameboard[column, gameboard.GetLength(1) - 1] == 0)
+            if(gameboard[column, (gameboard.GetLength(1) - 1)] == 0)
             {
                 return true;
             }
@@ -94,10 +99,7 @@ namespace ConnectfourCode
                     gameboard[i, j] = 0;
                 }
             }
-            foreach(int move in moveHistory)
-            {
-                moveHistory.RemoveAt(moveHistory.Count - 1);
-            }
+            moveHistory = new Stack<Tuple<int, int>>();
         }
 
         public ulong GetBoardKey()
@@ -115,7 +117,7 @@ namespace ConnectfourCode
             int buffer = 0;
             foreach (int i in gameboard)
             {
-                buffer += i.GetHashCode();
+                buffer = checked(buffer + i.GetHashCode());
             }
             return buffer;
         }
