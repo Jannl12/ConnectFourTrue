@@ -26,24 +26,24 @@ namespace ConnectfourCode
         {
             ResetBitBoard();
             string[] splitStringBuffer;
-            foreach (string line in File.ReadLines(@"C:\Users\ehvid\Desktop\7C4.txt"))
+            foreach (string line in File.ReadLines(@"..\..\..\ConnectfourCode\7C4.txt"))
             {
                 splitStringBuffer = line.Split(' ');
                 sevenSlotsScores.Add(int.Parse(splitStringBuffer[0]), int.Parse(splitStringBuffer[1]));
             }
 
-            foreach (string line in File.ReadLines(@"C:\Users\ehvid\Desktop\6C4.txt"))
+            foreach (string line in File.ReadLines(@"..\..\..\ConnectfourCode\6C4.txt"))
             {
                 splitStringBuffer = line.Split(' ');
                 sixSlotsScores.Add(int.Parse(splitStringBuffer[0]), int.Parse(splitStringBuffer[1]));
             }
 
-            foreach (string line in File.ReadLines(@"C:\Users\ehvid\Desktop\5C4.txt"))
+            foreach (string line in File.ReadLines(@"..\..\..\ConnectfourCode\5C4.txt"))
             {
                 splitStringBuffer = line.Split(' ');
                 fiveSlotsScores.Add(int.Parse(splitStringBuffer[0]), int.Parse(splitStringBuffer[1]));
             }
-            foreach (string line in File.ReadLines(@"C:\Users\ehvid\Desktop\4C4.txt"))
+            foreach (string line in File.ReadLines(@"..\..\..\ConnectfourCode\4C4.txt"))
             {
                 splitStringBuffer = line.Split(' ');
                 fourSlotsScores.Add(int.Parse(splitStringBuffer[0]), int.Parse(splitStringBuffer[1]));
