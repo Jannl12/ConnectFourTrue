@@ -9,7 +9,7 @@ namespace ConnectfourCode
 {
     public class Negamax : ArrayGameBoard
     {
-        public int bestMove = 3;
+        public int bestMove = 3; // :)
         public int thisIsMaxDepth = 9;
         int[] turnArray = { 0, 1, 2, 3, 4, 5, 6 };
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
