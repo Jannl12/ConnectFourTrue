@@ -30,10 +30,10 @@ namespace ConnectfourCode
         
         public MainWindow()
         {
-            Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x4081; //gul (lige)
-            test.bitGameBoard[1] = 0x70008102; //rød (ulige)
-            test.EvaluateBoard();
+            //Negamax test = new Negamax();
+            //test.bitGameBoard[0] = 0x4081; //gul (lige)
+            //test.bitGameBoard[1] = 0x70008102; //rød (ulige)
+            //test.EvaluateBoard();
             //test.NegaMax(test, int.MinValue, int.MaxValue, 3, 1);
 
             InitializeComponent();
@@ -105,7 +105,7 @@ namespace ConnectfourCode
                 }
             }
             this.Content = gameGrid;
-            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 11, 1);
+            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 30, 1);
             ColumnClick(negamaxTest.bestMove, false);
             negamaxTest.ResetBestMove();
         }
@@ -113,7 +113,7 @@ namespace ConnectfourCode
         {
             for (int i = 0; i < rowCount; i++)
             {
-                ellipseGameBoard[i, targetColumn].Stroke = ((negamaxTest.MoveCount & 1) == 0) ? redColor : yellowColor;
+                ellipseGameBoard[i, targetColumn].Stroke = (negamaxTest.IsPlayerMove()) ? redColor : yellowColor;
             }
         }
         private void MouseLeaveHandler(int targetColumn)
@@ -133,11 +133,11 @@ namespace ConnectfourCode
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    ellipseGameBoard[i, targetColumn].Fill = ((negamaxTest.MoveCount & 1) == 0) ? redColor : yellowColor;
+                    ellipseGameBoard[i, targetColumn].Fill = negamaxTest.IsPlayerMove() ? redColor : yellowColor;
                     negamaxTest.MakeMove(targetColumn);
                     if (negamaxTest.IsWin())
                     {
-                        MessageBox.Show(((negamaxTest.MoveCount & 1) == 1 ? "Player one" : "Player two") + " won!");
+                        MessageBox.Show((negamaxTest.IsPlayerMove() ? "Player one" : "Player two") + " won!");
                         ResetBoard();
                     }
                     negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1);

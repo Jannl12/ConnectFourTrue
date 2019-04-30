@@ -38,6 +38,11 @@ namespace ConnectfourCode
 
         }
 
+        public bool IsPlayerMove()
+        {
+            return MoveCount % 2 == 0;
+        }
+
         public void UndoMove()
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
@@ -65,10 +70,6 @@ namespace ConnectfourCode
                 columnHeight[i] = i * boardWidth;
             }
             moveCount = 0;
-            foreach(int move in moveHistory)
-            {
-                moveHistory.Remove(move);
-            }
         }
 
         public bool IsWin()
@@ -121,7 +122,7 @@ namespace ConnectfourCode
         public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
 
         {
-            int[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
+            ulong[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
                                   53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
             ulong outerFrameBuffer = 0;
             foreach (int frameIn in frameRemover)
