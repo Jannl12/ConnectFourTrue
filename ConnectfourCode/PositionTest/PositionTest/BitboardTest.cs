@@ -87,7 +87,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             int expectedValue = 7;                      // | | | | | | | | 5
             int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
                                                         // | | | | | | | | 3
-                                                        //Assert                                    // | | | | | | | | 2
+            //Assert                                    // | | | | | | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // | | | |o| | | | 1
         }
 
@@ -153,11 +153,44 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
         //  1 2 3 4 5 6 7
         //Act                                       // | | | | | | | | 6
-        int expectedValue = -37;                    // | | | |o|o| | | 5
+        int expectedValue = 13;                     // | | | |o|o| | | 5
         int calcValue = test.EvaluateBoard();       // | | | |x|o| | | 4
                                                     // | | | |o|x| | | 3
         //Assert                                    // | | | |x|o| | | 2
         Assert.AreEqual(expectedValue, calcValue);  // |x| | |o|x| |x| 1
+    }
+
+        [TestMethod]
+    public void EvaluateBoardBaseFailCase()
+    {
+        //Arrange
+        BitBoard test = new BitBoard();
+        test.bitGameBoard[0] = 0x1A6A00000; // 0|0001|00 00|0010|0 000|0100| 0000|000 0|0000|01 00|0000|1 000|0001
+        test.bitGameBoard[1] = 0x40051400001; // 0|1110|11 01|1101|1 011|1011| 0000|000 0|0011|10 00|0111|0 000|1110
+
+                                                    //  1 2 3 4 5 6 7
+        //Act                                       // | | | |o| | | | 6
+        int expectedValue = 21;                     // | | | |o|o| | | 5
+        int calcValue = test.EvaluateBoard();       // | | | |x|o| | | 4
+                                                    // | | | |o|x| | | 3
+        //Assert                                    // | | | |x|o| | | 2
+        Assert.AreEqual(expectedValue, calcValue);  // |x| | |o|x| |x| 1
+    }
+    [TestMethod]
+    public void EvaluateBoardBaseRightMove()
+    {
+        //Arrange
+        BitBoard test = new BitBoard();
+        test.bitGameBoard[0] = 0x1A2A00080; // 0|0001|00 00|0010|0 000|0100| 0000|000 0|0000|01 00|0000|1 000|0001
+        test.bitGameBoard[1] = 0x40051400001; // 0|1110|11 01|1101|1 011|1011| 0000|000 0|0011|10 00|0111|0 000|1110
+
+        //  1 2 3 4 5 6 7
+        //Act                                       // | | | | | | | | 6
+        int expectedValue = 13;                     // | | | |o|o| | | 5
+        int calcValue = test.EvaluateBoard();       // | | | |x|o| | | 4
+                                                    // | | | |o|x| | | 3
+        //Assert                                    // | | | |x|o| | | 2
+        Assert.AreEqual(expectedValue, calcValue);  // |x|o| |o|x| |x| 1
     }
 }
 [TestClass]
