@@ -5,7 +5,7 @@ using ConnectfourCode;
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
     [TestClass]
-    public class EvaluateBoardTest
+    public class EvaluateBoardTest:BitBoard
     {
         [TestMethod]
         public void EvaluateBoardLeft()
@@ -14,6 +14,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             BitBoard test = new BitBoard();
             test.bitGameBoard[0] = 0x7;            // 0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0111
             test.bitGameBoard[1] = 0x380;          // 0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0011 1000 0000
+            test.MoveCount = 1;
+            
 
             //Act                                       //  1 2 3 4 5 6 7
             int expectedValue = -6;                     // | | | | | | | | 6

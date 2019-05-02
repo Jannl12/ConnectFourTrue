@@ -30,12 +30,6 @@ namespace ConnectfourCode
         
         public MainWindow()
         {
-            Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x4081; //gul (lige)
-            test.bitGameBoard[1] = 0x70008102; //rød (ulige)
-            test.EvaluateBoard();
-            //test.NegaMax(test, int.MinValue, int.MaxValue, 3, 1);
-
             InitializeComponent();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
@@ -44,7 +38,7 @@ namespace ConnectfourCode
             //Define colours used for the users. 
             yellowColor = new SolidColorBrush();
             yellowColor.Color = Color.FromArgb(255, 255, 0, 0);
-            redColor = new SolidColorBrush();
+            redColor = new SolidColorBrush();   
             redColor.Color = Color.FromArgb(255, 255, 255, 0);
             emptyColor = new SolidColorBrush();
             emptyColor.Color = Color.FromArgb(0, 0, 0, 0);
@@ -72,7 +66,7 @@ namespace ConnectfourCode
 
             /*Defines and specializes the Ellipses, which are put into the Grid. 
              * Here the colours, width, height and the eventhandlers are added to the
-             * Ellipses using delegates, since it is required to target af specific
+             * Ellipses using delegates, since it is required to target a specific
              * column (bit of a workaround). Finally adds the the Grid to the Form.
              * */
             for (int i = 0; i < rowCount; i++)
