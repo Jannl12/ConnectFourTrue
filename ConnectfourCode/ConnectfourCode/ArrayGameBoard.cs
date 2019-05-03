@@ -225,7 +225,6 @@ namespace ConnectfourCode
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
-            Debug.WriteLine(evaluationBuffer);
             return evaluationBuffer;
         }
     }

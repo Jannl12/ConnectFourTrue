@@ -17,6 +17,7 @@ namespace ConnectfourCode
         public int[] columnHeight;
         protected List<int> moveHistory = new List<int>();
         int boardHeight = 6, boardWidth = 7, moveCount;
+        ulong bufferFrame;
 
         public int MoveCount {
             get { return moveCount; }
@@ -74,7 +75,7 @@ namespace ConnectfourCode
 
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[(moveCount-1) & 1];
+            ulong bitboard = bitGameBoard[moveCount % 2];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 

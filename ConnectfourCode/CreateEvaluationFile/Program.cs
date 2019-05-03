@@ -15,6 +15,7 @@ namespace ControlFile
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
             Console.WriteLine("Hello World!");
             CreateCombinationFile.writeToFile();
+            Console.ReadKey();
 
 
 
@@ -85,13 +86,14 @@ namespace ControlFile
                 bufferScore = 0;
 
             }
+            Console.WriteLine(returnDictionary.Count());
             return returnDictionary;
         }
 
         static public void writeToFile()
         {
             Dictionary<int, int> inputDictionary = new Dictionary<int, int> { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } };
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\7C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\7C4.txt"))
             {
                 foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 7, 4, '0', '1'))
                 {
@@ -100,7 +102,7 @@ namespace ControlFile
                 }
             }
 
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\6C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\6C4.txt"))
             {
                 foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 6, 4, '0', '1'))
                 {
@@ -109,7 +111,7 @@ namespace ControlFile
                 }
             }
 
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\5C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\5C4.txt"))
             {
                 foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 5, 4, '0', '1'))
                 {
@@ -118,11 +120,11 @@ namespace ControlFile
                 }
             }
 
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\4C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\4C4.txt"))
             {
                 foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 4, 4, '0', '1'))
                 {
-                    string workstring = item.Key + " " + item.Value;
+                    string workstring = item.Key + " " + item.Value; ;
                     test.WriteLine(workstring);
                 }
             }
