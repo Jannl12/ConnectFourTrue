@@ -15,6 +15,7 @@ namespace ControlFile
             // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
             Console.WriteLine("Hello World!");
             CreateCombinationFile.writeToFile();
+            Console.ReadKey();
 
 
 
@@ -86,6 +87,7 @@ namespace ControlFile
                 bufferScore = 0;
 
             }
+            Console.WriteLine(returnDictionary.Count());
             return returnDictionary;
         }
 
@@ -123,7 +125,7 @@ namespace ControlFile
             {
                 foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 4, 4, '0', '1'))
                 {
-                    string workstring = item.Key + " " + item.Value;
+                    string workstring = item.Key + " " + item.Value; ;
                     test.WriteLine(workstring);
                 }
             }

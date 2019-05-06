@@ -9,9 +9,9 @@ namespace ConnectfourCode
 {
     public class Negamax : ArrayGameBoard
     {
-        public int bestMove = 3; // :)
+        public int bestMove = 3;
         public int thisIsMaxDepth = 9;
-        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
+        int[] turnArray = { 0, 1, 2, 3, 4, 5, 6 };
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
          
 
@@ -39,6 +39,7 @@ namespace ConnectfourCode
                 MakeMove(i);
                 if (CanPlay(i))
                 {
+                    
                     int value = -NegaMax(-beta, -alpha, maxDepth - 1, -color);
 
                     if (value >= beta)

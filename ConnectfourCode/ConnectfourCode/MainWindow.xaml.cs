@@ -140,11 +140,11 @@ namespace ConnectfourCode
                         MessageBox.Show((negamaxTest.IsPlayerMove() ? "Player one" : "Player two") + " won!");
                         ResetBoard();
                     }
-                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1);
+                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 10, 1);
                     if (playerMove)
                     {
                         ColumnClick(negamaxTest.bestMove, false);
-                    }
+                    } 
                     negamaxTest.ResetBestMove();
                     break;
                 }
