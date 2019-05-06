@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    public class Negamax : ArrayGameBoard
+    public class Negamax : BitBoard
     {
         public int bestMove = 3;
         public int thisIsMaxDepth = 9;
@@ -34,25 +34,20 @@ namespace ConnectfourCode
                 return color * evalBuffer;
             }
 
-            foreach(int i in turnArray)
+            foreach(int i in possibleMoves())
             {
-                MakeMove(i);
-                if (CanPlay(i))
-                {
-                    
-                    int value = -NegaMax(-beta, -alpha, maxDepth - 1, -color);
+                int value = -NegaMax(-beta, -alpha, maxDepth - 1, -color);
 
-                    if (value >= beta)
-                    {
-                        UndoMove();
-                        return value;
-                    }
-                    if (value > alpha)
-                    {
-                        alpha = value;
-                        if (thisIsMaxDepth == maxDepth)
-                            bestMove = i;
-                    }
+                if (value >= beta)
+                {
+                    UndoMove();
+                    return value;
+                }
+                if (value > alpha)
+                {
+                    alpha = value;
+                    if (thisIsMaxDepth == maxDepth)
+                        bestMove = i;
                 }
                 UndoMove();
             }

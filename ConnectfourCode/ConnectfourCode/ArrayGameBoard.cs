@@ -62,33 +62,31 @@ namespace ConnectfourCode
 
         public void MakeMove(int coloumnInput)
         {
-            if (CanPlay(coloumnInput) && columnHeight[coloumnInput] < 6)
-            {
-                Tuple<int, int> latestTuple = new Tuple<int, int>(coloumnInput, (columnHeight[coloumnInput]));
-                moveHistory.Push(latestTuple);
-                gameboard[latestTuple.Item1, latestTuple.Item2] = moveCount % 2;
+            Tuple<int, int> latestTuple = new Tuple<int, int>(coloumnInput, (columnHeight[coloumnInput]));
+            moveHistory.Push(latestTuple);
+            gameboard[latestTuple.Item1, latestTuple.Item2] = moveCount % 2;
 
-                moveCount++; (columnHeight[latestTuple.Item1])++;
-            }
+            moveCount++; (columnHeight[latestTuple.Item1])++;
         }
 
         public void UndoMove()
         {
-            if (moveHistory.Count > 0)
-            {
                 Tuple<int, int> latestTuple = moveHistory.Pop();
                 gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
-                moveCount--; columnHeight[latestTuple.Item1]--;
-            }
+                moveCount--; (columnHeight[latestTuple.Item1])--;
         }
 
-        public bool CanPlay(int column)
+        protected List<int> possibleMoves()
         {
-            if(gameboard[column, (gameboard.GetLength(1) - 1)] == 0)
+            List<int> returnList = new List<int>();
+            foreach(int i in columnHeight)
             {
-                return true;
+                if(i >= 5)
+                {
+                    returnList.Add(i);
+                } 
             }
-            return false;
+            return returnList;
         }
 
         public void ResetBitBoard()

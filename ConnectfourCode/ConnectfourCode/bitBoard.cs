@@ -87,6 +87,19 @@ namespace ConnectfourCode
             return false;
         }
 
+        protected List<int> possibleMoves()
+        {
+            List<int> returnList = new List<int>();
+            for(int i = 0; i < 7; i++)
+            {
+                if ((((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) == 1UL)
+                {
+                    returnList.Add(i);
+                }
+            }
+            return returnList;
+        }
+
         public ulong GetBoardKey()
         {
             ulong buffer = 0;
