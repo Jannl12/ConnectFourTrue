@@ -81,7 +81,7 @@ namespace ConnectfourCode
             List<int> returnList = new List<int>();
             foreach(int i in columnHeight)
             {
-                if(i >= 5)
+                if(i > 5)
                 {
                     returnList.Add(i);
                 } 
