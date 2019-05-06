@@ -40,22 +40,23 @@ namespace ControlFile
             }
         }
 
-        static Dictionary<int, int> getScoreValues(IEnumerable<int> permutationValues, Dictionary<int, int> scorePerConnected, int spanSize, int combinationLength, char emptySlotValue, char playerValue)
+        static Dictionary<string, int> getScoreValues(IEnumerable<int> permutationValues, Dictionary<int, int> scorePerConnected, int spanSize, int combinationLength, char emptySlotValue, char playerValue)
         {
-            Dictionary<int, int> returnDictionary = new Dictionary<int, int>();
+            Dictionary<string, int> returnDictionary = new Dictionary<string, int>();
             string[] lineBuffer = new string[(combinationLength - combinationLength % spanSize)];
             int currentPlayerSlotsFound = 0, bufferScore = 0, dictionaryLookup, count = 0;
             foreach (string combination in CombinationsWithRepition(permutationValues, spanSize))
             {
-                for (int g = 0; g < (spanSize - (combinationLength - 1)); g++)
+                string bufferString = '3' + combination;
+                for (int g = 0; g < (spanSize + 1) - (combinationLength - 1); g++)
                 {
                     for (int i = 0; i < combinationLength; i++)
                     {
-                        if (combination[g + i] == '1')
+                        if (bufferString[g + i] == '1')
                         {
                             currentPlayerSlotsFound += 1; count++;
                         }
-                        else if (combination[g + i] == '2')
+                        else if (bufferString[g + i] == '2')
                         {
                             currentPlayerSlotsFound = 0;
                             break;
@@ -67,11 +68,11 @@ namespace ControlFile
 
                     for (int h = 0; h < combinationLength; h++)
                     {
-                        if (combination[g + h] == '2')
+                        if (bufferString[g + h] == '2')
                         {
                             currentPlayerSlotsFound += 1; count++;
                         }
-                        else if (combination[g + h] == '1')
+                        else if (bufferString[g + h] == '1')
                         {
                             currentPlayerSlotsFound = 0;
                             break;
@@ -81,7 +82,7 @@ namespace ControlFile
                     bufferScore -= scorePerConnected.TryGetValue(currentPlayerSlotsFound, out dictionaryLookup) ? dictionaryLookup : 0;
                     currentPlayerSlotsFound = 0;
                 }
-                returnDictionary.Add(Convert.ToInt32(combination), bufferScore);
+                returnDictionary.Add(bufferString, bufferScore);
                 bufferScore = 0;
 
             }
@@ -91,36 +92,36 @@ namespace ControlFile
         static public void writeToFile()
         {
             Dictionary<int, int> inputDictionary = new Dictionary<int, int> { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } };
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\7C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\7C4.txt"))
             {
-                foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 7, 4, '0', '1'))
+                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 7, 4, '0', '1'))
                 {
                     string workstring = item.Key + " " + item.Value;
                     test.WriteLine(workstring);
                 }
             }
 
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\6C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\6C4.txt"))
             {
-                foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 6, 4, '0', '1'))
+                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 6, 4, '0', '1'))
                 {
                     string workstring = item.Key + " " + item.Value;
                     test.WriteLine(workstring);
                 }
             }
 
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\5C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\5C4.txt"))
             {
-                foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 5, 4, '0', '1'))
+                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 5, 4, '0', '1'))
                 {
                     string workstring = item.Key + " " + item.Value;
                     test.WriteLine(workstring);
                 }
             }
 
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Desktop\4C4.txt"))
+            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"..\..\..\ConnectfourCode\4C4.txt"))
             {
-                foreach (KeyValuePair<int, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 4, 4, '0', '1'))
+                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 4, 4, '0', '1'))
                 {
                     string workstring = item.Key + " " + item.Value;
                     test.WriteLine(workstring);
