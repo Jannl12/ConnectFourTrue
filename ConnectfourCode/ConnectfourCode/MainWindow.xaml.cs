@@ -105,8 +105,8 @@ namespace ConnectfourCode
                 }
             }
             this.Content = gameGrid;
-            negamaxTest.thisIsMaxDepth = 5;
-            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, negamaxTest.thisIsMaxDepth, 1, true);
+            
+            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
             ColumnClick(negamaxTest.bestMove, false);
             negamaxTest.ResetBestMove();
         }
@@ -145,7 +145,7 @@ namespace ConnectfourCode
                     {
                         MessageBox.Show("Draw Game");
                     }
-                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 7, 1, true);
+                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
                     if (playerMove)
                     {
                       ColumnClick(negamaxTest.bestMove, false);

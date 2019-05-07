@@ -21,9 +21,9 @@ namespace ConnectfourCode
             set { moveCount = value; }
 
         }
-        public int Three1 = 100;
-        public int Two1 = 42;
-        public int One1 = 28;
+        public int Three1 = 95;
+        public int Two1 = 51;
+        public int One1 = 14;
 
         int[] directions = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
 
