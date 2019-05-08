@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +9,25 @@ using System.Threading.Tasks;
 /* The following, is based on information we learned through:
  * https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md
  */
+
+
 namespace ConnectfourCode
 {
+    
     public class BitBoard
     {
+        [DllImport("EvaluateBoardDLL.dll")]
+        private static extern int EvaluateBoard(ulong board1, ulong board2, int[] inputvalues);
+
+        public int EvaluateBoardDLL()
+        {
+            return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], new int[] { 0, 1, 10, 100, 10000 });
+        }
+
         public ulong[] bitGameBoard;
         public int[] columnHeight;
         protected List<int> moveHistory = new List<int>();
         int boardHeight = 6, boardWidth = 7, moveCount;
-        ulong bufferFrame;
 
         public int MoveCount {
             get { return moveCount; }
@@ -133,7 +143,7 @@ namespace ConnectfourCode
             }
         }
 
-        public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
+        public int evaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
 
         {
             ulong[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
@@ -201,7 +211,7 @@ namespace ConnectfourCode
                 //xxx1
                 returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], One1);
             }
-       
+
             return returnValue[0] - returnValue[1];
         }
         private int Eval(ulong b1, ulong b2, ulong b3, ulong b4, int score)
@@ -209,11 +219,11 @@ namespace ConnectfourCode
             int retval = 0;
             for (int i = 0; i < directions.Length; i++)
             {
-                ulong andBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i])) 
+                ulong andBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i]))
                     & (b4 >> (3 * directions[i])));
                 if (andBitBoards != 0)
                 {
-                    retval += score*CountSetBits(andBitBoards); 
+                    retval += score * CountSetBits(andBitBoards);
                 }
             }
             return retval;

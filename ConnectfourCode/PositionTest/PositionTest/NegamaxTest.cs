@@ -26,7 +26,7 @@ namespace PositionTest
 
             int expectedInt = 2;
 
-            test.NegaMax(test, int.MinValue + 1, int.MaxValue, test.thisIsMaxDepth, 1);
+            test.NegaMax(int.MinValue + 1, int.MaxValue, test.thisIsMaxDepth, 1);
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);
@@ -43,7 +43,7 @@ namespace PositionTest
             test.thisIsMaxDepth = 7;
             int expectedInt = 3;
 
-            test.NegaMax(test, int.MinValue + 1, int.MaxValue, test.thisIsMaxDepth, 1);
+            test.NegaMax(int.MinValue + 1, int.MaxValue, test.thisIsMaxDepth, 1);
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);
