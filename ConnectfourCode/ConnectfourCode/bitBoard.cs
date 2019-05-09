@@ -21,7 +21,7 @@ namespace ConnectfourCode
 
         public int EvaluateBoardDLL()
         {
-            return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], new int[] { 0, 1, 10, 100, 10000 });
+            return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], new int[] { 0, 1, 4, 9, 1000 });
         }
 
         public ulong[] bitGameBoard;
@@ -146,22 +146,17 @@ namespace ConnectfourCode
         public int evaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
 
         {
-            ulong[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
-                                  53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
-            ulong outerFrameBuffer = 0;
-            foreach (int frameIn in frameRemover)
-            {
-                outerFrameBuffer += (ulong)(Math.Pow(2, frameIn));
-            }
+            // Frame: 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
+            ulong outerFrameBuffer = 18446464815071240256;
 
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
             ulong[] bitboard = bitGameBoard;
             int[] returnValue = { 0, 0 };
 
             //returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*2;
-            int Four1 = 1000000;
-            int Three1 = 10000;
-            int Two1 = 100;
+            int Four1 = 1000;
+            int Three1 = 9;
+            int Two1 = 4;
             int One1 = 1;
 
             for (int i = 0; i < 2; i++)

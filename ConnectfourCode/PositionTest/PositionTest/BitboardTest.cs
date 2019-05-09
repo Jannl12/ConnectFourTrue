@@ -17,7 +17,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
             //Act                                       //  1 2 3 4 5 6 7
             int expectedValue = -6;                     // | | | | | | | | 6
-            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // |o|x| | | | | | 3
             //Assert                                    // |o|x| | | | | | 2
@@ -32,10 +32,10 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             test.bitGameBoard[0] = 0xA00000;       // 0 0000 0000 0000 0000 0000 0000 1010 0000 0000 0000 0000 0000
             test.bitGameBoard[1] = 0x400000;       // 0 0000 0000 0000 0000 0000 0000 0100 0000 0000 0000 0000 0000
 
-            //  1 2 3 4 5 6 7
+                                                        //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
-            int expectedValue = test.evaluateBoard();   // | | | | | | | | 5
-            int calcValue = test.EvaluateBoardDLL();    // | | | | | | | | 5
+            int expectedValue = 9;                      // | | | | | | | | 5
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // | | | |o| | | | 3
             //Assert                                    // | | | |x| | | | 2
@@ -53,7 +53,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = -6;                     // | | | | | | | | 5
-            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // | | | | | |x|o| 3
             //Assert                                    // | | | | | |x|o| 2
@@ -70,7 +70,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = -6;                     // | | | |o| | |o| 5
-            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
                                                         // | | | |x| | |x| 4
                                                         // |o| | |x| | |o| 3
             //Assert                                    // |o|o| |o|x|x|x| 2
@@ -88,7 +88,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = 7;                      // | | | | | | | | 5
-            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // | | | | | | | | 3
             //Assert                                    // | | | | | | | | 2
@@ -106,7 +106,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = 3;                      // | | | | | | | | 5
-            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // | | | | | | | | 3
             //Assert                                    // | | | | | | | | 2
@@ -123,8 +123,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
-            int expectedValue = test.EvaluateBoardDLL();//-37;                    // | | | | | | | | 5
-            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
+            int expectedValue = test.evaluateBoard();// -37;                    // | | | | | | | | 5
+            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // | | | | |x| | | 3
             //Assert                                    // |x|x|x| |x| | | 2
@@ -139,9 +139,9 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             test.bitGameBoard[0] = 0x102040004081; // 0|0001|00 00|0010|0 000|0100| 0000|000 0|0000|01 00|0000|1 000|0001
             test.bitGameBoard[1] = 0xEDDBB003870E; // 0|1110|11 01|1101|1 011|1011| 0000|000 0|0011|10 00|0111|0 000|1110
 
-                                                        //  1 2 3 4 5 6 7
+            //  1 2 3 4 5 6 7
             //Act                                       // | | | | |x|x|x| 6
-            int expectedValue = -37;                    // | | | | |x|x|x| 5
+            int expectedValue = test.evaluateBoard();                    // | | | | |x|x|x| 5
             int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
                                                         // |x|x|x| |x|x|x| 4
                                                         // |x|x|x| |o|o|o| 3
