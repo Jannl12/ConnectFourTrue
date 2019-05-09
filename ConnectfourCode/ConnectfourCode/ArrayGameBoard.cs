@@ -12,7 +12,7 @@ namespace ConnectfourCode
 
     public class ArrayGameBoard
     {
-        int[,] gameboard = new int[7, 6];
+        protected int[,] gameboard = new int[7, 6];
         int moveCount = 0;
         int[] columnHeight = { 0, 0, 0, 0, 0, 0, 0 };
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
@@ -29,7 +29,7 @@ namespace ConnectfourCode
 
         public ArrayGameBoard()
         {
-            ResetBitBoard();
+            ResetGame();
             string[] splitStringBuffer;
             foreach (string line in File.ReadLines(@"..\..\..\ConnectfourCode\7C4.txt"))
             {
@@ -79,17 +79,17 @@ namespace ConnectfourCode
         protected List<int> possibleMoves()
         {
             List<int> returnList = new List<int>();
-            foreach(int i in columnHeight)
+            for(int i = 0; i < 7; i++)
             {
-                if(i > 5)
+                if(columnHeight[i] <= 5)
                 {
                     returnList.Add(i);
-                } 
+                }
             }
             return returnList;
         }
 
-        public void ResetBitBoard()
+        public void ResetGame()
         {
             for (int i = 0; i < gameboard.GetLength(0); i++)
             {
@@ -101,14 +101,15 @@ namespace ConnectfourCode
             moveHistory = new Stack<Tuple<int, int>>();
         }
 
-        public ulong GetBoardKey()
+        public int GetBoardKey()
         {
-            ulong buffer = 0; 
-            foreach(int i in gameboard)
-            {
-                buffer += Convert.ToUInt64(i.GetHashCode());
-            }
-            return buffer;
+            return gameboard.GetHashCode();
+            //ulong buffer = 0; 
+            //foreach(int i in gameboard)
+            //{
+            //    buffer += Convert.ToUInt64(i.GetHashCode());
+            //}
+            //return buffer;
         }
 
         override public int GetHashCode()
@@ -135,7 +136,8 @@ namespace ConnectfourCode
 
         public bool IsWin()
         {
-            return EvaluateBoard() >= 1000 ? true : false;
+            int g = EvaluateBoard();
+            return g >= 1000 || g <= -1000;
         }
 
         public int EvaluateBoard()
@@ -146,9 +148,9 @@ namespace ConnectfourCode
             //scan horizontal
             for (int i = 0; i < 6; i++)
             {
-                wasFound = sixSlotsScores.TryGetValue(30000000 + (gameboard[0, i] * 1000000 + gameboard[1, i] * 100000 +
+                wasFound = sevenSlotsScores.TryGetValue(30000000 + gameboard[0, i] * 1000000 + gameboard[1, i] * 100000 +
                     gameboard[2, i] * 10000 + gameboard[3, i] * 1000 + gameboard[4, i] * 100 +
-                    gameboard[5, i] * 10 + gameboard[6, i] * 1).GetHashCode(), 
+                    gameboard[5, i] * 10 + gameboard[6, i] * 1, 
                     out dictionaryLookup);
                 evaluationBuffer += wasFound ? dictionaryLookup : 0;
             }
@@ -156,71 +158,71 @@ namespace ConnectfourCode
             //scan vertical
             for (int i = 0; i < 7; i++)
             {
-                sevenSlotsScores.TryGetValue(3000000 + (gameboard[i, 0] * 100000 + gameboard[i, 1] * 10000 +
+                sixSlotsScores.TryGetValue(3000000 + gameboard[i, 0] * 100000 + gameboard[i, 1] * 10000 +
                     gameboard[i, 2] * 1000 + gameboard[i, 3] * 100 + gameboard[i, 4] * 10 +
-                    gameboard[i, 5] * 1).GetHashCode(), 
+                    gameboard[i, 5] * 1, 
                     out dictionaryLookup);
                 evaluationBuffer += wasFound? dictionaryLookup : 0;
             }
             //scan diagonal 1
             wasFound = fourSlotsScores.TryGetValue(
-                (30000 + gameboard[0, 3] * 1000 + gameboard[1, 2] * 100 + gameboard[2, 1] * 10 + gameboard[3, 0] + 1).GetHashCode(), 
+                30000 + gameboard[0, 3] * 1000 + gameboard[1, 2] * 100 + gameboard[2, 1] * 10 + gameboard[3, 0] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = fiveSlotsScores.TryGetValue(
-                (300000 + gameboard[0, 4] * 10000 + gameboard[1, 3] * 1000 + gameboard[2, 2] * 100 + gameboard[3, 1] * 10 + gameboard[4, 0] + 1).GetHashCode(), 
+                300000 + gameboard[0, 4] * 10000 + gameboard[1, 3] * 1000 + gameboard[2, 2] * 100 + gameboard[3, 1] * 10 + gameboard[4, 0] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = sixSlotsScores.TryGetValue(
-                (3000000 + gameboard[0, 5] * 100000 + gameboard[1, 4] * 10000 + gameboard[2, 3] * 1000 + gameboard[3, 2] + 100 + gameboard[4, 1] + 10 + gameboard[5, 0] + 1).GetHashCode(), 
+                3000000 + gameboard[0, 5] * 100000 + gameboard[1, 4] * 10000 + gameboard[2, 3] * 1000 + gameboard[3, 2] + 100 + gameboard[4, 1] + 10 + gameboard[5, 0] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = sixSlotsScores.TryGetValue(
-                (3000000 + gameboard[1, 5] * 100000 + gameboard[2, 4] * 10000 + gameboard[3, 3] * 1000 + gameboard[4, 2] + 100 + gameboard[5, 1] + 10 + gameboard[6, 0] + 1).GetHashCode(), 
+                3000000 + gameboard[1, 5] * 100000 + gameboard[2, 4] * 10000 + gameboard[3, 3] * 1000 + gameboard[4, 2] + 100 + gameboard[5, 1] + 10 + gameboard[6, 0] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = fiveSlotsScores.TryGetValue(
-                (300000 + gameboard[2, 5] * 10000 + gameboard[3, 4] * 1000 + gameboard[4, 3] * 100 + gameboard[5, 2] * 10 + gameboard[6, 1] + 1).GetHashCode(), 
+                300000 + gameboard[2, 5] * 10000 + gameboard[3, 4] * 1000 + gameboard[4, 3] * 100 + gameboard[5, 2] * 10 + gameboard[6, 1] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = fourSlotsScores.TryGetValue(
-                (30000 + gameboard[3, 5] * 1000 + gameboard[4, 4] * 100 + gameboard[5, 3] * 10 + gameboard[6, 2] + 1).GetHashCode(),
+                30000 + gameboard[3, 5] * 1000 + gameboard[4, 4] * 100 + gameboard[5, 3] * 10 + gameboard[6, 2] + 1,
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             //scan diagonal 2
             wasFound = fourSlotsScores.TryGetValue(
-                (30000 + gameboard[3, 5] * 1000 + gameboard[2, 4] * 100 + gameboard[1, 3] * 10 + gameboard[0, 2] + 1).GetHashCode(), 
+                30000 + gameboard[3, 5] * 1000 + gameboard[2, 4] * 100 + gameboard[1, 3] * 10 + gameboard[0, 2] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = fiveSlotsScores.TryGetValue(
-                (300000 + gameboard[4, 5] * 10000 + gameboard[3, 4] * 1000 + gameboard[2, 3] * 100 + gameboard[1, 2] * 10 +  gameboard[0, 1] + 1).GetHashCode(), 
+                300000 + gameboard[4, 5] * 10000 + gameboard[3, 4] * 1000 + gameboard[2, 3] * 100 + gameboard[1, 2] * 10 +  gameboard[0, 1] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = sixSlotsScores.TryGetValue(
-                (3000000 + gameboard[5, 5] * 100000 + gameboard[4, 4] * 10000 + gameboard[3, 3] * 1000 + gameboard[2, 2] + 100 + gameboard[1, 1] + 10 + gameboard[0, 0] + 1).GetHashCode(),
+                3000000 + gameboard[5, 5] * 100000 + gameboard[4, 4] * 10000 + gameboard[3, 3] * 1000 + gameboard[2, 2] + 100 + gameboard[1, 1] + 10 + gameboard[0, 0] + 1,
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = sixSlotsScores.TryGetValue(
-                (300000 + gameboard[6, 5] * 100000 + gameboard[5, 4] * 10000 + gameboard[4, 3] * 1000 + gameboard[3, 2] + 100 + gameboard[2, 1] + 10 + gameboard[1, 0] + 1).GetHashCode(), 
+                3000000 + gameboard[6, 5] * 100000 + gameboard[5, 4] * 10000 + gameboard[4, 3] * 1000 + gameboard[3, 2] + 100 + gameboard[2, 1] + 10 + gameboard[1, 0] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = fiveSlotsScores.TryGetValue(
-                (300000 + gameboard[6, 4] * 10000 + gameboard[5, 3] * 1000 + gameboard[4, 2] * 100 + gameboard[3, 1] * 10 + gameboard[2, 0] + 1).GetHashCode(), 
+                300000 + gameboard[6, 4] * 10000 + gameboard[5, 3] * 1000 + gameboard[4, 2] * 100 + gameboard[3, 1] * 10 + gameboard[2, 0] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 
             wasFound = fourSlotsScores.TryGetValue(
-                (30000 + gameboard[6, 3] * 1000 + gameboard[5, 2] * 100 + gameboard[4, 1] * 10 + gameboard[3, 0] + 1).GetHashCode(), 
+                30000 + gameboard[6, 3] * 1000 + gameboard[5, 2] * 100 + gameboard[4, 1] * 10 + gameboard[3, 0] + 1, 
                 out dictionaryLookup);
             evaluationBuffer += wasFound ? dictionaryLookup : 0;
 

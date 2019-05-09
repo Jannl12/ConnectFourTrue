@@ -105,9 +105,7 @@ namespace ConnectfourCode
                 }
             }
             this.Content = gameGrid;
-            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 10, 1);
-            ColumnClick(negamaxTest.bestMove, false);
-            negamaxTest.ResetBestMove();
+            ColumnClick(negamaxTest.GetBestMove(10), false);
         }
         private void MouseEnterHandler(int targetColumn)
         {
@@ -138,26 +136,24 @@ namespace ConnectfourCode
                     if (negamaxTest.IsWin())
                     {
                         MessageBox.Show((negamaxTest.IsPlayerMove() ? "Player one" : "Player two") + " won!");
-                        ResetBoard();
+                        ResetGame();
                     }
-                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 10, 1);
                     if (playerMove)
                     {
-                        ColumnClick(negamaxTest.bestMove, false);
+                        ColumnClick(negamaxTest.GetBestMove(10), false);
                     } 
-                    negamaxTest.ResetBestMove();
                     break;
                 }
             }   
         }
 
-        private void ResetBoard()
+        private void ResetGame()
         {
             foreach (Ellipse ellipse in ellipseGameBoard)
             {
                 ellipse.Fill = emptyColor;
             }
-            negamaxTest.ResetBitBoard();
+            negamaxTest.ResetGame();
         }
     }
 
