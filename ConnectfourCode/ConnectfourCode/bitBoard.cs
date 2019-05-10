@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,22 +10,33 @@ using System.Threading.Tasks;
 /* The following, is based on information we learned through:
  * https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md
  */
+
+
 namespace ConnectfourCode
 {
+    
     public class BitBoard
     {
+        [DllImport("EvaluateBoardDLL.dll")]
+        private static extern int EvaluateBoard(ulong board1, ulong board2, int[] inputvalues);
+
+        public int EvaluateBoardDLL()
+        {
+            return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], new int[] { 0, 1, 4, 9, 1000 });
+        }
+
         public ulong[] bitGameBoard;
         public int[] columnHeight;
-        public List<int> moveHistory = new List<int>();
+
+        protected List<int> moveHistory = new List<int>();
         int boardHeight = 6-1, boardWidth = 7, moveCount;
+
         public int MoveCount {
             get { return moveCount; }
-            set { moveCount = value; }
-
         }
-        public int Three1 = 4;//75;//4
-        public int Two1 = 1;//15;//1
-        public int One1 = 0;//8;//0
+        private int Three1 = 4;//75;//4
+        private int Two1 = 1;//15;//1
+        private int One1 = 0;//8;//0
 
         int[] directions = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
 
@@ -39,6 +52,11 @@ namespace ConnectfourCode
 
         }
 
+        public bool GetCurrentPlayer()
+        {
+            return MoveCount % 2 == 0;
+        }
+
         public void UndoMove()
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
@@ -46,11 +64,11 @@ namespace ConnectfourCode
             bitGameBoard[(--moveCount & 1)] ^= moveBuffer;
         }
 
-        public bool CanPlay( int coulumn)
+        public bool CanPlay( int column)
         {
             ulong mask = 1;
             ulong boardstate = bitGameBoard[0] ^ bitGameBoard[1];
-            if (((boardstate >> ((coulumn * boardWidth) + boardHeight)) & mask) == mask)
+            if (((boardstate >> ((column * boardWidth) + boardHeight)) & mask) == mask)
                 return false;
             else return true;
         }
@@ -65,13 +83,14 @@ namespace ConnectfourCode
             {
                 columnHeight[i] = i * boardWidth;
             }
+            moveHistory = new List<int>();
             moveCount = 0;
             moveHistory.Clear();
         }
 
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[(moveCount-1) & 1];
+            ulong bitboard = bitGameBoard[moveCount % 2];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
@@ -82,6 +101,29 @@ namespace ConnectfourCode
             }
             return false;
         }
+
+
+        protected List<int> possibleMoves()
+        {
+            List<int> returnList = new List<int>();
+            for(int i = 0; i < 7; i++)
+            {
+                if ((((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) == 1UL)
+                {
+                    returnList.Add(i);
+                }
+            }
+            return returnList;
+        }
+
+        public ulong GetBoardKey()
+        {
+            ulong buffer = 0;
+            foreach (ulong inputlong in this.bitGameBoard)
+            {
+                buffer ^= inputlong;
+            }
+            return buffer + bitGameBoard[moveCount & 1];
 
         public bool IsDraw()
         {
@@ -99,25 +141,7 @@ namespace ConnectfourCode
         }
 
 
-      /*  public override int GetHashCode()
-        {
-            int buffer = 0; 
-            foreach(ulong inputLong in this.bitGameBoard)
-            {
-                buffer ^= inputLong.GetHashCode();
-            }
-            return buffer + bitGameBoard[moveCount & 1].GetHashCode();
-        }*/
-
-        public ulong GetBoardKey()
-        {
-            ulong buffer = 0;
-            foreach (ulong inputLong in this.bitGameBoard)
-            {
-                buffer ^= inputLong;
-            }
-            return buffer + bitGameBoard[moveCount & 1];
-        } 
+        
 
         public override bool Equals(object obj)
         {
@@ -131,22 +155,19 @@ namespace ConnectfourCode
             }
         }
 
-        public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
+        public int evaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
 
         {
-            int[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
-                                  53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
-            ulong outerFrameBuffer = 0;
-            foreach (int frameIn in frameRemover)
-            {
-                outerFrameBuffer += (ulong)(Math.Pow(2, frameIn));
-            }
+            // Frame: 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
+            ulong outerFrameBuffer = 18446464815071240256;
 
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
             ulong[] bitboard = bitGameBoard;
             int[] returnValue = { 0, 0 };
 
             //returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*2;
+
+
             int win = 10000;
             
 
@@ -196,6 +217,7 @@ namespace ConnectfourCode
                 //xxx1
                 returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], One1);
               }
+
             return returnValue[0] - returnValue[1];
         }
         private int Eval(ulong b1, ulong b2, ulong b3, ulong b4, int score)
@@ -203,11 +225,11 @@ namespace ConnectfourCode
             int retval = 0;
             for (int i = 0; i < directions.Length; i++)
             {
-                ulong andBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i])) 
+                ulong andBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i]))
                     & (b4 >> (3 * directions[i])));
                 if (andBitBoards != 0)
                 {
-                    retval += score*CountSetBits(andBitBoards); 
+                    retval += score * CountSetBits(andBitBoards);
                 }
             }
             return retval;

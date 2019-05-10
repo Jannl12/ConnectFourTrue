@@ -8,8 +8,10 @@ using Microsoft.Office.Interop.Excel;
 
 namespace ConnectfourCode
 {
-    public class Negamax : BitBoard
+    public class Negamax : ArrayGameBoard
     {
+
+
 
         public int bestMove { get; set; }
         int[] turnArray =  { 3, 2, 4, 1, 5, 0, 6 };
@@ -23,14 +25,13 @@ namespace ConnectfourCode
             if (IsWin() || depth == 0 || IsDraw())
             {
                 int evalBuffer = EvaluateBoard();
-                return evalBuffer*color;
-
-              
+                return evalBuffer*color
             }
             int value = int.MinValue;
 
-            foreach(int i in turnArray)
+            foreach(int move in possibleMoves())
             {
+
                 
                 if (CanPlay(i))
                 {

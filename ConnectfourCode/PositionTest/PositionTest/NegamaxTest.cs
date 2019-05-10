@@ -29,6 +29,7 @@ namespace PositionTest
             int expectedInt = 2;
 
             test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
+
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);
@@ -44,6 +45,7 @@ namespace PositionTest
             test.MoveCount = 0;
             int expectedInt = 3;
 
+
             test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
             int calcValue = test.bestMove;
 
@@ -58,6 +60,7 @@ namespace PositionTest
             int expectedInt = 3;
 
             test.NegaMax(9, 1, true);
+          
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);

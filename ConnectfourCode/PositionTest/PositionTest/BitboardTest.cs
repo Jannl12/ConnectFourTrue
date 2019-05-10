@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 using ConnectfourCode;
 
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
@@ -17,7 +18,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
             //Act                                       //  1 2 3 4 5 6 7
             int expectedValue = -6;                     // | | | | | | | | 6
-            int calcValue = test.EvaluateBoard();       // | | | | | | | | 5
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // |o|x| | | | | | 3
                                                         //Assert                                    // |o|x| | | | | | 2
@@ -35,7 +36,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = 9;                      // | | | | | | | | 5
-            int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
+                                                        // | | | | | | | | 4
                                                         // | | | |o| | | | 3
                                                         //Assert                                    // | | | |x| | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // | | | |o| | | | 1
@@ -52,7 +54,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = -6;                     // | | | | | | | | 5
-            int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
+                                                        // | | | | | | | | 4
                                                         // | | | | | |x|o| 3
                                                         //Assert                                    // | | | | | |x|o| 2
             Assert.AreEqual(expectedValue, calcValue);  // | | | | | |x|o| 1
@@ -68,7 +71,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
                                                    //  1 2 3 4 5 6 7
                                                    //Act                                       // | | | | | | | | 6
             int expectedValue = -6;                     // | | | |o| | |o| 5
-            int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
+                                                        // | | | |x| | |x| 4
                                                         // |o| | |x| | |o| 3
                                                         //Assert                                    // |o|o| |o|x|x|x| 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|x|o|o| 1
@@ -85,7 +89,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = 7;                      // | | | | | | | | 5
-            int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
+                                                        // | | | | | | | | 4
                                                         // | | | | | | | | 3
             //Assert                                    // | | | | | | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // | | | |o| | | | 1
@@ -102,7 +107,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = 3;                      // | | | | | | | | 5
-            int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
+            int calcValue = test.evaluateBoard();       // | | | | | | | | 5
+                                                        // | | | | | | | | 4
                                                         // | | | | | | | | 3
                                                         //Assert                                    // | | | | | | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o| | | | | | | 1
@@ -118,11 +124,13 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
-            int expectedValue = -37;                    // | | | | | | | | 5
-            int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
+            int expected = -37;                         // | | | | | | | | 5
+            int actual = test.EvaluateBoardDLL();       // | | | | | | | | 5
+                                                        // | | | | | | | | 4
                                                         // | | | | |x| | | 3
-                                                        //Assert                                    // |x|x|x| |x| | | 2
-            Assert.AreEqual(expectedValue, calcValue);  // |o|o|o| |x| | | 1
+            //Assert                                    // |x|x|x| |x| | | 2
+            Assert.AreEqual(expected, actual);          // |o|o|o| |x| | | 1
+
         }
 
         [TestMethod]
@@ -135,8 +143,9 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | |x|x|x| 6
-            int expectedValue = -37;                    // | | | | |x|x|x| 5
-            int calcValue = test.EvaluateBoard();       // |x|x|x| |x|x|x| 4
+            int expectedValue = -37;                   // | | | | |x|x|x| 5
+            int calcValue = test.EvaluateBoardDLL();    // | | | | | | | | 5
+                                                        // |x|x|x| |x|x|x| 4
                                                         // |x|x|x| |o|o|o| 3
                                                         //Assert                                    // |x|x|x| |x|x|x| 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|o|o| |x|x|x| 1
@@ -248,21 +257,21 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             Assert.AreEqual(expectedBool, calcValue);
         }
     }
-    [TestClass]
-    public class TestCountSetBits
-    {
-        [TestMethod]
-        public void TestCSB3Bit()
-        {
-            BitBoard test = new BitBoard();
-            test.bitGameBoard[0] = 0x55;
-            test.bitGameBoard[1] = 0x15;
-            int expectedValue = 3;
+    //[TestClass]
+    //public class TestCountSetBits
+    //{
+    //    [TestMethod]
+        //public void TestCSB3Bit()
+        //{
+        //    BitBoard test = new BitBoard();
+        //    test.bitGameBoard[0] = 0x55;
+        //    test.bitGameBoard[1] = 0x15;
+        //    int expectedValue = 3;
 
-            int calcValue = test.CountSetBits(0x7);
+        //    int calcValue = test.CountSetBits(0x7);
 
-            Assert.AreEqual(expectedValue, calcValue);
+        //    Assert.AreEqual(expectedValue, calcValue);
 
-        }
-    }
+        //}
+    //}
 }
