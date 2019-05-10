@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 using ConnectfourCode;
 
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
@@ -248,21 +249,21 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             Assert.AreEqual(expectedBool, calcValue);
         }
     }
-    [TestClass]
-    public class TestCountSetBits
-    {
-        [TestMethod]
-        public void TestCSB3Bit()
-        {
-            BitBoard test = new BitBoard();
-            test.bitGameBoard[0] = 0x55;
-            test.bitGameBoard[1] = 0x15;
-            int expectedValue = 3;
+    //[TestClass]
+    //public class TestCountSetBits
+    //{
+    //    [TestMethod]
+        //public void TestCSB3Bit()
+        //{
+        //    BitBoard test = new BitBoard();
+        //    test.bitGameBoard[0] = 0x55;
+        //    test.bitGameBoard[1] = 0x15;
+        //    int expectedValue = 3;
 
-            int calcValue = test.CountSetBits(0x7);
+        //    int calcValue = test.CountSetBits(0x7);
 
-            Assert.AreEqual(expectedValue, calcValue);
+        //    Assert.AreEqual(expectedValue, calcValue);
 
-        }
-    }
+        //}
+    //}
 }
