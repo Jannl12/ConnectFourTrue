@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectfourCode", "Connectf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionTest", "PositionTest\PositionTest\PositionTest.csproj", "{64F45E24-5E38-4037-9740-D719188464A6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EvaluateBoardDLL", "..\..\..\EvaluateBoardDLL\EvaluateBoardDLL\EvaluateBoardDLL.vcxproj", "{13E066AF-B365-466D-BF6F-289B7F20E9ED}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EvaluateBoardDLL", "EvaluateBoardDLL\EvaluateBoardDLL\EvaluateBoardDLL.vcxproj", "{13E066AF-B365-466D-BF6F-289B7F20E9ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
