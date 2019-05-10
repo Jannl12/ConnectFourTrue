@@ -3,68 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Office.Interop.Excel;
 
 
 namespace ConnectfourCode
 {
     public class Negamax : ArrayGameBoard
     {
-        public int bestMove = 0, plyDepth;
-        public int thisIsMaxDepth = 15;
-        int[] turnArray = { 0, 1, 2, 3, 4, 5, 6 };
-        Dictionary<int, int> TranspositionTable = new Dictionary<int, int>();
-         
 
-        //public void ResetBestMove() 
-        //{
-        //    bestMove = 3;
-        //    //TranspositionTable.Clear();
-        //}
 
-        private const int height = 6, width = 7;
-        
-        public int GetBestMove(int plyDepth)
-        {
-            this.plyDepth = plyDepth;
-            this.NegaMax(int.MinValue + 1, int.MaxValue, this.plyDepth, 1);
-            return bestMove;
-        }
+        public int bestMove { get; set; }
+        int[] turnArray =  { 3, 2, 4, 1, 5, 0, 6 };
 
-        public int NegaMax(int alpha, int beta, int depth, int color)
+ 
+        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
 
             //TODO: Skal med i implementeringen
         {
-            if (depth == 0 ) {
-                int evalBuffer = 0, boardHashCode = GetBoardKey();
-                if (TranspositionTable.TryGetValue(boardHashCode, out evalBuffer))
-                {
-                    return evalBuffer * color;
-                }
-                else
-                {
-                    evalBuffer = EvaluateBoard();
-                    TranspositionTable.Add(boardHashCode, evalBuffer);
-                    return evalBuffer * color;
-                }
+
+            if (IsWin() || depth == 0 || IsDraw())
+            {
+                int evalBuffer = EvaluateBoard();
+                return evalBuffer*color;
+
+              
             }
+            int value = int.MinValue;
 
             foreach(int move in possibleMoves())
             {
-                MakeMove(move);
-                int value = -NegaMax(-beta, -alpha, depth - 1, -color);
 
-                if (value >= beta)
+                if (CanPlay(i))
                 {
+                    MakeMove(i);
+                    value = Math.Max(value,-NegaMax(-beta, -alpha, depth - 1, -color, false));
+
+                    if (value >= beta)
+                    {
+                        UndoMove();
+                        return value;
+                    }
+                    if (value > alpha)
+                    {
+                        alpha = value;
+                        if (firstCall)
+                            bestMove = i;
+                    }
                     UndoMove();
-                    return value;
                 }
-                if (value > alpha)
-                {
-                    alpha = value;
-                    if (plyDepth == depth)
-                        bestMove = move;
-                }
-                UndoMove();
+                
             }
             return alpha;
         }        
