@@ -111,7 +111,7 @@ namespace ConnectfourCode
         {
             for (int i = 0; i < rowCount; i++)
             {
-                ellipseGameBoard[i, targetColumn].Stroke = (negamaxTest.IsPlayerMove()) ? redColor : yellowColor;
+                ellipseGameBoard[i, targetColumn].Stroke = (negamaxTest.GetCurrentPlayer()) ? redColor : yellowColor;
             }
         }
         private void MouseLeaveHandler(int targetColumn)
@@ -131,11 +131,11 @@ namespace ConnectfourCode
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    ellipseGameBoard[i, targetColumn].Fill = negamaxTest.IsPlayerMove() ? redColor : yellowColor;
+                    ellipseGameBoard[i, targetColumn].Fill = negamaxTest.GetCurrentPlayer() ? redColor : yellowColor;
                     negamaxTest.MakeMove(targetColumn);
                     if (negamaxTest.IsWin())
                     {
-                        MessageBox.Show((negamaxTest.IsPlayerMove() ? "Player one" : "Player two") + " won!");
+                        MessageBox.Show((negamaxTest.GetCurrentPlayer() ? "Player one" : "Player two") + " won!");
                         ResetGame();
                     }
                     if (playerMove)

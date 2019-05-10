@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="ArrayGameBoard.cs" />
     <Compile Include="bitBoard.cs" />
+    <Compile Include="CreateEvaluationFiles.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -142,10 +143,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="4C4.txt" />
-    <Resource Include="5C4.txt" />
-    <Resource Include="6C4.txt" />
-    <Resource Include="7C4.txt" />
+    <None Include="Resources\possibleCombinationsAndScores.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gameboardDirectionConfig.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
