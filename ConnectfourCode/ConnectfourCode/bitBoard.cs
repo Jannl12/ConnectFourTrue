@@ -31,8 +31,6 @@ namespace ConnectfourCode
 
         public int MoveCount {
             get { return moveCount; }
-            set { moveCount = value; }
-
         }
 
         int[] directions = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
@@ -49,7 +47,7 @@ namespace ConnectfourCode
 
         }
 
-        public bool IsPlayerMove()
+        public bool GetCurrentPlayer()
         {
             return MoveCount % 2 == 0;
         }
@@ -80,6 +78,7 @@ namespace ConnectfourCode
             {
                 columnHeight[i] = i * boardWidth;
             }
+            moveHistory = new List<int>();
             moveCount = 0;
         }
 

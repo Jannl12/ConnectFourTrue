@@ -143,9 +143,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\possibleCombinationsAndScores.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\gameboardDirectionConfig.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
