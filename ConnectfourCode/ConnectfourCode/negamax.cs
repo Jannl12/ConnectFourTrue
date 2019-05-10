@@ -13,36 +13,29 @@ namespace ConnectfourCode
 
         public int bestMove { get; set; }
         int[] turnArray =  { 3, 2, 4, 1, 5, 0, 6 };
-        public int thisIsMaxDepth;
-        Dictionary<int, int> TranspositionTable = new Dictionary<int, int>();
 
-
-
-        public void ResetBestMove() 
-        {
-            bestMove = 3;
-            //TranspositionTable.Clear();
-        }
-
-        private const int height = 6, width = 7;       
-        public int NegaMax(int alpha, int beta, int maxDepth, int color, bool firstCall)
+ 
+        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
 
             //TODO: Skal med i implementeringen
         {
 
-            if (IsWin() || maxDepth == 0 || IsDraw())
+            if (IsWin() || depth == 0 || IsDraw())
             {
                 int evalBuffer = EvaluateBoard();
-                return evalBuffer * color;
-               
+                return evalBuffer*color;
+
+              
             }
+            int value = int.MinValue;
 
             foreach(int i in turnArray)
             {
-                MakeMove(i);
+                
                 if (CanPlay(i))
                 {
-                    int value = -NegaMax(-beta, -alpha, maxDepth - 1, -color, false);
+                    MakeMove(i);
+                    value = Math.Max(value,-NegaMax(-beta, -alpha, depth - 1, -color, false));
 
                     if (value >= beta)
                     {
@@ -54,10 +47,10 @@ namespace ConnectfourCode
                         alpha = value;
                         if (firstCall)
                             bestMove = i;
-
                     }
+                    UndoMove();
                 }
-                UndoMove();
+                
             }
             return alpha;
         }        

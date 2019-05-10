@@ -34,9 +34,6 @@ namespace ConnectfourCode
                     TranspositionTable[lookUpBoardKey] = evalBuffer;
                     return evalBuffer * color;
                 }
-
-
-
             }
             int value = int.MinValue;
 
