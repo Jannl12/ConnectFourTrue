@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NegamaxTest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,15 +27,16 @@ namespace ConnectfourCode
         Ellipse[,] ellipseGameBoard;
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
-        BitBoard gameBitBoard = new BitBoard();
+        Negamax negamaxTest = new Negamax();
+        IterativDeepening negaTest = new IterativDeepening();
+       // Negamax p2 = new Negamax();
         
         public MainWindow()
         {
-            Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x4081; //gul (lige)
-            test.bitGameBoard[1] = 0x70008102; //rød (ulige)
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x1A6A00000; // 0|0001|00 00|0010|0 000|0100| 0000|000 0|0000|01 00|0000|1 000|0001
+            test.bitGameBoard[1] = 0x40051400001; // 0|1110|11 01|1101|1 011|1011| 0000|000 0|0011|10 00|0111|0 000|1110
             test.EvaluateBoard();
-            //test.NegaMax(test, int.MinValue, int.MaxValue, 3, 1);
 
             InitializeComponent();
             Grid gameGrid = new Grid();
@@ -90,30 +92,35 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseEnter += delegate (object sender, MouseEventArgs e)
                     {
-                        MouseEnterHandler(sender, e, g);
+                        MouseEnterHandler(g);
                     };
                     bufferEllipse.MouseLeave += delegate (object sender, MouseEventArgs e)
                     {
-                        MouseLeaveHandler(sender, e, g);
+                        MouseLeaveHandler(g);
                     };
                     bufferEllipse.MouseDown += delegate (object sender, MouseButtonEventArgs e)
                     {
-                        ColumnClick(sender, e, g);
+                        ColumnClick(g, true);
                     };
                     ellipseGameBoard[i, j] = bufferEllipse;
                     gameGrid.Children.Add(bufferEllipse);
                 }
             }
             this.Content = gameGrid;
+
+            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
+            ColumnClick(negamaxTest.bestMove, false);
+            //negamaxTest.ResetBestMove();
+            //ColumnClick(negaTest.Deepening(), false);
         }
-        private void MouseEnterHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseEnterHandler(int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
-                ellipseGameBoard[i, targetColumn].Stroke = ((gameBitBoard.MoveCount & 1) == 0) ? redColor : yellowColor;
+                ellipseGameBoard[i, targetColumn].Stroke = ((negamaxTest.MoveCount)/*negaTest.MoveCount & 1)*/ == 0) ? yellowColor : redColor;
             }
         }
-        private void MouseLeaveHandler(object sender, EventArgs e, int targetColumn)
+        private void MouseLeaveHandler(int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
@@ -123,24 +130,35 @@ namespace ConnectfourCode
         /*Loops from the bottom of the column, and if it finds an empty cell, it fills it with 
          * the current players color. Also makes a move on the bitboard.
          */
-        private void ColumnClick(object sender, EventArgs e, int targetColumn)
+        private void ColumnClick(int targetColumn, bool playerMove)
         {
             
             for (int i = rowCount - 1; i >= 0; i--)
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    ellipseGameBoard[i, targetColumn].Fill = ((gameBitBoard.MoveCount & 1) == 0) ? redColor : yellowColor;
-                    gameBitBoard.MakeMove(targetColumn);
-                    if (gameBitBoard.IsWin())
+                    ellipseGameBoard[i, targetColumn].Fill = ((negamaxTest.MoveCount/*negaTest.MoveCount*/ & 1) == 0) ? yellowColor : redColor;
+                    negamaxTest.MakeMove(targetColumn);
+                    //negaTest.MakeMove(targetColumn);
+                    if (negamaxTest.IsWin())//negaTest.IsWin())negamaxTest.IsWin())
                     {
-                        MessageBox.Show(((gameBitBoard.MoveCount & 1) == 1 ? "Player one" : "Player two") + " won!");
+                        MessageBox.Show(((negamaxTest.MoveCount/*negaTest.MoveCount & 1*/) == 1 ? "Player one" : "Player two") + " won!");
                         ResetBoard();
                     }
-                    MouseEnterHandler(sender, e, targetColumn);
+                    else if (negamaxTest.IsDraw())//negaTest.IsDraw())negamaxTest.IsDraw())
+                    {
+                        MessageBox.Show("Draw Game");
+                    }
+                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
+                    if (playerMove)
+                    {
+                       // ColumnClick(negaTest.Deepening(), false);
+                      ColumnClick(negamaxTest.bestMove, false);
+                    }
+                    //negamaxTest.ResetBestMove();
                     break;
                 }
-            }
+            }   
         }
 
         private void ResetBoard()
@@ -149,7 +167,8 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
-            gameBitBoard.ResetBitBoard();
+            negamaxTest.ResetBitBoard();
+            //negaTest.ResetBitBoard();
         }
     }
 
