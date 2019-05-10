@@ -34,8 +34,8 @@ namespace ConnectfourCode
 
             //TODO: Skal med i implementeringen
         {
-            if (depth == 0) {
-                int evalBuffer = 0, boardHashCode = gameboard.GetHashCode();
+            if (depth == 0 ) {
+                int evalBuffer = 0, boardHashCode = GetBoardKey();
                 if (TranspositionTable.TryGetValue(boardHashCode, out evalBuffer))
                 {
                     return evalBuffer * color;

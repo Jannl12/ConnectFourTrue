@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 using ConnectfourCode;
 
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
@@ -121,14 +122,14 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             test.bitGameBoard[0] = 0x4081;         // 0|0000|00 00|0000|0 000|0000| 0000|000 0|0000|01 00|0000|1 000|0001
             test.bitGameBoard[1] = 0x70008102;     // 0|0000|00 00|0000|0 000|0111| 0000|000 0|0000|10 00|0001|0 000|0010
 
-            //  1 2 3 4 5 6 7
+                                                        //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
-            int expectedValue = test.evaluateBoard();// -37;                    // | | | | | | | | 5
-            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
+            int expected = -37;                         // | | | | | | | | 5
+            int actual = test.EvaluateBoardDLL();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // | | | | |x| | | 3
             //Assert                                    // |x|x|x| |x| | | 2
-            Assert.AreEqual(expectedValue, calcValue);  // |o|o|o| |x| | | 1
+            Assert.AreEqual(expected, actual);          // |o|o|o| |x| | | 1
         }
         
         [TestMethod]
@@ -141,8 +142,8 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | |x|x|x| 6
-            int expectedValue = test.evaluateBoard();                    // | | | | |x|x|x| 5
-            int calcValue = test.EvaluateBoardDLL();       // | | | | | | | | 5
+            int expectedValue = -37;                   // | | | | |x|x|x| 5
+            int calcValue = test.EvaluateBoardDLL();    // | | | | | | | | 5
                                                         // |x|x|x| |x|x|x| 4
                                                         // |x|x|x| |o|o|o| 3
             //Assert                                    // |x|x|x| |x|x|x| 2
