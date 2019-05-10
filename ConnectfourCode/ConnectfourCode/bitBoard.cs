@@ -15,15 +15,15 @@ namespace ConnectfourCode
         public ulong[] bitGameBoard;
         public int[] columnHeight;
         public List<int> moveHistory = new List<int>();
-        int boardHeight = 6, boardWidth = 7, moveCount;
+        int boardHeight = 6-1, boardWidth = 7, moveCount;
         public int MoveCount {
             get { return moveCount; }
             set { moveCount = value; }
 
         }
-        public int Three1 = 95;
-        public int Two1 = 51;
-        public int One1 = 14;
+        public int Three1 = 4;//75;//4
+        public int Two1 = 1;//15;//1
+        public int One1 = 0;//8;//0
 
         int[] directions = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
 
@@ -99,7 +99,7 @@ namespace ConnectfourCode
         }
 
 
-        public override int GetHashCode()
+      /*  public override int GetHashCode()
         {
             int buffer = 0; 
             foreach(ulong inputLong in this.bitGameBoard)
@@ -107,7 +107,17 @@ namespace ConnectfourCode
                 buffer ^= inputLong.GetHashCode();
             }
             return buffer + bitGameBoard[moveCount & 1].GetHashCode();
-        }
+        }*/
+
+        public ulong GetBoardKey()
+        {
+            ulong buffer = 0;
+            foreach (ulong inputLong in this.bitGameBoard)
+            {
+                buffer ^= inputLong;
+            }
+            return buffer + bitGameBoard[moveCount & 1];
+        } 
 
         public override bool Equals(object obj)
         {

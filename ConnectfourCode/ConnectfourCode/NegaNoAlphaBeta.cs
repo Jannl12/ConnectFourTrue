@@ -20,7 +20,6 @@ namespace NegamaxTest
             bestMove = 3;
         }
 
-        private const int height = 6, width = 7;
         public int NegaMax(int maxDepth, int color, bool firstCall)
 
         //TODO: Skal med i implementeringen
@@ -35,15 +34,16 @@ namespace NegamaxTest
 
             foreach (int i in turnArray)
             {
-                MakeMove(i);
+                
                 if (CanPlay(i))
-                {
-                    int bufvalue = value;
+                   {
+                    MakeMove(i);
+                    int bufferValue = value;
                     value = Math.Max(value,-NegaMax(maxDepth - 1, -color, false));
-                    if (bufvalue != value && firstCall)
+                    if (bufferValue != value && firstCall)
                         bestMove = i;
-                }
-                UndoMove();
+                    UndoMove();
+                }   
             }
             return value;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NegamaxTest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,7 @@ namespace ConnectfourCode
         SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
         const int rowCount = 6, columnCount = 7, ellipseSize = 100;
         Negamax negamaxTest = new Negamax();
+        IterativDeepening negaTest = new IterativDeepening();
        // Negamax p2 = new Negamax();
         
         public MainWindow()
@@ -105,16 +107,17 @@ namespace ConnectfourCode
                 }
             }
             this.Content = gameGrid;
-            
+
             negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
             ColumnClick(negamaxTest.bestMove, false);
-            negamaxTest.ResetBestMove();
+            //negamaxTest.ResetBestMove();
+            //ColumnClick(negaTest.Deepening(), false);
         }
         private void MouseEnterHandler(int targetColumn)
         {
             for (int i = 0; i < rowCount; i++)
             {
-                ellipseGameBoard[i, targetColumn].Stroke = ((negamaxTest.MoveCount & 1) == 0) ? yellowColor : redColor;
+                ellipseGameBoard[i, targetColumn].Stroke = ((negamaxTest.MoveCount)/*negaTest.MoveCount & 1)*/ == 0) ? yellowColor : redColor;
             }
         }
         private void MouseLeaveHandler(int targetColumn)
@@ -134,23 +137,25 @@ namespace ConnectfourCode
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
-                    ellipseGameBoard[i, targetColumn].Fill = ((negamaxTest.MoveCount & 1) == 0) ? yellowColor : redColor;
+                    ellipseGameBoard[i, targetColumn].Fill = ((negamaxTest.MoveCount/*negaTest.MoveCount*/ & 1) == 0) ? yellowColor : redColor;
                     negamaxTest.MakeMove(targetColumn);
-                    if (negamaxTest.IsWin())
+                    //negaTest.MakeMove(targetColumn);
+                    if (negamaxTest.IsWin())//negaTest.IsWin())negamaxTest.IsWin())
                     {
-                        MessageBox.Show(((negamaxTest.MoveCount & 1) == 1 ? "Player one" : "Player two") + " won!");
+                        MessageBox.Show(((negamaxTest.MoveCount/*negaTest.MoveCount & 1*/) == 1 ? "Player one" : "Player two") + " won!");
                         ResetBoard();
                     }
-                    else if (negamaxTest.IsDraw())
+                    else if (negamaxTest.IsDraw())//negaTest.IsDraw())negamaxTest.IsDraw())
                     {
                         MessageBox.Show("Draw Game");
                     }
                     negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
                     if (playerMove)
                     {
+                       // ColumnClick(negaTest.Deepening(), false);
                       ColumnClick(negamaxTest.bestMove, false);
                     }
-                    negamaxTest.ResetBestMove();
+                    //negamaxTest.ResetBestMove();
                     break;
                 }
             }   
@@ -163,6 +168,7 @@ namespace ConnectfourCode
                 ellipse.Fill = emptyColor;
             }
             negamaxTest.ResetBitBoard();
+            //negaTest.ResetBitBoard();
         }
     }
 
