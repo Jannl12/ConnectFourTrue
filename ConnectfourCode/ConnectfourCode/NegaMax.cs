@@ -8,7 +8,7 @@ using Microsoft.Office.Interop.Excel;
 
 namespace ConnectfourCode
 {
-    public class Negamax : ArrayGameBoard
+    public class Negamax : BitBoard
     {
 
 
@@ -25,33 +25,27 @@ namespace ConnectfourCode
             if (IsWin() || depth == 0 || IsDraw())
             {
                 int evalBuffer = EvaluateBoard();
-                return evalBuffer*color
+                return evalBuffer * color;
             }
             int value = int.MinValue;
 
             foreach(int move in possibleMoves())
             {
+                MakeMove(move);
+                value = Math.Max(value,-NegaMax(-beta, -alpha, depth - 1, -color, false));
 
-                
-                if (CanPlay(i))
+                if (value >= beta)
                 {
-                    MakeMove(i);
-                    value = Math.Max(value,-NegaMax(-beta, -alpha, depth - 1, -color, false));
-
-                    if (value >= beta)
-                    {
-                        UndoMove();
-                        return value;
-                    }
-                    if (value > alpha)
-                    {
-                        alpha = value;
-                        if (firstCall)
-                            bestMove = i;
-                    }
                     UndoMove();
+                    return value;
                 }
-                
+                if (value > alpha)
+                {
+                    alpha = value;
+                    if (firstCall)
+                        bestMove = move;
+                }
+                UndoMove();
             }
             return alpha;
         }        

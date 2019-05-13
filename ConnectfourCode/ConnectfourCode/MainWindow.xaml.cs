@@ -102,8 +102,7 @@ namespace ConnectfourCode
                 }
             }
             this.Content = gameGrid;
-
-            ColumnClick(negamaxTest.GetBestMove(10), false); //Call function 
+            //Call function 
 
 
             //negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true); // normal negaMax
@@ -154,7 +153,7 @@ namespace ConnectfourCode
                     }
                     if (playerMove)
                     {
-                        ColumnClick(negamaxTest.GetBestMove(10), false);
+                        //ColumnClick(negamaxTest.GetBestMove(10), false);
                     } 
 
                     //    MessageBox.Show(((negamaxTest.MoveCount/*negaTest.MoveCount & 1*/) == 1 ? "Player one" : "Player two") + " won!");

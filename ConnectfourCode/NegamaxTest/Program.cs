@@ -1,17 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.IO;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Controls;
 using ConnectfourCode;
 using Microsoft.Office.Interop.Excel;
-using OpenQA.Selenium.Firefox;
-using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace NegamaxTest
 {

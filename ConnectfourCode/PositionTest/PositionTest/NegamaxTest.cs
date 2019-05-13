@@ -14,7 +14,7 @@ namespace PositionTest
         public void NegaMaxFinishTest()
         {
             Negamax test = new Negamax();
- 
+
             test.bitGameBoard[1] = 0x4BB40A01615; //blå (lige)
             test.bitGameBoard[0] = 0x140B74009AA; //rød (ulige)
             test.MoveCount = 31;
@@ -60,7 +60,7 @@ namespace PositionTest
             int expectedInt = 3;
 
             test.NegaMax(9, 1, true);
-          
+
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);
