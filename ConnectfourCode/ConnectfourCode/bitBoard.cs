@@ -164,7 +164,7 @@ namespace ConnectfourCode
 
             ulong[] gameBoards = { playerOneBoard, playerTwoBoard };
 
-            int[] testCase = { 0, 1, 4, 9, 1000 };
+            int[] pointForDiscsInARow = { 0, 1, 4, 9, 1000 };
 
             int[,] allCombinations = 
             { 
