@@ -10,6 +10,10 @@ namespace PositionTest
     [TestClass]
     public class NegamaxTest
     {
+        public <T> makeMultipleMoves(List<int> desiredMoves)
+        {
+
+        }
         [TestMethod]
         public void NegaMaxFinishTest()
         {
@@ -17,7 +21,7 @@ namespace PositionTest
 
             test.bitGameBoard[1] = 0x4BB40A01615; //blå (lige)
             test.bitGameBoard[0] = 0x140B74009AA; //rød (ulige)
-            test.MoveCount = 31;
+            //test.MoveCount = 31;
             test.columnHeight[0] += 6;
             test.columnHeight[1] += 6;
             test.columnHeight[2] += 0;
@@ -42,7 +46,7 @@ namespace PositionTest
             Negamax test = new Negamax();
             test.bitGameBoard[0] = 0x0; //blå (lige)
             test.bitGameBoard[1] = 0x0; //rød (ulige)
-            test.MoveCount = 0;
+            //test.MoveCount = 0;
             int expectedInt = 3;
 
 

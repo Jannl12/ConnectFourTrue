@@ -14,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    
+
     public class BitBoard
-    {
+    {s
         [DllImport("EvaluateBoardDLL.dll")]
         private static extern int EvaluateBoard(ulong board1, ulong board2, int[] inputvalues);
 
@@ -26,14 +26,15 @@ namespace ConnectfourCode
         }
 
         public ulong[] bitGameBoard;
-        public int[] columnHeight;
+        protected int[] columnHeight;
+        int[] boardScores = { 0, 1, 4, 9, 1000 };
 
         protected List<int> moveHistory = new List<int>();
-        int boardHeight = 6-1, boardWidth = 7, moveCount;
+        int boardHeight = 6, boardWidth = 7;
 
-        public int MoveCount {
-            get { return moveCount; }
-            set { moveCount = value; }
+        protected int moveCount
+        {
+            get { return moveHistory.Count(); }
         }
         private int Three1 = 4;//75;//4
         private int Two1 = 1;//15;//1
@@ -43,29 +44,35 @@ namespace ConnectfourCode
 
         public BitBoard()
         {
-            ResetBitBoard();
+            ResetGame();
         }
         public void MakeMove(int coloumnInput)
-        {   
-                ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
-                bitGameBoard[(moveCount++ & 1)] ^= moveBuffer;
-                moveHistory.Add(coloumnInput);
+        {
+            ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
+            bitGameBoard[(moveCount & 1)] ^= moveBuffer;
+            moveHistory.Add(coloumnInput);
 
         }
 
         public bool GetCurrentPlayer()
         {
-            return MoveCount % 2 == 0;
+            return moveCount % 2 == 0;
         }
 
+        /**<summary><c>UndoMove</c> undoes the move that the player did based on <paramref name="movehistory"/>.</summary>
+         */
         public void UndoMove()
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
             moveHistory.RemoveAt(moveHistory.Count - 1);
-            bitGameBoard[(--moveCount & 1)] ^= moveBuffer;
+            bitGameBoard[(moveCount & 1)] ^= moveBuffer;
         }
 
-        public bool CanPlay( int column)
+        /** <summary>Tests if it is possible to put a new disk into a target coloumn.</summary>
+         * <param name="column">The coloumn to be checked for possible move.</param>
+         * <returns>A bool describing if it is possible to add a disk to the given coloumn. </returns>
+         */
+        public bool CanPlay(int column)
         {
             ulong mask = 1;
             ulong boardstate = bitGameBoard[0] ^ bitGameBoard[1];
@@ -74,27 +81,36 @@ namespace ConnectfourCode
             else return true;
         }
 
-        public void ResetBitBoard()   
+        /**<summary>Reset the state of the board by:
+         * <list type="bullet">
+         *  <item>Setting values of <paramref name="bitGameBoard"/> to 0</item>
+         *  <item>Setting the values of <paramref name="columnHeight"/> to values equal of the coloumn bottom integers of the ulongs.</item>
+         *  <item>Clearing the values of <paramref name="moveHistory"/> .</list>
+         * </list>
+         * </summary>
+         */
+        public void ResetGame()
         {
             bitGameBoard = new ulong[2];
             bitGameBoard[0] = 0; bitGameBoard[1] = 0;
 
             columnHeight = new int[boardWidth];
-            for(int i = 0; i < columnHeight.Length; i++)
+            for (int i = 0; i < columnHeight.Length; i++)
             {
                 columnHeight[i] = i * boardWidth;
             }
-            moveHistory = new List<int>();
-            moveCount = 0;
             moveHistory.Clear();
         }
 
+        /**<summary><c>IsWin</c> checks if the current player has won the game.</summary>
+         * <retuns>A bool if the current player has won the game.</retuns>
+         */
         public bool IsWin()
-        { //TODO: Should be described in Implemention, use figur
+        {
             ulong bitboard = bitGameBoard[moveCount % 2];
             for (int i = 0; i < directions.Length; i++)
             {
-                if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) & 
+                if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
                         (bitboard >> (3 * directions[i]))) != 0)
                 {
                     return true;
@@ -103,11 +119,14 @@ namespace ConnectfourCode
             return false;
         }
 
-
+        /**<summary><c>possibleMoves</c> creates a list of possible moves, based on which bits are set in
+         * the ulongs of the <paramref name="bitGameBoard">.</paramref></summary>
+         * <returns>A list of possible moves in the current state of the game.</returns>
+         */
         protected List<int> possibleMoves()
         {
             List<int> returnList = new List<int>();
-            for(int i = 0; i < 7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 if ((((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) == 1UL)
                 {
@@ -116,7 +135,9 @@ namespace ConnectfourCode
             }
             return returnList;
         }
-
+        /**<summary>Creates a hopefully unique key based on the current state of the ulongs in <paramref name="bitGameBoard"/>.</summary>
+         * <returns>A hashcode based on the two hashcodes</returns>
+         */
         public ulong GetBoardKey()
         {
             ulong buffer = 0;
@@ -127,15 +148,12 @@ namespace ConnectfourCode
             return buffer + bitGameBoard[moveCount & 1];
         }
 
+        /**<summary><c>IsDraw</c> tests if the gameboard is full, by comparing with a template(ulong) of a full board.</summary>
+         * <retuns>A bool which describes if the board is full, and the game therefor is a draw.</retuns>
+         */
         public bool IsDraw()
         {
-            int[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
-                                  53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
-            ulong outerFrameBuffer = 0;
-            foreach (int frameIn in frameRemover)
-            {
-                outerFrameBuffer += (ulong)(Math.Pow(2, frameIn));
-            }
+            ulong outerFrameBuffer = 18446464815071240256;
             if ((bitGameBoard[0] | bitGameBoard[1]) == (ulong.MaxValue ^ outerFrameBuffer))
                 return true;
             else
@@ -143,11 +161,11 @@ namespace ConnectfourCode
         }
 
 
-        
+
 
         public override bool Equals(object obj)
         {
-            if(obj == null || this.GetType().Equals(obj.GetType()))
+            if (obj == null || this.GetType().Equals(obj.GetType()))
             {
                 return false;
             }
@@ -157,43 +175,56 @@ namespace ConnectfourCode
             }
         }
 
-        public int EvaluateBoard(ulong playerOneBoard, ulong playerTwoBoard)
+        /** <summary> Function <c>int EvaluateBoard() </c> takes the current state of the board, and creates 
+         * an value which represents a score of the board, for the computerplayer. </summary>
+         * <returns> Returns the score of the given board as integer value. </returns>
+         */
+        public int EvaluateBoard()
         {
             ulong outerFrameBuffer = 18446464815071240256;
-            ulong emptySlotsBitBoard = (ulong.MaxValue ^ (playerOneBoard | playerTwoBoard)) ^ outerFrameBuffer;
+            ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
 
-            ulong[] gameBoards = { playerOneBoard, playerTwoBoard };
-
-            int[] testCase = { 0, 1, 4, 9, 1000 };
-
-            int[,] allCombinations = { {1,1,1,1}, //four in span
-								{ 1, 1, 1, 0}, { 1, 1, 0, 1}, { 1, 0, 1, 1}, {0, 1, 1, 1}, // three in span
-								{1, 1, 0, 0}, {1, 0, 1, 0}, {1, 0, 0, 1}, {0, 1, 1, 0}, {0, 1, 0, 1}, {0, 0, 1, 1}, //two in span
-								{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} }; //one in span
-
-	    int returnValue = 0;
-	    for (int playerIterator = 0; playerIterator< 2; playerIterator++) {
-		    for (int combination = 0; combination< 15; combination++) {
-			    int evaluationBuffer = evalDirection(
-                    allCombinations[combination,0] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
-                    allCombinations[combination,1] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
-                    allCombinations[combination,2] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
-                    allCombinations[combination,3] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
-                    testCase[allCombinations[combination, 0] + 
-                            allCombinations[combination, 1] + 
-                            allCombinations[combination, 2] + 
-                            allCombinations[combination, 3]]);
-            returnValue += playerIterator == 0 ? evaluationBuffer : -evaluationBuffer;
-		    }
+            int returnValue = 0;
+            foreach(int playerIterator in bitGameBoard)
+            {
+                ulong[,] allCombinations = { {bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //4
+							                { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //3
+                                            { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //3
+                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //3
+                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //3
+							                { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //2
+                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //2
+                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //2
+                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //2 
+                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //2
+                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //2
+							                { bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             emptySlotsBitBoard},            //1
+                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //1 
+                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //1
+                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]} };//1
+                int[] numberOfboardsInSpan = { 4, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1 };
+                for (int combination = 0; combination < 15; combination++)
+                {
+                    int evaluationBuffer = findCombinationInBoards(allCombinations[combination, 0],
+                                                        allCombinations[combination, 1],
+                                                        allCombinations[combination, 2],
+                                                        allCombinations[combination, 3],
+                                                        boardScores[numberOfboardsInSpan[combination]]);
+                    returnValue += playerIterator == 0 ? evaluationBuffer : -evaluationBuffer;
+                }
+            }
+            return returnValue;
         }
-	    return returnValue;
-        }
 
-        int evalDirection(ulong firstBoard, ulong secondBoard, ulong thirdBoard, ulong fourthBoard, int score)
+
+        /** <summary><c>evalDirection</c> takes in four boards(ulongs) and calculates how many cases of the given
+         * combination that exists. </summary>
+         * <retuns>The score of the board for that given combination, based on a given score and found combinations.</retuns>
+         */
+        private int findCombinationInBoards(ulong firstBoard, ulong secondBoard, ulong thirdBoard, ulong fourthBoard, int score)
         {
             int returnValue = 0;
-            int[] directionOffset = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
-            for (int i = 0; i < directionOffset.Count(); i++)
+            for (int i = 0; i < directions.Count(); i++)
             {
                 ulong boardShiftAndAdditionBuffer =
                     (firstBoard) &
@@ -208,6 +239,10 @@ namespace ConnectfourCode
             return returnValue;
         }
 
+        /**<summary>Takes in a <paramref name="inputValue"/> and counts the set bits in the bitstring.</summary>
+         * <param name="inputValue">The ulong which bits will be counted.</param>
+         * <returns>The number of bits in the input parameter.</returns>
+         */
         private int countSetBitsInUlong(ulong inputValue)
         {
             int returnCount = 0;
@@ -221,98 +256,5 @@ namespace ConnectfourCode
             }
             return returnCount;
         }
-
-
-        public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
-        {
-            // Frame: 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
-            ulong outerFrameBuffer = 18446464815071240256;
-
-            ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
-            ulong[] bitboard = bitGameBoard;
-            int[] returnValue = { 0, 0 };
-
-            //returnValue[(moveCount -1 ) & 1] = 10 - ((moveHistory[0] + 1) % 4)*2;
-
-
-            int win = 10000;
-            
-
-                for (int i = 0; i < 2; i++)
-                {
-                //1111
-                returnValue[i] = Eval(bitboard[i], bitboard[i], bitboard[i], bitboard[i], win);
-                //111x
-                returnValue[i] += Eval(bitboard[i], bitboard[i], bitboard[i], emptySlotsBitBoard, Three1);
-
-                //11x1
-                returnValue[i] += Eval(bitboard[i], bitboard[i], emptySlotsBitBoard, bitboard[i], Three1);
-
-                //1x11
-                returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, bitboard[i], bitboard[i], Three1);
-
-                //x111
-                returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], bitboard[i], bitboard[i], Three1);
-
-                //11xx
-                returnValue[i] += Eval(bitboard[i], bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, Two1);
-
-                //1x1x
-                returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, Two1);
-
-                //1xx1
-                returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], Two1);
-
-                //x11x
-                returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], bitboard[i], emptySlotsBitBoard, Two1);
-
-                //x1x1
-                returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, bitboard[i], Two1);
-
-                //xx11
-                returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], bitboard[i], Two1);
-
-                //1xxx
-                returnValue[i] += Eval(bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, One1);
-
-                //x1xx
-                 returnValue[i] += Eval(emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, emptySlotsBitBoard, One1);
-
-                //xx1x
-                returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], emptySlotsBitBoard, One1);
-
-                //xxx1
-                returnValue[i] += Eval(emptySlotsBitBoard, emptySlotsBitBoard, emptySlotsBitBoard, bitboard[i], One1);
-              }
-
-            return returnValue[0] - returnValue[1];
-        }
-        private int Eval(ulong b1, ulong b2, ulong b3, ulong b4, int score)
-        {
-            int retval = 0;
-            for (int i = 0; i < directions.Length; i++)
-            {
-                ulong andBitBoards = (b1 & (b2 >> directions[i]) & (b3 >> (2 * directions[i]))
-                    & (b4 >> (3 * directions[i])));
-                if (andBitBoards != 0)
-                {
-                    retval += score * CountSetBits(andBitBoards);
-                }
-            }
-            return retval;
-        }
-
-        public int CountSetBits(ulong x)
-        {
-            int count = 0;
-            while (x > 0)
-            {
-                if ((x & 1) == 1)
-                    count++;
-                x >>= 1;
-            }
-            return count;
-        }
     }
-    
 }

@@ -54,13 +54,13 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //  1 2 3 4 5 6 7
             //Act  
             sw.Start();// | | | | | | | | 6
-            int expectedValue = 0;
+            int expectedValue = test.EvaluateBoard();
             sw.Stop();
             sw2.Start();// | | | | | | | | 5
             int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
             sw.Stop();                                           // | | | | | |x|o| 3
             //Assert                                    // | | | | | |x|o| 2
-            Assert.AreEqual(sw, sw2);  // | | | | | |x|o| 1
+            Assert.IsTrue(sw.Elapsed <= sw2.Elapsed);  // | | | | | |x|o| 1
         }
 
         [TestMethod]

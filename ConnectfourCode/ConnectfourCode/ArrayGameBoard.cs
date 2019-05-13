@@ -24,7 +24,7 @@ namespace ConnectfourCode
         {
             ResetGame();
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
-                new Dictionary<int, int> { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } }, new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 3 }, '0', '1');
+                new Dictionary<int, int> { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } }, new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 2 }, '0', '1');
             boardCheckLocations = getSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
 
@@ -156,94 +156,5 @@ namespace ConnectfourCode
             }
             return returnValue;
         }
-        //public int EvaluateBoard()
-        //{
-        //    int evaluationBuffer = 0, dictionaryLookup = 0;
-        //    bool wasFound = false;
-
-
-        //    //scan horizontal
-        //    for (int i = 0; i < 6; i++)
-        //    {
-        //        wasFound = knownScores.TryGetValue(30000000 + gameboard[0, i] * 1000000 + gameboard[1, i] * 100000 +
-        //            gameboard[2, i] * 10000 + gameboard[3, i] * 1000 + gameboard[4, i] * 100 +
-        //            gameboard[5, i] * 10 + gameboard[6, i] * 1, 
-        //            out dictionaryLookup);
-        //        evaluationBuffer += wasFound ? dictionaryLookup : 0;
-        //    }
-
-        //    //scan vertical
-        //    for (int i = 0; i < 7; i++)
-        //    {
-        //        knownScores.TryGetValue(3000000 + gameboard[i, 0] * 100000 + gameboard[i, 1] * 10000 +
-        //            gameboard[i, 2] * 1000 + gameboard[i, 3] * 100 + gameboard[i, 4] * 10 +
-        //            gameboard[i, 5] * 1, 
-        //            out dictionaryLookup);
-        //        evaluationBuffer += wasFound? dictionaryLookup : 0;
-        //    }
-        //    //scan diagonal 1
-        //    wasFound = knownScores.TryGetValue(
-        //        30000 + gameboard[0, 3] * 1000 + gameboard[1, 2] * 100 + gameboard[2, 1] * 10 + gameboard[3, 0] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        300000 + gameboard[0, 4] * 10000 + gameboard[1, 3] * 1000 + gameboard[2, 2] * 100 + gameboard[3, 1] * 10 + gameboard[4, 0] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        3000000 + gameboard[0, 5] * 100000 + gameboard[1, 4] * 10000 + gameboard[2, 3] * 1000 + gameboard[3, 2] * 100 + gameboard[4, 1] * 10 + gameboard[5, 0] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        3000000 + gameboard[1, 5] * 100000 + gameboard[2, 4] * 10000 + gameboard[3, 3] * 1000 + gameboard[4, 2] * 100 + gameboard[5, 1] * 10 + gameboard[6, 0] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        300000 + gameboard[2, 5] * 10000 + gameboard[3, 4] * 1000 + gameboard[4, 3] * 100 + gameboard[5, 2] * 10 + gameboard[6, 1] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        30000 + gameboard[3, 5] * 1000 + gameboard[4, 4] * 100 + gameboard[5, 3] * 10 + gameboard[6, 2] * 1,
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    //scan diagonal 2
-        //    wasFound = knownScores.TryGetValue(
-        //        30000 + gameboard[3, 5] * 1000 + gameboard[2, 4] * 100 + gameboard[1, 3] * 10 + gameboard[0, 2] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        300000 + gameboard[4, 5] * 10000 + gameboard[3, 4] * 1000 + gameboard[2, 3] * 100 + gameboard[1, 2] * 10 +  gameboard[0, 1] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        3000000 + gameboard[5, 5] * 100000 + gameboard[4, 4] * 10000 + gameboard[3, 3] * 1000 + gameboard[2, 2] * 100 + gameboard[1, 1] * 10 + gameboard[0, 0] * 1,
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        3000000 + gameboard[6, 5] * 100000 + gameboard[5, 4] * 10000 + gameboard[4, 3] * 1000 + gameboard[3, 2] * 100 + gameboard[2, 1] * 10 + gameboard[1, 0] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        300000 + gameboard[6, 4] * 10000 + gameboard[5, 3] * 1000 + gameboard[4, 2] * 100 + gameboard[3, 1] * 10 + gameboard[2, 0] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    wasFound = knownScores.TryGetValue(
-        //        30000 + gameboard[6, 3] * 1000 + gameboard[5, 2] * 100 + gameboard[4, 1] * 10 + gameboard[3, 0] * 1, 
-        //        out dictionaryLookup);
-        //    evaluationBuffer += wasFound ? dictionaryLookup : 0;
-
-        //    return evaluationBuffer;
-        //}
     }
 }

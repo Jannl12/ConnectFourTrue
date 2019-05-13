@@ -226,7 +226,7 @@ namespace NegamaxTest
                 else if (plyNega.IsDraw())
                     result = "Draw Game";
             }
-            plyNega.ResetBitBoard();
+            plyNega.ResetGame();
         }
 
         private void MakeAndTimeMove(int player)
