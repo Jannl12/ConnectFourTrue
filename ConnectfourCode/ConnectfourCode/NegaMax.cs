@@ -24,15 +24,14 @@ namespace ConnectfourCode
             if (IsWin() || depth == 0 || IsDraw())
             {
                 int evalBuffer = EvaluateBoard();
-                return evalBuffer*color;
-
-              
+                return evalBuffer*color
             }
             int value = int.MinValue;
 
             foreach(int move in possibleMoves())
             {
 
+                
                 if (CanPlay(i))
                 {
                     MakeMove(i);

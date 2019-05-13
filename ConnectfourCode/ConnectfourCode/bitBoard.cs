@@ -124,7 +124,7 @@ namespace ConnectfourCode
                 buffer ^= inputlong;
             }
             return buffer + bitGameBoard[moveCount & 1];
-
+        }
         public bool IsDraw()
         {
             int[] frameRemover = { 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52,
