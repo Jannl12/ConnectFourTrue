@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,27 +7,8 @@ using System.Threading.Tasks;
 
 namespace ControlFile
 {
-    class Program
-    {
-        static void Main(string[] args)
+        static class ScoreCombinations
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            CreateCombinationFile.writeToFile();
-            Console.ReadKey();
-
-
-
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
-        }
-
-    }
-
-
-
-    static class CreateCombinationFile
-    {
         //https://stackoverflow.com/questions/25824376/combinations-with-repetitions-c-sharp
         static IEnumerable<String> CombinationsWithRepition(IEnumerable<int> playerValues, int permutationLength)
         {
@@ -40,8 +21,10 @@ namespace ControlFile
                         yield return i.ToString() + c;
             }
         }
+            
 
-        static Dictionary<string, int> getScoreValues(IEnumerable<int> permutationValues, Dictionary<int, int> scorePerConnected, int spanSize, int combinationLength, char emptySlotValue, char playerValue)
+        static Dictionary<string, int> getScoreValues(
+            IEnumerable<int> permutationValues, Dictionary<int, int> scorePerConnected, int spanSize, int combinationLength, char emptySlotValue, char playerValue)
         {
             Dictionary<string, int> returnDictionary = new Dictionary<string, int>();
             string[] lineBuffer = new string[(combinationLength - combinationLength % spanSize)];
@@ -91,33 +74,19 @@ namespace ControlFile
             return returnDictionary;
         }
 
-        static public void writeToFile()
+        public static Dictionary<int, int> GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
+            Dictionary<int,int> inputScores, int[] spanSizes, int combinationsize, int[] playerValues, char emptySlotValue, char playerValue)
         {
-            Dictionary<int, int> inputDictionary = new Dictionary<int, int> { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } };
-            using (System.IO.StreamWriter test = new System.IO.StreamWriter(@"C:\Users\ehvid\Source\Repos\Jannl12\ConnectFourTrue\ConnectfourCode\ConnectfourCode\Resources\possibleCombinationsAndScores.txt"))
+            Dictionary<int, int> returnDictionary = new Dictionary<int, int>();
+                
+            foreach(int spanSize in spanSizes)
             {
-                int i = 0;
-                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 7, 4, '0', '1'))
+                foreach(KeyValuePair<string, int> item in getScoreValues(playerValues, inputScores, spanSize, 4, emptySlotValue, playerValue))
                 {
-                    string workstring = i++ + ": " + item.Key + " " + item.Value;
-                    test.WriteLine(workstring);
-                }
-                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 6, 4, '0', '1'))
-                {
-                    string workstring = i++ + ": " + item.Key + " " + item.Value;
-                    test.WriteLine(workstring);
-                }
-                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 5, 4, '0', '1'))
-                {
-                    string workstring = i++ + ": " + item.Key + " " + item.Value;
-                    test.WriteLine(workstring);
-                }
-                foreach (KeyValuePair<string, int> item in getScoreValues(new int[] { 0, 1, 2 }, inputDictionary, 4, 4, '0', '1'))
-                {
-                    string workstring = i++ + ": " + item.Key + " " + item.Value;
-                    test.WriteLine(workstring);
+                    returnDictionary.Add(Int32.Parse(item.Key), item.Value);
                 }
             }
+            return returnDictionary;
         }
     }
 }
