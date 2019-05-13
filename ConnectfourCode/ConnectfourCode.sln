@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PositionTest", "PositionTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NegamaxTest", "NegamaxTest\NegamaxTest.csproj", "{C541A513-0F39-48F4-9184-BD3BC2DE6233}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EvaluateBoardDLL", "EvaluateBoardDLL\EvaluateBoardDLL\EvaluateBoardDLL.vcxproj", "{13E066AF-B365-466D-BF6F-289B7F20E9ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,18 @@ Global
 		{64F45E24-5E38-4037-9740-D719188464A6}.Release|x64.Build.0 = Release|Any CPU
 		{64F45E24-5E38-4037-9740-D719188464A6}.Release|x86.ActiveCfg = Release|Any CPU
 		{64F45E24-5E38-4037-9740-D719188464A6}.Release|x86.Build.0 = Release|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Debug|x64.Build.0 = Debug|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Debug|x86.Build.0 = Debug|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Release|x64.ActiveCfg = Release|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Release|x64.Build.0 = Release|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Release|x86.ActiveCfg = Release|Any CPU
+		{C541A513-0F39-48F4-9184-BD3BC2DE6233}.Release|x86.Build.0 = Release|Any CPU
 		{13E066AF-B365-466D-BF6F-289B7F20E9ED}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{13E066AF-B365-466D-BF6F-289B7F20E9ED}.Debug|x64.ActiveCfg = Debug|x64
 		{13E066AF-B365-466D-BF6F-289B7F20E9ED}.Debug|x64.Build.0 = Debug|x64
@@ -53,7 +67,6 @@ Global
 		{13E066AF-B365-466D-BF6F-289B7F20E9ED}.Release|x64.Build.0 = Release|x64
 		{13E066AF-B365-466D-BF6F-289B7F20E9ED}.Release|x86.ActiveCfg = Release|Win32
 		{13E066AF-B365-466D-BF6F-289B7F20E9ED}.Release|x86.Build.0 = Release|Win32
-
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
