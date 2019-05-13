@@ -33,6 +33,7 @@ namespace ConnectfourCode
 
         public int MoveCount {
             get { return moveCount; }
+            set { moveCount = value; }
         }
         private int Three1 = 4;//75;//4
         private int Two1 = 1;//15;//1
@@ -156,8 +157,73 @@ namespace ConnectfourCode
             }
         }
 
-        public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
+        public int EvaluateBoard(ulong playerOneBoard, ulong playerTwoBoard)
+        {
+            ulong outerFrameBuffer = 18446464815071240256;
+            ulong emptySlotsBitBoard = (ulong.MaxValue ^ (playerOneBoard | playerTwoBoard)) ^ outerFrameBuffer;
 
+            ulong[] gameBoards = { playerOneBoard, playerTwoBoard };
+
+            int[] testCase = { 0, 1, 4, 9, 1000 };
+
+            int[,] allCombinations = { {1,1,1,1}, //four in span
+								{ 1, 1, 1, 0}, { 1, 1, 0, 1}, { 1, 0, 1, 1}, {0, 1, 1, 1}, // three in span
+								{1, 1, 0, 0}, {1, 0, 1, 0}, {1, 0, 0, 1}, {0, 1, 1, 0}, {0, 1, 0, 1}, {0, 0, 1, 1}, //two in span
+								{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} }; //one in span
+
+	    int returnValue = 0;
+	    for (int playerIterator = 0; playerIterator< 2; playerIterator++) {
+		    for (int combination = 0; combination< 15; combination++) {
+			    int evaluationBuffer = evalDirection(
+                    allCombinations[combination,0] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
+                    allCombinations[combination,1] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
+                    allCombinations[combination,2] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
+                    allCombinations[combination,3] == 1 ? gameBoards[playerIterator] : emptySlotsBitBoard,
+                    testCase[allCombinations[combination, 0] + 
+                            allCombinations[combination, 1] + 
+                            allCombinations[combination, 2] + 
+                            allCombinations[combination, 3]]);
+            returnValue += playerIterator == 0 ? evaluationBuffer : -evaluationBuffer;
+		    }
+        }
+	    return returnValue;
+        }
+
+        int evalDirection(ulong firstBoard, ulong secondBoard, ulong thirdBoard, ulong fourthBoard, int score)
+        {
+            int returnValue = 0;
+            int[] directionOffset = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
+            for (int i = 0; i < directionOffset.Count(); i++)
+            {
+                ulong boardShiftAndAdditionBuffer =
+                    (firstBoard) &
+                    (secondBoard >> (directions[i])) &
+                    (thirdBoard >> (2 * directions[i])) &
+                    (fourthBoard >> (3 * directions[i]));
+                if (boardShiftAndAdditionBuffer != 0)
+                {
+                    returnValue += score * countSetBitsInUlong(boardShiftAndAdditionBuffer);
+                }
+            }
+            return returnValue;
+        }
+
+        private int countSetBitsInUlong(ulong inputValue)
+        {
+            int returnCount = 0;
+            while (inputValue > 0)
+            {
+                if ((inputValue & 1) == 1)
+                {
+                    returnCount++;
+                }
+                inputValue >>= 1;
+            }
+            return returnCount;
+        }
+
+
+        public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M
         {
             // Frame: 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
             ulong outerFrameBuffer = 0xFFFF020408102040; //11111_1111111_1000000_1000000_1000000_1000000_1000000_1000000_1000000UL / 18446464815071240256
