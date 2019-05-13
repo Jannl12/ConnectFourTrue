@@ -3,55 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Office.Interop.Excel;
 
 
 namespace ConnectfourCode
 {
     public class Negamax : ArrayGameBoard
     {
-        public int bestMove = 3; // :)
-        public int thisIsMaxDepth = 9;
-        int[] turnArray = { 0, 1, 2, 3, 4, 5, 6 };
-        Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
-         
 
-        public void ResetBestMove() 
-        {
-            bestMove = 3;
-            TranspositionTable.Clear();
-        }
 
-        private const int height = 6, width = 7;       
-        public int NegaMax(int alpha, int beta, int maxDepth, int color)
+        public int bestMove { get; set; }
+        int[] turnArray =  { 3, 2, 4, 1, 5, 0, 6 };
+
+ 
+        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
 
             //TODO: Skal med i implementeringen
         {
-            ulong lookuphashCode = this.GetBoardKey();
-            int evalBuffer = 0;
 
-            //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
-            if (IsWin() || maxDepth == 0)
+            if (IsWin() || depth == 0 || IsDraw())
             {
-                if(TranspositionTable.TryGetValue(lookuphashCode, out evalBuffer))
-                {
-                    return evalBuffer * color; // TODO: Add heuristic score JAN OG MAYOH
-                }
-                else
-                {
-                    evalBuffer = EvaluateBoard();
-                    TranspositionTable[lookuphashCode] = evalBuffer;
-                    return evalBuffer * color;
-                }
-
-
+                int evalBuffer = EvaluateBoard();
+                return evalBuffer*color
             }
+            int value = int.MinValue;
 
-            foreach(int i in turnArray)
+            foreach(int move in possibleMoves())
             {
-                MakeMove(i);
+
+                
                 if (CanPlay(i))
                 {
-                    int value = -NegaMax(-beta, -alpha, maxDepth - 1, -color);
+                    MakeMove(i);
+                    value = Math.Max(value,-NegaMax(-beta, -alpha, depth - 1, -color, false));
 
                     if (value >= beta)
                     {
@@ -61,12 +45,12 @@ namespace ConnectfourCode
                     if (value > alpha)
                     {
                         alpha = value;
-                        if (thisIsMaxDepth == maxDepth)
+                        if (firstCall)
                             bestMove = i;
-
                     }
+                    UndoMove();
                 }
-                UndoMove();
+                
             }
             return alpha;
         }        

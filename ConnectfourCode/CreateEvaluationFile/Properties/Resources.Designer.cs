@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConnectfourCode.Properties {
+namespace CreateEvaluationFile.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ConnectfourCode.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ConnectfourCode.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("CreateEvaluationFile.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,31 +61,11 @@ namespace ConnectfourCode.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 0,0 1,0 2,0 3,0 4,0 5,0 6,0
-        ///0,1 1,1 2,1 3,1 4,1 5,1 6,1
-        ///0,2 1,2 2,2 3,2 4,2 5,2 6,2
-        ///0,3 1,3 2,3 3,3 4,3 5,3 6,3
-        ///0,4 1,4 2,4 3,4 4,4 5,4 6,4
-        ///0,5 1,5 2,5 3,5 4,5 5,5 6,5
-        ///0,0	0,1 0,2 0,3 0,4 0,5
-        ///1,0 1,1 1,2 1,3 1,4 1,5
-        ///2,0 2,1 2,2 2,3 2,4 2,5
-        ///3,0 3,1 3,2 3,3 3,4 3,5
-        ///4,0 4,1 4,2 4,3 4,4 4,5
-        ///5,0 5,1 5,2 5,3 5,4 5,5
-        ///6,0 6,1 6,2 6,3 6,4 6,5
-        ///0,3 1,2 2,1 3,0
-        ///0,4 1,3 2,2 3,1 4,0
-        ///0,5 1,4 2,3 3,2 4,1 5,0 
-        ///1,5 2,4 3,3 4,2 5,1 6,0 
-        ///2,5 3,4 4,3 5,2 6,1 
-        ///3,5 4,4 5,3 6,2 
-        ///3,5 2,4 1,3 0,2
-        ///4,5 3,4 2,3 1,2  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to .
         /// </summary>
-        internal static string gameboardDirectionConfig {
+        internal static string possibleCombinationsAndScores {
             get {
-                return ResourceManager.GetString("gameboardDirectionConfig", resourceCulture);
+                return ResourceManager.GetString("possibleCombinationsAndScores", resourceCulture);
             }
         }
     }
