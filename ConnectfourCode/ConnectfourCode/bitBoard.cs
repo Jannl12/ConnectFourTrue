@@ -159,7 +159,7 @@ namespace ConnectfourCode
 
         public int EvaluateBoard(ulong playerOneBoard, ulong playerTwoBoard)
         {
-            ulong outerFrameBuffer = 18446464815071240256;
+            ulong outerFrameBuffer = 0xFFFF020408102040; //11111_1111111_1000000_1000000_1000000_1000000_1000000_1000000_1000000UL / 18446464815071240256
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (playerOneBoard | playerTwoBoard)) ^ outerFrameBuffer;
 
             ulong[] gameBoards = { playerOneBoard, playerTwoBoard };
