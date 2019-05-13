@@ -166,10 +166,13 @@ namespace ConnectfourCode
 
             int[] testCase = { 0, 1, 4, 9, 1000 };
 
-            int[,] allCombinations = { {1,1,1,1}, //four in span
-								{ 1, 1, 1, 0}, { 1, 1, 0, 1}, { 1, 0, 1, 1}, {0, 1, 1, 1}, // three in span
-								{1, 1, 0, 0}, {1, 0, 1, 0}, {1, 0, 0, 1}, {0, 1, 1, 0}, {0, 1, 0, 1}, {0, 0, 1, 1}, //two in span
-								{1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} }; //one in span
+            int[,] allCombinations = 
+            { 
+                {1,1,1,1}, //four in span
+                {1, 1, 1, 0}, {1, 1, 0, 1}, {1, 0, 1, 1}, {0, 1, 1, 1},                           // three in span
+                {1, 1, 0, 0}, {1, 0, 1, 0}, {1, 0, 0, 1}, {0, 1, 1, 0}, {0, 1, 0, 1}, {0, 0, 1, 1},  //two in span
+                {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}                               //one in span
+            }; 
 
 	    int returnValue = 0;
 	    for (int playerIterator = 0; playerIterator< 2; playerIterator++) {
