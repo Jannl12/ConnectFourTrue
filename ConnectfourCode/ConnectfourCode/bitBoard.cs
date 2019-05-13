@@ -160,7 +160,7 @@ namespace ConnectfourCode
 
         {
             // Frame: 6, 13, 20, 27, 34, 41, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64 };
-            ulong outerFrameBuffer = 18446464815071240256;
+            ulong outerFrameBuffer = 0xFFFF020408102040; //11111_1111111_1000000_1000000_1000000_1000000_1000000_1000000_1000000UL / 18446464815071240256
 
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
             ulong[] bitboard = bitGameBoard;
@@ -175,7 +175,8 @@ namespace ConnectfourCode
                 for (int i = 0; i < 2; i++)
                 {
                 //1111
-                returnValue[i] = Eval(bitboard[i], bitboard[i], bitboard[i], bitboard[i], win);
+                returnValue[i] += Eval(bitboard[i], bitboard[i], bitboard[i], bitboard[i], win);
+
                 //111x
                 returnValue[i] += Eval(bitboard[i], bitboard[i], bitboard[i], emptySlotsBitBoard, Three1);
 
