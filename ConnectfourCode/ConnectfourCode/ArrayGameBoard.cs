@@ -12,19 +12,25 @@ namespace ConnectfourCode
 
     public class ArrayGameBoard
     {
-        public int[,] gameboard = new int[7, 6];
-        int moveCount = 0;
+        private int[,] gameboard = new int[7, 6];
         int[] columnHeight = { 0, 0, 0, 0, 0, 0, 0 };
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         public List<List<Tuple<int, int>>> boardCheckLocations;
 
         Dictionary<int, int> knownScores;
 
+        protected int moveCount
+        {
+            get { return moveHistory.Count(); }
+        }
+
         public ArrayGameBoard()
         {
             ResetGame();
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
-                new Dictionary<int, int> { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } }, new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 2 }, '0', '1');
+                new Dictionary<int, int>() { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } }, 
+                new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 2 }, '0', '1');
+
             boardCheckLocations = getSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
 
@@ -72,14 +78,14 @@ namespace ConnectfourCode
             moveHistory.Push(latestTuple);
             gameboard[latestTuple.Item1, latestTuple.Item2] = moveCount % 2;
 
-            moveCount++; (columnHeight[latestTuple.Item1])++;
+            (columnHeight[latestTuple.Item1])++;
         }
 
         public void UndoMove()
         {
                 Tuple<int, int> latestTuple = moveHistory.Pop();
                 gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
-                moveCount--; (columnHeight[latestTuple.Item1])--;
+                (columnHeight[latestTuple.Item1])--;
         }
 
         protected List<int> possibleMoves()

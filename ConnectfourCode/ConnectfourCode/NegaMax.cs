@@ -10,13 +10,19 @@ namespace ConnectfourCode
 {
     public class Negamax : BitBoard
     {
-
-
-
         public int bestMove { get; set; }
-        int[] turnArray =  { 3, 2, 4, 1, 5, 0, 6 };
+        public int PlyDepth { get; }
 
- 
+
+
+        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
+
+        public Negamax (int inputPlyDepth)
+        {
+            PlyDepth = inputPlyDepth;   
+        }
+
+
         public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
 
             //TODO: Skal med i implementeringen

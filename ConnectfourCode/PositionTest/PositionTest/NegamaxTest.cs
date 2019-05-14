@@ -2,18 +2,25 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ConnectfourCode;
 using NegamaxTest;
-
-
+using System.Collections.Generic;
 
 namespace PositionTest
 {
+    class CreateNegaMaxTestArrange : Negamax
+    {
+        public CreateNegaMaxTestArrange(List<int> inputMoves)
+        {
+            foreach(int move in inputMoves)
+            {
+                this.MakeMove(move);
+            }
+        }
+    }
+
+
     [TestClass]
     public class NegamaxTest
     {
-        public <T> makeMultipleMoves(List<int> desiredMoves)
-        {
-
-        }
         [TestMethod]
         public void NegaMaxFinishTest()
         {
@@ -43,9 +50,9 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxStartTest()
         {
-            Negamax test = new Negamax();
-            test.bitGameBoard[0] = 0x0; //blå (lige)
-            test.bitGameBoard[1] = 0x0; //rød (ulige)
+            CreateNegaMaxTestArrange test = new CreateNegaMaxTestArrange(new List<int>());
+            //test.bitGameBoard[0] = 0x0; //blå (lige)
+            //test.bitGameBoard[1] = 0x0; //rød (ulige)
             //test.MoveCount = 0;
             int expectedInt = 3;
 

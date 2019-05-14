@@ -16,47 +16,54 @@ namespace ConnectfourCode
 {
 
     public class BitBoard
-    {s
+    {
+
+        private ulong[] bitGameBoard;
+        protected int[] columnHeight;
+
+        
+        protected List<int> moveHistory = new List<int>();
+        private int boardHeight = 6, boardWidth = 7;
+        private int[] boardScores = { 0, 1, 4, 9, 1000 };
+        private int[] directions = { 1, 7, 6, 8 };
+
         [DllImport("EvaluateBoardDLL.dll")]
         private static extern int EvaluateBoard(ulong board1, ulong board2, int[] inputvalues);
-
+        
         public int EvaluateBoardDLL()
         {
-            return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], new int[] { 0, 1, 4, 9, 1000 });
+            return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], boardScores);
         }
-
-        public ulong[] bitGameBoard;
-        protected int[] columnHeight;
-        int[] boardScores = { 0, 1, 4, 9, 1000 };
-
-        protected List<int> moveHistory = new List<int>();
-        int boardHeight = 6, boardWidth = 7;
 
         protected int moveCount
         {
             get { return moveHistory.Count(); }
         }
-        private int Three1 = 4;//75;//4
-        private int Two1 = 1;//15;//1
-        private int One1 = 0;//8;//0
-
-        int[] directions = { 1, 7, 6, 8 }; //Vertikal, Horizontal, V.Diagonal, H.Diagonal
 
         public BitBoard()
         {
             ResetGame();
         }
-        public void MakeMove(int coloumnInput)
+
+        protected void MakeMove (int columnInput)
+        {
+            ulong moveBuffer = 1UL << columnHeight[columnInput]++;
+            bitGameBoard[(moveCount & 1)] ^= moveBuffer;
+            moveHistory.Add(columnInput);
+        }
+
+        public bool MakeMoveAndCheckIfWin(int coloumnInput)
         {
             ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
             bitGameBoard[(moveCount & 1)] ^= moveBuffer;
+            bool wonBuffer = IsWin();
             moveHistory.Add(coloumnInput);
-
+            return wonBuffer;
         }
 
-        public bool GetCurrentPlayer()
+        public int GetCurrentPlayer()
         {
-            return moveCount % 2 == 0;
+            return (moveCount) % 2;
         }
 
         /**<summary><c>UndoMove</c> undoes the move that the player did based on <paramref name="movehistory"/>.</summary>
@@ -103,11 +110,11 @@ namespace ConnectfourCode
         }
 
         /**<summary><c>IsWin</c> checks if the current player has won the game.</summary>
-         * <retuns>A bool if the current player has won the game.</retuns>
+         * <returns>A bool if the current player has won the game.</returns>
          */
         public bool IsWin()
         {
-            ulong bitboard = bitGameBoard[moveCount % 2];
+            ulong bitboard = bitGameBoard[GetCurrentPlayer()];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
@@ -121,7 +128,7 @@ namespace ConnectfourCode
 
         /**<summary><c>possibleMoves</c> creates a list of possible moves, based on which bits are set in
          * the ulongs of the <paramref name="bitGameBoard">.</paramref></summary>
-         * <returns>A list of possible moves in the current state of the game.</returns>
+         * <returns><c>List<int></c>A list of possible moves in the current state of the game.</returns>
          */
         protected List<int> possibleMoves()
         {
@@ -159,9 +166,6 @@ namespace ConnectfourCode
             else
                 return false;
         }
-
-
-
 
         public override bool Equals(object obj)
         {
