@@ -36,12 +36,11 @@ namespace ConnectfourCode
                 }
             }
             int value = int.MinValue;
+            List<int> moves = possibleMoves();
 
-            foreach (int i in turnArray)
+            foreach (int move in moves)
             {
-                if (CanPlay(i))
-                {
-                    MakeMove(i);
+                    MakeMove(move);
                     value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));
 
                     if (value >= beta)
@@ -53,10 +52,9 @@ namespace ConnectfourCode
                     {
                         alpha = value;
                         if (firstCall)
-                            bestMove = i;
+                            bestMove = move;
                     }
                     UndoMove();
-                }
             }
             return alpha;
         }

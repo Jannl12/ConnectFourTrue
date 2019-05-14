@@ -106,9 +106,11 @@ namespace ConnectfourCode
         protected List<int> possibleMoves()
         {
             List<int> returnList = new List<int>();
+            int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
             for(int i = 0; i < 7; i++)
+            //foreach(int i in turnArray)
             {
-                if ((((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) == 1UL)
+                if ((((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) != 1UL)
                 {
                     returnList.Add(i);
                 }
