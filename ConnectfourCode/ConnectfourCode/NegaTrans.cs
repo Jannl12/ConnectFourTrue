@@ -40,10 +40,6 @@ namespace ConnectfourCode
             foreach (int move in moves)
             {
                 MakeMove(move);
-                if (depth == 8)
-                {
-                    int val = 0;
-                }
                 int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
 
                 if (value >= beta)
@@ -51,8 +47,7 @@ namespace ConnectfourCode
                     UndoMove();
                     return value;
                 }
-                if (firstCall)
-                    Console.WriteLine("Move is {0}, with a score of {1}", move, value);
+
                 if (value > alpha)
                 {
                     alpha = value;
