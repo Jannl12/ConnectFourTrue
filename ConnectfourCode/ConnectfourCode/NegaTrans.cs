@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    public class NegaTrans:BitBoard
+    public class NegaTrans : BitBoard
     {
+        
         public int bestMove { get; set; }
+        public int PlyDepth;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
@@ -17,8 +19,20 @@ namespace ConnectfourCode
             TranspositionTable.Clear();
         }
 
+        public NegaTrans(int plyDepth)
+        {
+            this.PlyDepth = plyDepth;
+        }
 
-        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
+        public int GetBestMove(int player)
+        {
+            NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
+            int bufferBestMove = bestMove;
+            bestMove = 3;
+            return bufferBestMove;
+        }
+
+        public int NegaMax(int alpha, int beta, int depth, int color, bool ifRootNode)
 
         //TODO: Skal med i implementeringen
         {
@@ -52,7 +66,7 @@ namespace ConnectfourCode
                     if (value > alpha)
                     {
                         alpha = value;
-                        if (firstCall)
+                        if (ifRootNode)
                             bestMove = i;
                     }
                     UndoMove();
