@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConnectfourCode.Properties {
-    using System;
-    
-    
+namespace WindowsFormsApp1.Properties
+{
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,73 +19,52 @@ namespace ConnectfourCode.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
-        
+    internal class Resources
+    {
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Resources()
+        {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ConnectfourCode.Properties.Resources", typeof(Resources).Assembly);
+        internal static global::System.Resources.ResourceManager ResourceManager
+        {
+            get
+            {
+                if ((resourceMan == null))
+                {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WindowsFormsApp1.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+        {
+            get
+            {
                 return resourceCulture;
             }
-            set {
+            set
+            {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to 0,0 1,0 2,0 3,0 4,0 5,0 6,0
-        ///0,1 1,1 2,1 3,1 4,1 5,1 6,1
-        ///0,2 1,2 2,2 3,2 4,2 5,2 6,2
-        ///0,3 1,3 2,3 3,3 4,3 5,3 6,3
-        ///0,4 1,4 2,4 3,4 4,4 5,4 6,4
-        ///0,5 1,5 2,5 3,5 4,5 5,5 6,5
-        ///0,0	0,1 0,2 0,3 0,4 0,5
-        ///1,0 1,1 1,2 1,3 1,4 1,5
-        ///2,0 2,1 2,2 2,3 2,4 2,5
-        ///3,0 3,1 3,2 3,3 3,4 3,5
-        ///4,0 4,1 4,2 4,3 4,4 4,5
-        ///5,0 5,1 5,2 5,3 5,4 5,5
-        ///6,0 6,1 6,2 6,3 6,4 6,5
-        ///0,3 1,2 2,1 3,0
-        ///0,4 1,3 2,2 3,1 4,0
-        ///0,5 1,4 2,3 3,2 4,1 5,0 
-        ///1,5 2,4 3,3 4,2 5,1 6,0 
-        ///2,5 3,4 4,3 5,2 6,1 
-        ///3,5 4,4 5,3 6,2 
-        ///3,5 2,4 1,3 0,2
-        ///4,5 3,4 2,3 1,2  [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string gameboardDirectionConfig {
-            get {
-                return ResourceManager.GetString("gameboardDirectionConfig", resourceCulture);
             }
         }
     }

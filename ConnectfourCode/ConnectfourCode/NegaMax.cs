@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Office.Interop.Excel;
 
 
 namespace ConnectfourCode
@@ -10,42 +11,43 @@ namespace ConnectfourCode
     public class Negamax : BitBoard
     {
 
-        public int bestMove = 0;
-        public int thisIsMaxDepth = 9;
+
+
+        public int bestMove { get; set; }
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
-        
 
-        private const int height = 6, width = 7;       
-        public int NegaMax(BitBoard node, int alpha, int beta, int maxDepth, int color)
 
-            //TODO: Skal med i implementeringen
+        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
+
+        //TODO: Skal med i implementeringen
         {
-            //TODO: Lav eventuelt nyt bitboard hver gang funktionen kaldes. JAN OG MAYOH
-            if (node.IsWin() || maxDepth == 0)
-                return node.EvaluateBoard()*color; // TODO: Add heuristic score JAN OG MAYOH
 
-            for(int i = 0; i < width; i++)
+            if (IsWin() || depth == 0 || IsDraw())
             {
-                node.MakeMove(i);
-                if (node.CanPlay(i))
-                {
-                    int value = -NegaMax(node, -beta, -alpha, maxDepth - 1, -color);
+                int evalBuffer = EvaluateBoard();
+                return evalBuffer * color;
+            }
+            int value = int.MinValue;
+            List<int> moves = possibleMoves();
+            foreach (int move in moves)
+            {
+                MakeMove(move);
+                value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));
 
-                    if (value >= beta)
-                    {
-                        node.UndoMove();
-                        return value;
-                    }
-                    if (value > alpha)
-                    {
-                        alpha = value;
-                        if(thisIsMaxDepth == maxDepth)
-                            bestMove = i;
-                    }
-                }                
-                node.UndoMove();
+                if (value >= beta)
+                {
+                    UndoMove();
+                    return value;
+                }
+                if (value > alpha)
+                {
+                    alpha = value;
+                    if (firstCall)
+                        bestMove = move;
+                }
+                UndoMove();
             }
             return alpha;
-        }        
+        }
     }
 }
