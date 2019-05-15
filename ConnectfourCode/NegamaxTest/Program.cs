@@ -180,13 +180,20 @@ namespace NegamaxTest
             test.PlayConnectFour();
             test.CreateSheet("p1-5_P2-7");
             test.WriteToExcel("ThisIsTest");*/
-            TestPlyEffect<NegamaxArray/*NegaNoAlphaBeta*//*NegaTransNegamax*/> testPlyEffect = new TestPlyEffect<NegamaxArray/*Negamax/*NegaTrans/*NegaNoAlphaBeta*/>(9, 9);
-            for (int i = 0; i < 1; i++)
+            //TestPlyEffect<NegamaxArray/*NegaNoAlphaBeta*//*NegaTransNegamax*/> testPlyEffect = new TestPlyEffect<NegamaxArray/*Negamax/*NegaTrans/*NegaNoAlphaBeta*/>(9, 9);
+            /*for (int i = 0; i < 1; i++)
             {
                 testPlyEffect.PlayConnectFour();
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
-            testPlyEffect.WriteToExcel("ArrayTest");
+            testPlyEffect.WriteToExcel("ArrayTest");*/
+            NegaTrans test = new NegaTrans();
+            int[] moveArray = { 3, 3, 3, 3, 3, 3, 2, 1, 5, 4, 4, 4, 4, 5};
+            foreach (int i in moveArray)
+                test.MakeMove(i);
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
+            Console.WriteLine(test.bestMove);
+            Console.ReadKey();
         }
     }
 
