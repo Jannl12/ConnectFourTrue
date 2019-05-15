@@ -108,7 +108,7 @@ namespace PositionTest
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|x|o|o| 1
         }
 
-        [TestMethod]
+        /*[TestMethod]
         public void EvaluateBoardOnlyMiddle()
         {
             //Arrange
@@ -280,6 +280,6 @@ namespace PositionTest
             bool calcValue = test.CanPlay(6);
 
             Assert.AreEqual(expectedBool, calcValue);
-        }
+        }*/
     }
 }

@@ -92,7 +92,7 @@ namespace ConnectfourCode
 
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[(moveCount-1) % 2];
+            ulong bitboard = bitGameBoard[(moveCount+1) % 2];
             for (int i = 0; i < directions.Length; i++)
             {
                 if ((bitboard & (bitboard >> directions[i]) & (bitboard >> (2 * directions[i])) &
@@ -175,7 +175,7 @@ namespace ConnectfourCode
             int win = 10000;
 
             if (IsWin())
-                return (MoveCount-1)%2 == 0 ?  win -MoveCount : -2*win - MoveCount;
+                return (MoveCount+1)%2 == 0 ?  win - MoveCount : -2*win - MoveCount;
             else if (IsDraw())
                 return 0;
             else
