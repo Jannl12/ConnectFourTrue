@@ -183,7 +183,7 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
-            negamaxTest.ResetBitBoard();
+            //negamaxTest.ResetBitBoard();
             //negaTest.ResetBitBoard();
         }
     }

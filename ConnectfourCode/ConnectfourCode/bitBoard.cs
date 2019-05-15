@@ -42,7 +42,7 @@ namespace ConnectfourCode
 
         public BitBoard()
         {
-            ResetBitBoard();
+            ResetGame();
         }
         public void MakeMove(int coloumnInput)
         {   
@@ -51,6 +51,7 @@ namespace ConnectfourCode
                 moveHistory.Add(coloumnInput);
 
         }
+
 
         public bool GetCurrentPlayer()
         {
@@ -73,7 +74,7 @@ namespace ConnectfourCode
             else return true;
         }
 
-        public void ResetBitBoard()   
+        public void ResetGame()
         {
             bitGameBoard = new ulong[2];
             bitGameBoard[0] = 0; bitGameBoard[1] = 0;
@@ -107,8 +108,7 @@ namespace ConnectfourCode
         {
             List<int> returnList = new List<int>();
             int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
-            for(int i = 0; i < 7; i++)
-            //foreach(int i in turnArray)
+            foreach(int i in turnArray)
             {
                 if ((((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) != 1UL)
                 {

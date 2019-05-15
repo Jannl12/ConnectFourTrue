@@ -54,6 +54,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArrayEvalTest.cs" />
     <Compile Include="BitboardTest.cs" />
     <Compile Include="ConsoleManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

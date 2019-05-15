@@ -180,13 +180,13 @@ namespace NegamaxTest
             test.PlayConnectFour();
             test.CreateSheet("p1-5_P2-7");
             test.WriteToExcel("ThisIsTest");*/
-            TestPlyEffect</*NegaNoAlphaBeta*//*NegaTrans*/Negamax> testPlyEffect = new TestPlyEffect<Negamax/*NegaTrans/*NegaNoAlphaBeta*/>(9, 9);
-            for (int i = 0; i < 10; i++)
+            TestPlyEffect<NegamaxArray/*NegaNoAlphaBeta*//*NegaTransNegamax*/> testPlyEffect = new TestPlyEffect<NegamaxArray/*Negamax/*NegaTrans/*NegaNoAlphaBeta*/>(9, 9);
+            for (int i = 0; i < 1; i++)
             {
                 testPlyEffect.PlayConnectFour();
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
-            testPlyEffect.WriteToExcel("AlphaBetaNoOrdering");
+            testPlyEffect.WriteToExcel("ArrayTest");
         }
     }
 
@@ -197,7 +197,7 @@ namespace NegamaxTest
             return Convert.ToInt32(s);
         }
     }
-    public class TestPlyEffect<T> where T : /*NegaNoAlphaBeta*//*NegaTrans*/Negamax, new()
+    public class TestPlyEffect<T> where T : NegamaxArray/*NegaNoAlphaBeta*//*NegaTransNegamax*/, new()
     {
         private List<List<long>> data = new List<List<long>>();
         private int firstPlayerPlyDepth;
@@ -228,14 +228,14 @@ namespace NegamaxTest
         {
             while (!plyNega.IsDraw() && !plyNega.IsWin())
             {
-                int player = (plyNega.MoveCount + 2) % 2;
+                int player = plyNega.GetCurrentPlayer();
                 MakeAndTimeMove(player);
                 if (plyNega.IsWin())
                     result = "Win P" + (player + 1).ToString();
                 else if (plyNega.IsDraw())
                     result = "Draw Game";
             }
-            plyNega.ResetBitBoard();
+            plyNega.ResetGame();
         }
 
         private void MakeAndTimeMove(int player)
@@ -261,7 +261,7 @@ namespace NegamaxTest
             plyNega.NegaMax(alpha, beta, plyDepth, color, true);
             Watch.Stop();
             //plyNega.ResetTranspositionTable();
-            tempData.Add(plyNega.MoveCount);
+            tempData.Add(plyNega.MoveCount());
             tempData.Add(color);
             tempData.Add(plyDepth);
             tempData.Add(plyNega.bestMove);
