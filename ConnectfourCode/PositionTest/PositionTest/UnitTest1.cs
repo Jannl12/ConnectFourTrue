@@ -15,8 +15,8 @@ namespace PositionTest
             test.gameboard[3, 0] = 1;
             test.gameboard[3, 1] = 1;
             test.gameboard[2, 0] = 2;
-            
-            int expectedValue = test.EvaluataBoardLoop();
+
+            int expectedValue = 10; //test.EvaluataBoardLoop();
             int actual = test.EvaluateBoard();
 
             Assert.AreEqual(expectedValue, actual);
