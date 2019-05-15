@@ -22,7 +22,7 @@ namespace ConnectfourCode
         protected int[] columnHeight;
 
         
-        protected List<int> moveHistory = new List<int>();
+        protected Stack<int> moveHistory = new Stack<int>();
         private int boardHeight = 6, boardWidth = 7;
         private int[] boardScores = { 0, 1, 4, 9, 1000 };
         private int[] directions = { 1, 7, 6, 8 };
@@ -45,11 +45,11 @@ namespace ConnectfourCode
             ResetGame();
         }
 
-        protected void MakeMove (int columnInput)
+        public void MakeMove (int columnInput)
         {
             ulong moveBuffer = 1UL << columnHeight[columnInput]++;
             bitGameBoard[(moveCount & 1)] ^= moveBuffer;
-            moveHistory.Add(columnInput);
+            moveHistory.Push(columnInput);
         }
 
         public bool MakeMoveAndCheckIfWin(int coloumnInput)
@@ -57,7 +57,7 @@ namespace ConnectfourCode
             ulong moveBuffer = 1UL << columnHeight[coloumnInput]++;
             bitGameBoard[(moveCount & 1)] ^= moveBuffer;
             bool wonBuffer = IsWin();
-            moveHistory.Add(coloumnInput);
+            moveHistory.Push(coloumnInput);
             return wonBuffer;
         }
 
@@ -70,9 +70,8 @@ namespace ConnectfourCode
          */
         public void UndoMove()
         {
-            ulong moveBuffer = 1UL << --columnHeight[moveHistory.Last()];
-            moveHistory.RemoveAt(moveHistory.Count - 1);
-            bitGameBoard[(moveCount & 1)] ^= moveBuffer;
+            ulong moveBuffer = 1UL << columnHeight[moveHistory.Pop()]--;
+            bitGameBoard[moveCount % 2] ^= moveBuffer;
         }
 
         /** <summary>Tests if it is possible to put a new disk into a target coloumn.</summary>
@@ -189,7 +188,7 @@ namespace ConnectfourCode
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
 
             int returnValue = 0;
-            foreach(int playerIterator in bitGameBoard)
+            for(int playerIterator = 0; playerIterator < bitGameBoard.Count(); playerIterator++)
             {
                 ulong[,] allCombinations = { {bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //4
 							                { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //3

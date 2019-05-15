@@ -170,7 +170,7 @@ namespace ConnectfourCode
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         IterativDeepening negaTest = new IterativDeepening();
 
-        bool playerOneComputerPlayer, playerTwoComputerPlayer;
+        bool[] playerModes = new bool[2];
 
 
 
@@ -179,8 +179,8 @@ namespace ConnectfourCode
             InitializeComponent();
             newGameMenu = new startMenu(this);
             newGameMenu.ShowDialog();
-            this.playerOneComputerPlayer = newGameMenu.PlayerOneIsComputerControlled;
-            this.playerTwoComputerPlayer = newGameMenu.PlayerTwoIsComputerControlled;
+            this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
+            this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
             negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
 
 
@@ -250,7 +250,7 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseDown += (sender, e) =>
                     {
-                        ColumnClick(g, true);
+                        ColumnClick(g);
                     };
                     ellipseGameBoard[i, j] = bufferEllipse;
                     gameGrid.Children.Add(bufferEllipse);
@@ -277,7 +277,7 @@ namespace ConnectfourCode
 
             //Setup undoButton
             undoMove = new Button();
-            undoMove.Content = "Undo Last Move";
+            undoMove.Content = "Undo Last \r\n    Move";
             undoMove.Height = gridElementSize - gridElementSize / 5;
             undoMove.Width = gridElementSize - gridElementSize / 5;
             resetButton.Margin = new Thickness(gridElementSize / 5 / 2);
@@ -293,7 +293,7 @@ namespace ConnectfourCode
 
             //New Game
             newGameButton = new Button();
-            newGameButton.Content = "Reset";
+            newGameButton.Content = "New Game";
             newGameButton.Height = gridElementSize - gridElementSize / 5;
             newGameButton.Width = gridElementSize - gridElementSize / 5;
             newGameButton.Margin = new Thickness(gridElementSize / 5 / 2);
@@ -303,17 +303,25 @@ namespace ConnectfourCode
             newGameButton.Click += (sender, e) =>
             {
                 ResetGame();
+                newGameMenu.ShowDialog();
+                this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
+                this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
+                negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
             };
 
+            this.Closed += (sender, e) =>
+            {
+                System.Windows.Application.Current.Shutdown();
+            };
             this.Content = gameGrid;
 
-            if(playerOneComputerPlayer)
+            if (playerModes[0])
             {
-                ColumnClick(negaMaxBoard.GetBestMove(1), playerTwoComputerPlayer);
+                ColumnClick(negaMaxBoard.GetBestMove(1));
             }
-            if (playerTwoComputerPlayer)
+            else if (playerModes[1])
             {
-                ColumnClick(negaMaxBoard.GetBestMove(-1), playerOneComputerPlayer);
+                ColumnClick(negaMaxBoard.GetBestMove(-1));
             }
 
         }
@@ -334,7 +342,7 @@ namespace ConnectfourCode
         /*Loops from the bottom of the column, and if it finds an empty cell, it fills it with 
          * the current players color. Also makes a move on the bitboard.
          */
-        private void ColumnClick(int targetColumn, bool CallAgain)
+        private void ColumnClick(int targetColumn)
         {    
             for (int i = rowCount - 1; i >= 0; i--)
             {
@@ -342,16 +350,17 @@ namespace ConnectfourCode
                 {
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    
-                    if (negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
+                    bool test;
+                    if(test = negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
                     {
-                        MessageBox.Show((negaMaxBoard.GetCurrentPlayer() == 1 ? "Player one" : "Player two") + " won!");
+                        MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer()).ToString() + " won!");
                         ResetGame();
                     }
-                    if (CallAgain)
+                    if (playerModes[negaMaxBoard.GetCurrentPlayer()])
                     {
-                        ColumnClick(negaMaxBoard.GetBestMove(-1), false);
-                    } 
+                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1));
+                    }
+
                     break;
                 }
             }
@@ -368,6 +377,4 @@ namespace ConnectfourCode
             //negaTest.ResetBitBoard();
         }
     }
-
-
 }
