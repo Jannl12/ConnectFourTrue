@@ -31,9 +31,7 @@ namespace ConnectfourCode
         protected List<int> moveHistory = new List<int>();
         int boardHeight = 6-1, boardWidth = 7, moveCount;
 
-        public int MoveCount {
-            get { return moveCount; }
-        }
+        public int MoveCount { get; set; }
         private int Three1 = 4;//75;//4
         private int Two1 = 1;//15;//1
         private int One1 = 0;//8;//0
