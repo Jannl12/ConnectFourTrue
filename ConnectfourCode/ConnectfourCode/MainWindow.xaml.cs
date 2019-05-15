@@ -350,8 +350,8 @@ namespace ConnectfourCode
                 {
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    bool test;
-                    if(test = negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
+                    bool test = negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn);
+                    if (test)
                     {
                         MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer()).ToString() + " won!");
                         ResetGame();

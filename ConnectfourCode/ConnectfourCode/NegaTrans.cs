@@ -29,6 +29,7 @@ namespace ConnectfourCode
             NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
             int bufferBestMove = bestMove;
             bestMove = 3;
+            ResetGame();
             return bufferBestMove;
         }
 
