@@ -30,9 +30,12 @@ namespace ConnectfourCode
         NegaTrans negamaxTest = new NegaTrans();
         IterativDeepening negaTest = new IterativDeepening();
        // Negamax p2 = new Negamax();
+
+
         
         public MainWindow()
         {
+            
             InitializeComponent();
             Grid gameGrid = new Grid();
             this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
