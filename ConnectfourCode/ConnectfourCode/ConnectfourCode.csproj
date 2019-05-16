@@ -118,6 +118,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NegaMax.cs" />
+    <Compile Include="NegamaxArray.cs" />
     <Compile Include="NegaNoAlphaBeta.cs" />
     <Compile Include="NegaTrans.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -146,7 +147,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-
     <None Include="Resources\gameboardDirectionConfig.txt" />
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>

@@ -358,8 +358,8 @@ namespace ConnectfourCode
 
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    bool test = negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn);
-                    if (test)
+                    negaMaxBoard.MakeMove(targetColumn);
+                    if (negaMaxBoard.IsWin())
                     {
                         MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer()).ToString() + " won!");
                         ResetGame();
@@ -383,8 +383,8 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
+
             negaMaxBoard.ResetGame();
-            //negaTest.ResetBitBoard();
         }
     }
 }
