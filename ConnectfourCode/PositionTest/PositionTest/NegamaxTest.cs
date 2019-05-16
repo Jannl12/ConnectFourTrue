@@ -50,10 +50,10 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxStartTest()
         {
-            CreateNegaMaxTestArrange test = new CreateNegaMaxTestArrange(new List<int>());
-            //test.bitGameBoard[0] = 0x0; //blå (lige)
-            //test.bitGameBoard[1] = 0x0; //rød (ulige)
-            //test.MoveCount = 0;
+            Negamax test = new Negamax();
+            test.bitGameBoard[0] = 0x0; //blå (lige)
+            test.bitGameBoard[1] = 0x0; //rød (ulige)
+          
             int expectedInt = 3;
 
 

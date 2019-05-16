@@ -15,7 +15,6 @@ namespace ConnectfourCode
 
 
 
-        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
 
         public Negamax (int inputPlyDepth)
         {
@@ -23,9 +22,10 @@ namespace ConnectfourCode
         }
 
 
+
         public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
 
-            //TODO: Skal med i implementeringen
+        //TODO: Skal med i implementeringen
         {
 
             if (IsWin() || depth == 0 || IsDraw())
@@ -34,11 +34,13 @@ namespace ConnectfourCode
                 return evalBuffer * color;
             }
             int value = int.MinValue;
-
-            foreach(int move in possibleMoves())
+            List<int> moves = possibleMoves();
+            foreach (int move in moves)
             {
                 MakeMove(move);
+
                 value = Math.Max(value,-NegaMax(-beta, -alpha, depth - 1, -color, false));
+
 
                 if (value >= beta)
                 {
@@ -54,6 +56,6 @@ namespace ConnectfourCode
                 UndoMove();
             }
             return alpha;
-        }        
+        }
     }
 }

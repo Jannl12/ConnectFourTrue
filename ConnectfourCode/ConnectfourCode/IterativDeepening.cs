@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    class IterativDeepening:BitBoard
+    class IterativDeepening : BitBoard
     {
 
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
@@ -20,13 +20,13 @@ namespace ConnectfourCode
 
         public int Deepening()
         {
-            int depth = 3;
+            int depth = 9;
             int bestMove = 0;
             watch.Start();
 
-            while(watch.ElapsedMilliseconds < maxTimeInMiliseconds)
+            while (watch.ElapsedMilliseconds < maxTimeInMiliseconds)
             {
-                int tempMove = (int)NegaMax(double.MinValue + 1, double.MaxValue, ++depth, 1, true, overtime);
+                int tempMove = NegaMax(int.MinValue + 1, int.MaxValue, ++depth, 1, true, overtime);
                 if (!overtime)
                     bestMove = tempMove;
             }
@@ -34,7 +34,7 @@ namespace ConnectfourCode
             return bestMove;
         }
 
-        public double NegaMax(double alpha, double beta, int depth, int color, bool firstCall, bool overtime)
+        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall, bool overtime)
 
         //TODO: Skal med i implementeringen
         {
@@ -42,12 +42,12 @@ namespace ConnectfourCode
             int evalBuffer = 0;
             if (overtime)
                 return 0;
-            else if(watch.ElapsedMilliseconds > maxTimeInMiliseconds)
+            else if (watch.ElapsedMilliseconds > maxTimeInMiliseconds)
             {
                 overtime = true;
                 return 0;
             }
-                
+
             if (IsWin() || depth == 0 || IsDraw())
             {
                 if (TranspositionTable.TryGetValue(lookUpBoardKey, out evalBuffer))
@@ -58,34 +58,34 @@ namespace ConnectfourCode
                     TranspositionTable[lookUpBoardKey] = evalBuffer;
                     return evalBuffer * color;
                 }
-                
-               
+
+
 
             }
-            double value = int.MinValue;
+            int value = int.MinValue;
             int bestMove = 0;
+            List<int> moves = possibleMoves();
 
-            foreach (int i in turnArray)
+            foreach (int move in moves)
             {
-                MakeMove(i);
-                if (CanPlay(i))
+                MakeMove(move);
+
+                value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false, overtime));
+
+                if (value > alpha)
                 {
-                    value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false, overtime));
-
-                    if (value > alpha)
-                    {
-                        alpha = value;
-                        if (firstCall)
-                            bestMove = i;
-
-                    }
-                    if (value >= beta)
-                    {
-                        UndoMove();
-                        break;
-                    }
+                    alpha = value;
+                    if (firstCall)
+                        bestMove = move;
 
                 }
+                if (value >= beta)
+                {
+                    UndoMove();
+                    break;
+                }
+
+
                 UndoMove();
             }
             if (firstCall)

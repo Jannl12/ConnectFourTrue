@@ -155,6 +155,7 @@ namespace ConnectfourCode
     public partial class MainWindow : Window
     {
         Ellipse[,] ellipseGameBoard;
+
         Button resetButton, undoMove, newGameButton;
 
         SolidColorBrush emptyColor, blackColor;
@@ -168,6 +169,7 @@ namespace ConnectfourCode
         NegaTrans negaMaxBoard;
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
+
         IterativDeepening negaTest = new IterativDeepening();
 
         bool[] playerModes = new bool[2];
@@ -258,7 +260,9 @@ namespace ConnectfourCode
             }
 
 
+
             gameGrid.RowDefinitions.Add(new RowDefinition());
+
 
             //Setup resetButton
             resetButton = new Button();
@@ -273,6 +277,7 @@ namespace ConnectfourCode
             {
                 ResetGame();
             };
+
 
 
             //Setup undoButton
@@ -291,13 +296,14 @@ namespace ConnectfourCode
             };
             gameGrid.Children.Add(undoMove);
 
+
             //New Game
             newGameButton = new Button();
             newGameButton.Content = "New Game";
             newGameButton.Height = gridElementSize - gridElementSize / 5;
             newGameButton.Width = gridElementSize - gridElementSize / 5;
             newGameButton.Margin = new Thickness(gridElementSize / 5 / 2);
-;           Grid.SetRow(newGameButton, rowCount + 1);
+            Grid.SetRow(newGameButton, rowCount + 1);
             Grid.SetColumn(newGameButton, 5);
             gameGrid.Children.Add(newGameButton);
             newGameButton.Click += (sender, e) =>
@@ -322,6 +328,7 @@ namespace ConnectfourCode
             else if (playerModes[1])
             {
                 ColumnClick(negaMaxBoard.GetBestMove(-1));
+
             }
 
         }
@@ -348,6 +355,7 @@ namespace ConnectfourCode
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
+
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
                     bool test = negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn);
@@ -357,9 +365,11 @@ namespace ConnectfourCode
                         ResetGame();
                     }
                     if (playerModes[negaMaxBoard.GetCurrentPlayer()])
+
                     {
                         ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1));
                     }
+
 
                     break;
                 }
