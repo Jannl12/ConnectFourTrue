@@ -13,14 +13,12 @@ namespace ConnectfourCode
         public int bestMove { get; set; }
         public int PlyDepth { get; }
 
-
-
+        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
 
         public Negamax (int inputPlyDepth)
         {
             PlyDepth = inputPlyDepth;   
         }
-
 
 
         public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
@@ -38,9 +36,8 @@ namespace ConnectfourCode
             foreach (int move in moves)
             {
                 MakeMove(move);
-
+                
                 value = Math.Max(value,-NegaMax(-beta, -alpha, depth - 1, -color, false));
-
 
                 if (value >= beta)
                 {

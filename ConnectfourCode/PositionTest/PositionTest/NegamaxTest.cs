@@ -24,7 +24,7 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxFinishTest()
         {
-            Negamax test = new Negamax();
+            Negamax test = new Negamax(9);
 
             test.bitGameBoard[1] = 0x4BB40A01615; //blå (lige)
             test.bitGameBoard[0] = 0x140B74009AA; //rød (ulige)
