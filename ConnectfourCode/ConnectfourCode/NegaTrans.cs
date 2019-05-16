@@ -10,7 +10,7 @@ namespace ConnectfourCode
     {
         
         public int bestMove { get; set; }
-        public int PlyDepth;
+        private int plyDepth;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
@@ -21,12 +21,12 @@ namespace ConnectfourCode
 
         public NegaTrans(int plyDepth)
         {
-            this.PlyDepth = plyDepth;
+            this.plyDepth = plyDepth;
         }
 
         public int GetBestMove(int player)
         {
-            NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
+            NegaMax(int.MinValue + 1, int.MaxValue, plyDepth, player, true);
             int bufferBestMove = bestMove;
             bestMove = 3;
             ResetGame();

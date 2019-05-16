@@ -26,8 +26,8 @@ namespace ConnectfourCode
     public partial class startMenu : Window
     {
         StackPanel windowContent = new StackPanel();
-        StackPanel exitAndStartButton = new StackPanel();
-        StackPanel playerTypes = new StackPanel();
+        StackPanel exitAndStartStackPanel = new StackPanel();
+        StackPanel playerTypesStackPanel = new StackPanel();
         Slider plyDepth = new Slider();
         Button startButton, exitButton, playerOneModeButton, playerTwoModeButton;
         Label title = new Label(), plyDepthTitle = new Label();
@@ -82,8 +82,8 @@ namespace ConnectfourCode
             windowContent.Children.Add(plyDepth);
 
                 //Adding Two buttons in Stackpanel for Choosing AI players vs Human players
-                playerTypes.Orientation = Orientation.Horizontal;
-                playerTypes.HorizontalAlignment = HorizontalAlignment.Center;
+                playerTypesStackPanel.Orientation = Orientation.Horizontal;
+                playerTypesStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
                     //Player One
                     playerOneModeButton = new Button();
                     playerOneModeButton.HorizontalAlignment = HorizontalAlignment.Center;
@@ -98,7 +98,7 @@ namespace ConnectfourCode
                         playerOneModeButton.Content = playerOneIsComputerControlled ? "AI Player" : "Human Player";
                         
                     };
-                playerTypes.Children.Add(playerOneModeButton);
+                playerTypesStackPanel.Children.Add(playerOneModeButton);
                     //Player Two
                     playerTwoModeButton = new Button();
                     playerTwoModeButton.HorizontalAlignment = HorizontalAlignment.Center;
@@ -112,12 +112,12 @@ namespace ConnectfourCode
                         playerTwoModeButton.Content = playerTwoIsComputerControlled ? "AI Player" : "Human Player";
 
                     };
-                playerTypes.Children.Add(playerTwoModeButton);
+                playerTypesStackPanel.Children.Add(playerTwoModeButton);
 
-            windowContent.Children.Add(playerTypes);
+            windowContent.Children.Add(playerTypesStackPanel);
                 //Adding two buttons for exit and start game.
-                exitAndStartButton.Orientation = Orientation.Horizontal;
-                exitAndStartButton.HorizontalAlignment = HorizontalAlignment.Center;
+                exitAndStartStackPanel.Orientation = Orientation.Horizontal;
+                exitAndStartStackPanel.HorizontalAlignment = HorizontalAlignment.Center;
                     //Start Button
                     startButton = new Button();
                     startButton.HorizontalAlignment = HorizontalAlignment.Center;
@@ -127,9 +127,9 @@ namespace ConnectfourCode
                     startButton.Height = 100;
                     startButton.Click += (sender, e) =>
                     {
-                        this.Close();
+                        this.Hide();
                     };
-                exitAndStartButton.Children.Add(startButton);
+                exitAndStartStackPanel.Children.Add(startButton);
                     //Exit Button
                     exitButton = new Button();
                     exitButton.HorizontalAlignment = HorizontalAlignment.Center;
@@ -141,9 +141,9 @@ namespace ConnectfourCode
                     {
                         System.Windows.Application.Current.Shutdown();
                     };
-                exitAndStartButton.Children.Add(exitButton);
+                exitAndStartStackPanel.Children.Add(exitButton);
 
-            windowContent.Children.Add(exitAndStartButton);
+            windowContent.Children.Add(exitAndStartStackPanel);
 
             this.Title = "New Game";
             this.Width = 400;
@@ -263,9 +263,9 @@ namespace ConnectfourCode
             //Setup resetButton
             resetButton = new Button();
             resetButton.Content = "Reset";
-            resetButton.Height = gridElementSize - gridElementSize / 5;
-            resetButton.Width = gridElementSize - gridElementSize / 5;
-            resetButton.Margin = new Thickness(gridElementSize / 5 / 2);
+            resetButton.Height = gridElementSize * 0.8;
+            resetButton.Width = gridElementSize *0.8;
+            resetButton.Margin = new Thickness(gridElementSize * 0.1);
             Grid.SetRow(resetButton, rowCount + 1);
             Grid.SetColumn(resetButton, 1);
             gameGrid.Children.Add(resetButton);
@@ -303,7 +303,7 @@ namespace ConnectfourCode
             newGameButton.Click += (sender, e) =>
             {
                 ResetGame();
-                newGameMenu.ShowDialog();
+                newGameMenu.Show();
                 this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
                 this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
                 negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
@@ -315,20 +315,15 @@ namespace ConnectfourCode
             };
             this.Content = gameGrid;
 
-            if (playerModes[0])
-            {
-                ColumnClick(negaMaxBoard.GetBestMove(1));
-            }
-            else if (playerModes[1])
-            {
-                ColumnClick(negaMaxBoard.GetBestMove(-1));
-            }
+            //if (playerModes[0])
+            //{
+            //    ColumnClick(negaMaxBoard.GetBestMove(1));
+            //}
+            //else if (playerModes[1])
+            //{
+            //    ColumnClick(negaMaxBoard.GetBestMove(-1));
+            //}
 
-        }
-
-        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void mouseEnterColumn(int targetColumn)
@@ -350,16 +345,22 @@ namespace ConnectfourCode
                 {
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    bool test = negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn);
-                    if (test)
+
+                    if (negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
                     {
                         MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer()).ToString() + " won!");
                         ResetGame();
                     }
-                    if (playerModes[negaMaxBoard.GetCurrentPlayer()])
+
+                    if(negaMaxBoard.IsDraw())
                     {
-                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1));
+                        MessageBox.Show("Draw Motherfucker!");
+                        ResetGame();
                     }
+                    //if (playerModes[negaMaxBoard.GetCurrentPlayer()])
+                    //{
+                    //    ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1));
+                    //}
 
                     break;
                 }
