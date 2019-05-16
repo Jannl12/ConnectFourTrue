@@ -31,7 +31,7 @@ namespace NegamaxTest
 
             }
             value = int.MinValue;
-            List<int> moves = possibleMoves();
+            List<int> moves = PossibleMoves();
             foreach (int move in moves)
             {
 

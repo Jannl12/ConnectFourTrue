@@ -8,13 +8,11 @@ namespace ConnectfourCode
 {
     public class NegaTrans : BitBoard
     {
-        
+
         public int bestMove { get; set; }
-<<<<<<< HEAD
-=======
+
         public int PlyDepth;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
->>>>>>> master
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
         public void ResetTranspositionTable()
@@ -54,42 +52,24 @@ namespace ConnectfourCode
                 }
             }
             //int value = int.MinValue;
-            List<int> moves = possibleMoves();
+            List<int> moves = PossibleMoves();
 
             foreach (int move in moves)
             {
-<<<<<<< HEAD
+
                 MakeMove(move);
                 int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
 
                 if (value >= beta)
                 {
-=======
-                    MakeMove(move);
-                    value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));
-
-                    if (value >= beta)
-                    {
-                        UndoMove();
-                        return value;
-                    }
-                    if (value > alpha)
-                    {
-                        alpha = value;
-
-                        if (rootNode)
-                            bestMove = i;
-
-                    }
->>>>>>> master
                     UndoMove();
                     return value;
                 }
-
                 if (value > alpha)
                 {
                     alpha = value;
-                    if (firstCall)
+
+                    if (rootNode)
                         bestMove = move;
                 }
                 UndoMove();

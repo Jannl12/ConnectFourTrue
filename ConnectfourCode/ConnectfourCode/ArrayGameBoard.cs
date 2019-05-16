@@ -12,14 +12,9 @@ namespace ConnectfourCode
 
     public class ArrayGameBoard
     {
-<<<<<<< HEAD
         public int[,] gameboard = new int[6, 7];
-        int moveCount = 0;
         int[] columnHeight = new int[7];
-=======
-        private int[,] gameboard = new int[7, 6];
-        int[] columnHeight = { 0, 0, 0, 0, 0, 0, 0 };
->>>>>>> master
+
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         public List<List<Tuple<int, int>>> boardCheckLocations;
 
@@ -34,13 +29,10 @@ namespace ConnectfourCode
         {
             ResetGame();
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
-<<<<<<< HEAD
-                new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } }, new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 2 }, '0', '1');
-=======
-                new Dictionary<int, int>() { { 0, 0 }, { 1, 1 }, { 2, 4 }, { 3, 9 }, { 4, 1000 } }, 
+
+                new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } }, 
                 new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 2 }, '0', '1');
 
->>>>>>> master
             boardCheckLocations = getSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
 
@@ -87,23 +79,15 @@ namespace ConnectfourCode
             Tuple<int, int> latestTuple = new Tuple<int, int>((columnHeight[coloumnInput]), coloumnInput);
             moveHistory.Push(latestTuple);
             gameboard[latestTuple.Item1, latestTuple.Item2] = GetCurrentPlayer()+1;
+            columnHeight[latestTuple.Item2]++;
 
-<<<<<<< HEAD
-            moveCount++; columnHeight[latestTuple.Item2]++;
-=======
-            (columnHeight[latestTuple.Item1])++;
->>>>>>> master
         }
 
         public void UndoMove()
         {
                 Tuple<int, int> latestTuple = moveHistory.Pop();
                 gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
-<<<<<<< HEAD
-                moveCount--; columnHeight[latestTuple.Item2]--;
-=======
-                (columnHeight[latestTuple.Item1])--;
->>>>>>> master
+                columnHeight[latestTuple.Item2]--;
         }
 
         protected List<int> possibleMoves()
