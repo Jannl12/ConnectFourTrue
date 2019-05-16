@@ -56,21 +56,7 @@ namespace ConnectfourCode
         public void UndoMove()
         {
             ulong moveBuffer = 1UL << columnHeight[moveHistory.Pop()]--;
-            bitGameBoard[moveCount % 2] ^= moveBuffer;
-        }
-
-
-        /** <summary>Tests if it is possible to put a new disk into a target coloumn.</summary>
-         * <param name="column">The coloumn to be checked for possible move.</param>
-         * <returns>A bool describing if it is possible to add a disk to the given coloumn. </returns>
-         */
-        public bool CanPlay(int column)
-        {
-            ulong mask = 1;
-            ulong boardstate = bitGameBoard[0] ^ bitGameBoard[1];
-            if (((boardstate >> ((column * boardWidth) + boardHeight)) & mask) == mask)
-                return false;
-            else return true;
+            bitGameBoard[GetCurrentPlayer()] ^= moveBuffer;
         }
 
 
@@ -100,7 +86,7 @@ namespace ConnectfourCode
          */
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[(moveCount + 1) % 2];
+            ulong bitboard = bitGameBoard[(moveCount) % 2 + 1]; //MoveCount +1, since the opposit player is desired.
 
             for (int i = 0; i < directions.Length; i++)
             {
@@ -112,6 +98,7 @@ namespace ConnectfourCode
             }
             return false;
         }
+
 
         /**<summary><c>possibleMoves</c> creates a list of possible moves, based on which bits are set in
          * the ulongs of the <paramref name="bitGameBoard">.</paramref></summary>
@@ -151,24 +138,12 @@ namespace ConnectfourCode
          */
         public bool IsDraw()
         {
-            ulong outerFrameBuffer = 18446464815071240256;
-            if ((bitGameBoard[0] | bitGameBoard[1]) == (ulong.MaxValue ^ outerFrameBuffer))
-                return true;
-            else
-                return false;
+            ulong outerFrameMask = 0xFFFF020408102040;// 1111111111111111000000100000010000001000000100000010000001000000
+            //outerFrameMask contains a ulong with all bits, which are not in used flipped to 0.
+
+            return ((bitGameBoard[0] | bitGameBoard[1]) == (ulong.MaxValue ^ outerFrameMask));
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null || this.GetType().Equals(obj.GetType()))
-            {
-                return false;
-            }
-            else
-            {
-                return this.GetHashCode() == obj.GetHashCode();
-            }
-        }
 
         /** <summary> Function <c>int EvaluateBoard() </c> takes the current state of the board, and creates 
          * an value which represents a score of the board, for the computerplayer. </summary>
@@ -176,16 +151,20 @@ namespace ConnectfourCode
          */
         public int EvaluateBoard()
         {
-            ulong outerFrameBuffer = 18446464815071240256;
+            ulong outerFrameBuffer = 0xFFFF020408102040;
             ulong emptySlotsBitBoard = (ulong.MaxValue ^ (bitGameBoard[0] | bitGameBoard[1])) ^ outerFrameBuffer;
 
 
             int win = 10000;
 
             if (IsWin())
-                return (moveCount + 1) % 2 == 0 ? win - moveCount : -2 * win - moveCount;
+            {
+                return (moveCount + 1) % 2 == 0 ? win - moveCount : -2 * win + moveCount;
+            }
             else if (IsDraw())
+            {
                 return 0;
+            }
             else
             {
                 int returnValue = 0;
@@ -210,7 +189,7 @@ namespace ConnectfourCode
                     for (int combination = 0; combination < 15; combination++)
 
                     {
-                        int evaluationBuffer = findCombinationInBoards(allCombinations[combination, 0],
+                        int evaluationBuffer = findCombinationAndGiveScore(allCombinations[combination, 0],
                                                             allCombinations[combination, 1],
                                                             allCombinations[combination, 2],
                                                             allCombinations[combination, 3],
@@ -226,7 +205,7 @@ namespace ConnectfourCode
          * combination that exists. </summary>
          * <retuns>The score of the board for that given combination, based on a given score and found combinations.</retuns>
          */
-        private int findCombinationInBoards(ulong firstBoard, ulong secondBoard, ulong thirdBoard, ulong fourthBoard, int score)
+        private int findCombinationAndGiveScore(ulong firstBoard, ulong secondBoard, ulong thirdBoard, ulong fourthBoard, int score)
         {
             int returnValue = 0;
             for (int i = 0; i < directions.Count(); i++)

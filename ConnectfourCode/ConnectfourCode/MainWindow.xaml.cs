@@ -252,7 +252,7 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseDown += (sender, e) =>
                     {
-                        ColumnClick(g);
+                        ColumnClick(g, true);
                     };
                     ellipseGameBoard[i, j] = bufferEllipse;
                     gameGrid.Children.Add(bufferEllipse);
@@ -323,12 +323,7 @@ namespace ConnectfourCode
 
             if (playerModes[0])
             {
-                ColumnClick(negaMaxBoard.GetBestMove(1));
-            }
-            else if (playerModes[1])
-            {
-                ColumnClick(negaMaxBoard.GetBestMove(-1));
-
+                ColumnClick(negaMaxBoard.GetBestMove(1), false);
             }
 
         }
@@ -349,7 +344,7 @@ namespace ConnectfourCode
         /*Loops from the bottom of the column, and if it finds an empty cell, it fills it with 
          * the current players color. Also makes a move on the bitboard.
          */
-        private void ColumnClick(int targetColumn)
+        private void ColumnClick(int targetColumn, bool nextMoveAI)
         {    
             for (int i = rowCount - 1; i >= 0; i--)
             {
@@ -358,16 +353,16 @@ namespace ConnectfourCode
 
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    negaMaxBoard.MakeMove(targetColumn);
-                    if (negaMaxBoard.IsWin())
+                    //negaMaxBoard.MakeMove(targetColumn);
+
+                    if (negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
                     {
-                        MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer()).ToString() + " won!");
+                        MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer() + 1).ToString() + " won!");
                         ResetGame();
                     }
-                    if (playerModes[negaMaxBoard.GetCurrentPlayer()])
-
+                    if (nextMoveAI)
                     {
-                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1));
+                        ColumnClick(negaMaxBoard.GetBestMove(1), false);
                     }
 
 

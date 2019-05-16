@@ -32,7 +32,7 @@ namespace ConnectfourCode
                 return evalBuffer * color;
             }
             int value = int.MinValue;
-            List<int> moves = possibleMoves();
+            List<int> moves = PossibleMoves();
             foreach (int move in moves)
             {
                 MakeMove(move);
