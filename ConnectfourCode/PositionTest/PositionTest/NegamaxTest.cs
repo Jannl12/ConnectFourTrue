@@ -13,25 +13,19 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxFinishTest()
         {
-            Negamax test = new Negamax();
- 
-            test.bitGameBoard[1] = 0x4BB40A01615; //blå (lige)
-            test.bitGameBoard[0] = 0x140B74009AA; //rød (ulige)
-            //test.MoveCount = 31;
-            test.columnHeight[0] += 6;
-            test.columnHeight[1] += 6;
-            test.columnHeight[2] += 0;
-            test.columnHeight[3] += 6;
-            test.columnHeight[4] += 6;
-            test.columnHeight[5] += 6;
-            test.columnHeight[6] += 1;
+            //Arrange
+            NegaTrans test = new NegaTrans();
 
-            int expectedInt = 2;
+            int[] moveArray = {3,3,3,3,3,0,2,5,5,5,1,4,2,2,1,5,5,2,2,0,3,5,2,4,0,0,0,6 };
+            foreach (int move in moveArray)
+                test.MakeMove(move);
+            int expectedInt = 6;
 
+            //Act
             test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
-
             int calcValue = test.bestMove;
 
+            //Assert
             Assert.AreEqual(expectedInt, calcValue);
 
         }
