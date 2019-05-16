@@ -171,13 +171,13 @@ namespace NegamaxTest
             test.PlayConnectFour();
             test.CreateSheet("p1-5_P2-7");
             test.WriteToExcel("ThisIsTest");*/
-            TestPlyEffect<NegaTrans> testPlyEffect = new TestPlyEffect<NegaTrans>(9, 9);
+            TestPlyEffect</*NegaNoAlphaBeta*//*NegaTrans*/Negamax> testPlyEffect = new TestPlyEffect<Negamax/*NegaTrans/*NegaNoAlphaBeta*/>(9, 9);
             for (int i = 0; i < 10; i++)
             {
                 testPlyEffect.PlayConnectFour();
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
-            testPlyEffect.WriteToExcel("NegaTrans");
+            testPlyEffect.WriteToExcel("AlphaBetaNoOrdering");
         }
     }
 
@@ -188,7 +188,7 @@ namespace NegamaxTest
             return Convert.ToInt32(s);
         }
     }
-    public class TestPlyEffect<T> where T : NegaTrans/*Negamax*/, new()
+    public class TestPlyEffect<T> where T : /*NegaNoAlphaBeta*//*NegaTrans*/Negamax, new()
     {
         private List<List<long>> data = new List<List<long>>();
         private int firstPlayerPlyDepth;
@@ -251,7 +251,7 @@ namespace NegamaxTest
             Watch.Start();
             plyNega.NegaMax(alpha, beta, plyDepth, color, true);
             Watch.Stop();
-            plyNega.ResetTranspositionTable();
+            //plyNega.ResetTranspositionTable();
             tempData.Add(plyNega.MoveCount);
             tempData.Add(color);
             tempData.Add(plyDepth);

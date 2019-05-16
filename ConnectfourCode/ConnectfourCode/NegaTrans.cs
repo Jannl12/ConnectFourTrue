@@ -33,7 +33,7 @@ namespace ConnectfourCode
             return bufferBestMove;
         }
 
-        public int NegaMax(int alpha, int beta, int depth, int color, bool ifRootNode)
+        public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
 
         //TODO: Skal med i implementeringen
         {
@@ -51,12 +51,11 @@ namespace ConnectfourCode
                 }
             }
             int value = int.MinValue;
+            List<int> moves = possibleMoves();
 
-            foreach (int i in turnArray)
+            foreach (int move in moves)
             {
-                if (CanPlay(i))
-                {
-                    MakeMove(i);
+                    MakeMove(move);
                     value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));
 
                     if (value >= beta)
@@ -67,11 +66,12 @@ namespace ConnectfourCode
                     if (value > alpha)
                     {
                         alpha = value;
-                        if (ifRootNode)
+
+                        if (rootNode)
                             bestMove = i;
+
                     }
                     UndoMove();
-                }
             }
             return alpha;
         }

@@ -20,30 +20,28 @@ namespace NegamaxTest
             bestMove = 3;
         }
 
-        public int NegaMax(int maxDepth, int color, bool firstCall)
+        public int NegaMax(int depth, int color, bool firstCall)
 
         //TODO: Skal med i implementeringen
         {
-            if (IsWin() || maxDepth == 0 || IsDraw())
+            if (IsWin() || depth == 0 || IsDraw())
             {
                 int evalBuffer = EvaluateBoard();
                 return evalBuffer * color; 
 
             }
             value = int.MinValue;
-
-            foreach (int i in turnArray)
+            List<int> moves = possibleMoves();
+            foreach (int move in moves)
             {
-                
-                if (CanPlay(i))
-                   {
-                    MakeMove(i);
+
+                    MakeMove(move);
                     int bufferValue = value;
-                    value = Math.Max(value,-NegaMax(maxDepth - 1, -color, false));
-                    if (bufferValue != value && firstCall)
-                        bestMove = i;
+                    value = Math.Max(value,-NegaMax(depth - 1, -color, false));
+                    if (bufferValue < value && firstCall)
+                        bestMove = move;
                     UndoMove();
-                }   
+
             }
             return value;
         }

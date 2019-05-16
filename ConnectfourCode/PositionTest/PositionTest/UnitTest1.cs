@@ -17,6 +17,7 @@ namespace PositionTest
             test.gameboard[2, 0] = 2;
             
             int expectedValue = 4;
+
             int actual = test.EvaluateBoard();
 
             Assert.AreEqual(expectedValue, actual);
