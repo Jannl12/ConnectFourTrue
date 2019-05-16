@@ -21,7 +21,6 @@ inline int countSetBitsInUlong(unsigned long long inputValue) {
 	}
 	return  returnCount;
 }
-void what() {  };
 
 inline int evalDirection(unsigned long long firstBoard, unsigned long long secondBoard, unsigned long long thirdBoard, unsigned long long fourthBoard, int score) {
 	int returnValue = 0;
