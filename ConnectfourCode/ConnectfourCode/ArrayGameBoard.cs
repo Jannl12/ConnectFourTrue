@@ -31,7 +31,7 @@ namespace ConnectfourCode
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
 
                 new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } }, 
-                new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 2 }, '0', '1');
+                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '1');
 
             boardCheckLocations = getSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }

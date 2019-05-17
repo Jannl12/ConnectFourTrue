@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace ControlFile
 {
-        static class ScoreCombinations
-        {
+    static class ScoreCombinations
+    {
         //https://stackoverflow.com/questions/25824376/combinations-with-repetitions-c-sharp
-        static IEnumerable<String> CombinationsWithRepition(IEnumerable<int> playerValues, int permutationLength)
+        static IEnumerable<String> CombinationsWithRepition(char[] playerValues, int permutationLength)
         {
             if (permutationLength <= 0)
                 yield return "";
@@ -21,67 +21,56 @@ namespace ControlFile
                         yield return i.ToString() + c;
             }
         }
-            
+
 
         static Dictionary<string, int> getScoreValues(
-            IEnumerable<int> permutationValues, Dictionary<int, int> scorePerConnected, int spanSize, int combinationLength, char emptySlotValue, char playerValue)
+            char[] permutationValues, Dictionary<int, int> scorePerConnected, int spanSize, int combinationLength, char emptySlotValue, char playerValue)
         {
             Dictionary<string, int> returnDictionary = new Dictionary<string, int>();
             string[] lineBuffer = new string[(combinationLength - combinationLength % spanSize)];
-            int currentPlayerSlotsFound = 0, bufferScore = 0, dictionaryLookup, count = 0;
+            int currentPlayerSlotsFound = 0, bufferScore = 0, dictionaryLookup;
             foreach (string combination in CombinationsWithRepition(permutationValues, spanSize))
             {
                 string bufferString = '3' + combination;
-                for (int g = 0; g < (spanSize + 1) - (combinationLength - 1); g++)
+                foreach (char i in permutationValues)
                 {
-                    for (int i = 0; i < combinationLength; i++)
+                    for (int g = 1; g < (spanSize + 1) - (combinationLength - 1); g++)
                     {
-                        if (bufferString[g + i] == '1')
+                        for (int f = 0; f < combinationLength; f++)
                         {
-                            currentPlayerSlotsFound += 1; count++;
+                            if (bufferString[g + f] == i)
+                            {
+                                currentPlayerSlotsFound++;
+                            }
+                            else if (bufferString[g + f] == emptySlotValue)
+                            {
+                            }
+                            else if (bufferString[g + f] != i || bufferString[g + f] != emptySlotValue)
+                            {
+                                currentPlayerSlotsFound = 0;
+                                break;
+                            }
                         }
-                        else if (bufferString[g + i] == '2')
-                        {
-                            currentPlayerSlotsFound = 0;
-                            break;
-                        }
-
+                        bufferScore += scorePerConnected.TryGetValue(currentPlayerSlotsFound, out dictionaryLookup)
+                            ? (i == playerValue ? dictionaryLookup : -dictionaryLookup) : 0;
+                        currentPlayerSlotsFound = 0;
                     }
-                    bufferScore += scorePerConnected.TryGetValue(currentPlayerSlotsFound, out dictionaryLookup) ? dictionaryLookup : 0;
-                    currentPlayerSlotsFound = 0;
-
-                    for (int h = 0; h < combinationLength; h++)
-                    {
-                        if (bufferString[g + h] == '2')
-                        {
-                            currentPlayerSlotsFound += 1; count++;
-                        }
-                        else if (bufferString[g + h] == '1')
-                        {
-                            currentPlayerSlotsFound = 0;
-                            break;
-                        }
-                    }
-
-                    bufferScore -= scorePerConnected.TryGetValue(currentPlayerSlotsFound, out dictionaryLookup) ? dictionaryLookup : 0;
-                    currentPlayerSlotsFound = 0;
                 }
                 returnDictionary.Add(bufferString, bufferScore);
                 bufferScore = 0;
 
             }
-            Console.WriteLine(returnDictionary.Count());
             return returnDictionary;
         }
 
         public static Dictionary<int, int> GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
-            Dictionary<int,int> inputScores, int[] spanSizes, int combinationsize, int[] playerValues, char emptySlotValue, char playerValue)
+            Dictionary<int, int> inputScores, int[] spanSizes, int combinationsize, char[] playerValues, char emptySlotValue, char playerValue)
         {
             Dictionary<int, int> returnDictionary = new Dictionary<int, int>();
-                
-            foreach(int spanSize in spanSizes)
+
+            foreach (int spanSize in spanSizes)
             {
-                foreach(KeyValuePair<string, int> item in getScoreValues(playerValues, inputScores, spanSize, 4, emptySlotValue, playerValue))
+                foreach (KeyValuePair<string, int> item in getScoreValues(playerValues, inputScores, spanSize, 4, emptySlotValue, playerValue))
                 {
                     returnDictionary.Add(Int32.Parse(item.Key), item.Value);
                 }
