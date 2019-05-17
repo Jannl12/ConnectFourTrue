@@ -18,7 +18,7 @@ namespace ConnectfourCode
     public class BitBoard
     {
 
-        private ulong[] bitGameBoard;
+        public ulong[] bitGameBoard;
         protected int[] columnHeight;
 
 
