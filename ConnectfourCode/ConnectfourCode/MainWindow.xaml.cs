@@ -244,10 +244,7 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseLeave += (sender, e) =>
                     {
-                        for (int f = 0; f < rowCount; f++)
-                        {
-                            ellipseGameBoard[f, g].Stroke = blackColor;
-                        }
+                        mouseLeaveColumn(g);
                     };
 
                     bufferEllipse.MouseDown += (sender, e) =>
@@ -328,16 +325,20 @@ namespace ConnectfourCode
 
         }
 
-        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         private void mouseEnterColumn(int targetColumn)
         {
             for (int ellipseRowCounter = 0; ellipseRowCounter < rowCount; ellipseRowCounter++)
             {
                 ellipseGameBoard[ellipseRowCounter, targetColumn].Stroke = playerColors[negaMaxBoard.GetCurrentPlayer()];
+            }
+        }
+
+        private void mouseLeaveColumn(int targetColumn)
+        {
+            for (int f = 0; f < rowCount; f++)
+            {
+                ellipseGameBoard[f, targetColumn].Stroke = blackColor;
             }
         }
 
@@ -353,23 +354,21 @@ namespace ConnectfourCode
 
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    //negaMaxBoard.MakeMove(targetColumn);
+                    negaMaxBoard.MakeMove(targetColumn);
 
-                    if (negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
+                    if (negaMaxBoard.IsWin())
                     {
-                        MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer() + 1).ToString() + " won!");
+                        MessageBox.Show("Player " + (negaMaxBoard.GetPreviousPlayer() + 1).ToString() + " won!");
                         ResetGame();
                     }
-                    if (nextMoveAI)
+                    else if (nextMoveAI)
                     {
-                        ColumnClick(negaMaxBoard.GetBestMove(1), false);
+                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1), playerModes[negaMaxBoard.GetCurrentPlayer()]);
                     }
-
-
                     break;
                 }
             }
-            mouseEnterColumn(targetColumn);
+            
         }
 
         private void ResetGame()

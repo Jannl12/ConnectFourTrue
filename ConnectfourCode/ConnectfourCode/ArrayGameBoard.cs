@@ -31,7 +31,7 @@ namespace ConnectfourCode
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
 
                 new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } }, 
-                new int[] { 4, 5, 6, 7 }, 4, new int[] { 0, 1, 2 }, '0', '1');
+                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '1');
 
             boardCheckLocations = getSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
@@ -74,6 +74,11 @@ namespace ConnectfourCode
             return moveCount % 2;
         }
 
+        public int GetPreviousPlayer()
+        {
+            return (moveCount + 1) % 2;
+        }
+
         public void MakeMove(int coloumnInput)
         {
             Tuple<int, int> latestTuple = new Tuple<int, int>((columnHeight[coloumnInput]), coloumnInput);
@@ -90,7 +95,7 @@ namespace ConnectfourCode
                 columnHeight[latestTuple.Item2]--;
         }
 
-        protected List<int> possibleMoves()
+        protected List<int> PossibleMoves()
         {
             List<int> returnList = new List<int>();
             int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
@@ -111,9 +116,9 @@ namespace ConnectfourCode
             columnHeight = new int[7];
         }
 
-        public int GetBoardKey()
+        public ulong GetBoardKey()
         {
-            return gameboard.GetHashCode();
+            return Convert.ToUInt64(gameboard.GetHashCode());
         }
 
         override public int GetHashCode()

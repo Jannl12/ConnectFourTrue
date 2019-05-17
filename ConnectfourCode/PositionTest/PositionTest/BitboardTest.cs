@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using ConnectfourCode;
+using System.Collections.Generic;
 
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
@@ -126,6 +127,29 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //Act                                       // | | | | | | | | 6
             int expectedValue = -10;                    // | | | | | | | | 5
             int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
+                                                        // | | | | |x| | | 3
+            //Assert                                    // |x|x|x| |x| | | 2
+            Assert.AreEqual(expectedValue, calcValue);  // |o|o|o| |x| | | 1
+        }
+
+        [TestMethod]
+        public void WEE()
+        {
+            //Arrange
+            BitBoard test = new BitBoard();
+            ArrayGameBoard test2 = new ArrayGameBoard();
+            List<int> desiredMoves = new List<int> { 0, 1, 2, 3, 4, 5, 6 };
+            foreach(int i in desiredMoves)
+            {
+                test.MakeMove(i);
+                test2.MakeMove(i);
+            }
+
+
+            //  1 2 3 4 5 6 7
+            //Act                                       // | | | | | | | | 6
+            int expectedValue = test.EvaluateBoard();                    // | | | | | | | | 5
+            int calcValue = test2.EvaluateBoard();       // | | | | | | | | 4
                                                         // | | | | |x| | | 3
             //Assert                                    // |x|x|x| |x| | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|o|o| |x| | | 1

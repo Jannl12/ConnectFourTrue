@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    public class NegaTrans : BitBoard
+    public class NegaTrans : ArrayGameBoard
     {
 
         public int bestMove { get; set; }
@@ -51,9 +51,8 @@ namespace ConnectfourCode
                 }
             }
             //int value = int.MinValue;
-            List<int> moves = PossibleMoves();
 
-            foreach (int move in moves)
+            foreach (int move in PossibleMoves())
             {
 
                 MakeMove(move);
