@@ -1,17 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.IO;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Controls;
 using ConnectfourCode;
 using Microsoft.Office.Interop.Excel;
-using OpenQA.Selenium.Firefox;
-using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace NegamaxTest
 {
@@ -189,7 +180,7 @@ namespace NegamaxTest
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
             testPlyEffect.WriteToExcel("ArrayTest");*/
-            NegaTrans test = new NegaTrans();
+            NegaTrans test = new NegaTrans(9);
             int[] moveArray = { 3, 3, 3, 3, 3, 3, 2, 1, 5, 4, 4, 4, 4, 5};
             foreach (int i in moveArray)
                 test.MakeMove(i);

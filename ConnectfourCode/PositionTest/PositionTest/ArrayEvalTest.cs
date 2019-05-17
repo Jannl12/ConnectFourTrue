@@ -26,7 +26,7 @@ namespace PositionTest
             int calcValue = test.EvaluateBoard();       // | | | | | | | | 5
                                                         // | | | | | | | | 4
                                                         // |o|x| | | | | | 3
-                                                        //Assert                                    // |o|x| | | | | | 2
+            //Assert                                    // |o|x| | | | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| | | | | | 1
         }
 

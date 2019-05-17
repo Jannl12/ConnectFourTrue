@@ -64,7 +64,7 @@ namespace ConnectfourCode
             }
             int value = int.MinValue;
             int bestMove = 0;
-            List<int> moves = possibleMoves();
+            List<int> moves = PossibleMoves();
 
             foreach (int move in moves)
             {

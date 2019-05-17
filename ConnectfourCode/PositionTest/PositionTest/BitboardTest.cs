@@ -47,16 +47,21 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         {
             //Arrange
             BitBoard test = new BitBoard();
+
             test.bitGameBoard[0] = 0x1C0000000000; // 0 0001 1100 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
             test.bitGameBoard[1] = 0x3800000000;   // 0 0000 0000 0011 1000 0000 0000 0000 0000 0000 0000 0000 0000
 
+            Stopwatch sw = new Stopwatch(), sw2 = new Stopwatch(); ;
             //  1 2 3 4 5 6 7
-            //Act                                       // | | | | | | | | 6
-            int expectedValue = 0;                      // | | | | | | | | 5
+            //Act  
+            sw.Start();// | | | | | | | | 6
+            int expectedValue = test.EvaluateBoard();
+            sw.Stop();
+            sw2.Start();// | | | | | | | | 5
             int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
-                                                        // | | | | | |x|o| 3
+            sw.Stop();                                           // | | | | | |x|o| 3
             //Assert                                    // | | | | | |x|o| 2
-            Assert.AreEqual(expectedValue, calcValue);  // | | | | | |x|o| 1
+            Assert.IsTrue(sw.Elapsed <= sw2.Elapsed);  // | | | | | |x|o| 1
         }
 
         [TestMethod]
