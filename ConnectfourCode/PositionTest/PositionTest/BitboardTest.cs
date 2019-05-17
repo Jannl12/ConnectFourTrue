@@ -5,17 +5,18 @@ using ConnectfourCode;
 
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
-/*    [TestClass]
+    [TestClass]
     public class EvaluateBoardTest
     {
         [TestMethod]
-        public void EvaluateBoardAlmostAllCombinationsBitBoard()
+        public void EvaluateBoardLeft()
         {
             //Arrange
             BitBoard test = new BitBoard();
 
-            test.bitGameBoard[0] = 0x7;            // 0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0111
-            test.bitGameBoard[1] = 0x380;          // 0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0011 1000 0000
+            int[] moveArray = { 1, 0, 1, 0, 1, 0 };
+            foreach (int move in moveArray)
+                test.MakeMove(move);
 
             //Act                                       //  1 2 3 4 5 6 7
             int expectedValue = 0;                      // | | | | | | | | 6
@@ -25,7 +26,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //Assert                                    // |o|x| | | | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| | | | | | 1
         }
-
+        /*
         [TestMethod]
         public void EvaluateBoardMiddle()
         {
@@ -326,6 +327,6 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         //    Assert.AreEqual(expectedValue, calcValue);
 
         //}
-        //}
-    }*/
+        //}*/
+    }
 }
