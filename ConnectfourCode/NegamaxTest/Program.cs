@@ -19,19 +19,8 @@ namespace NegamaxTest
     {
         static void Main(string[] args)
         {
-            NegaTrans test = new NegaTrans();
-            test.bitGameBoard[1] = 0x1055400080; //blå (lige)
-            test.bitGameBoard[0] = 0x8A2A04000; //rød (ulige)
-            test.MoveCount = 13;
-            test.columnHeight[0] += 0;
-            test.columnHeight[1] += 1;
-            test.columnHeight[2] += 1;
-            test.columnHeight[3] += 6;
-            test.columnHeight[4] += 4;
-            test.columnHeight[5] += 2;
-            test.columnHeight[6] += 0;
-            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
-            Console.ReadKey();
+            
+            
             // Application excelApplication = new Application();
             // excelApplication.Visible = true;
             // var excelWorkBook = excelApplication.Workbooks.Add();

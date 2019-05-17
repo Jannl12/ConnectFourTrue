@@ -17,13 +17,13 @@ namespace ConnectfourCode
 
     public class BitBoard
     {
-        [DllImport("EvaluateBoardDLL.dll")]
-        private static extern int EvaluateBoard(ulong board1, ulong board2, int[] inputvalues);
+        ////[DllImport("EvaluateBoardDLL.dll")]
+        //private static extern int EvaluateBoard(ulong board1, ulong board2, int[] inputvalues);
 
-        public int EvaluateBoardDLL()
-        {
-            return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], new int[] { 0, 1, 4, 9, 1000 });
-        }
+        //public int EvaluateBoardDLL()
+        //{
+        //    return EvaluateBoard(bitGameBoard[0], bitGameBoard[1], new int[] { 0, 1, 4, 9, 1000 });
+        //}
 
         public ulong[] bitGameBoard;
         public int[] columnHeight;
@@ -142,21 +142,6 @@ namespace ConnectfourCode
                 return true;
             else
                 return false;
-        }
-
-
-
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || this.GetType().Equals(obj.GetType()))
-            {
-                return false;
-            }
-            else
-            {
-                return this.GetHashCode() == obj.GetHashCode();
-            }
         }
 
         public int EvaluateBoard() //TODO: Fix brikker uden kontinuerlig sammenhæng og lav de fire for løkker om til en løkke H&M

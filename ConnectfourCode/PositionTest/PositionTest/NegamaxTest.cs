@@ -17,7 +17,7 @@ namespace PositionTest
             NegaTrans test = new NegaTrans();
             test.bitGameBoard[1] = 0x1055400080; //blå (lige)
             test.bitGameBoard[0] = 0x8A2A04000; //rød (ulige)
-            test.MoveCount = 13;
+            //test.MoveCount = 13;
             test.columnHeight[0] += 0;
             test.columnHeight[1] += 1;
             test.columnHeight[2] += 1;

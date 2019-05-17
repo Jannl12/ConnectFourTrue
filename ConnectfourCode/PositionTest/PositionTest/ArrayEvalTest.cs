@@ -1,7 +1,7 @@
-﻿//using System;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using System.Diagnostics;
-//using ConnectfourCode;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
+using ConnectfourCode;
 
 namespace PositionTest
 {
@@ -28,6 +28,27 @@ namespace PositionTest
                                                         // |o|x| | | | | | 3
                                                         //Assert                                    // |o|x| | | | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| | | | | | 1
+        }
+
+        [TestMethod]
+        public void EvaluateBoardAlmostAllCombinationsArrayGameBoard()
+        {
+            //Arrange
+            ArrayGameBoard test = new ArrayGameBoard();
+            int[] moveHistory = {0, 1, 0, 3, 1, 4, 3, 3, 0, 3, 5, 5, 6, 6, 6, 6, 6, 4, 3};
+            foreach(int move in moveHistory)
+            {
+                test.MakeMove(move);
+            }
+            
+
+
+                                                        // | | | | | | | | 6
+            int expectedValue = -1;                     // | | | |k| | |k| 5
+            int calcValue = test.EvaluateBoard();       // | | | |l| | |l| 4
+                                                        // |k| | |l| | |k| 3                                                        
+            //Assert                                    // |k|k| |k|l|l|l| 2
+            Assert.AreEqual(expectedValue, calcValue);  // |k|l| |l|l|k|k| 1
         }
 
 
@@ -65,7 +86,7 @@ namespace PositionTest
 //                                                        // | | | | | |x|o| 3
 //                                                        //Assert                                    // | | | | | |x|o| 2
 //            Assert.AreEqual(expectedValue, calcValue);  // | | | | | |x|o| 1
-//        }
+        }
 
         [TestMethod]
         public void EvaluateBoardAlmostAllCombinations()
