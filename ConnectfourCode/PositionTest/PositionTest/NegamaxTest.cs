@@ -21,7 +21,7 @@ namespace PositionTest
     [TestClass]
     public class NegamaxTest
     {
-        [TestMethod]
+       /* [TestMethod]
         public void BlockFourInARow()
         {
             //Arrange
@@ -43,7 +43,7 @@ namespace PositionTest
 
             //Assert
             Assert.AreEqual(expectedMove, test.bestMove);
-        }
+        }*/
 
 
 
