@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    public class NegaTrans:BitBoard
+    public class NegaTrans : BitBoard
     {
+
         public int bestMove { get; set; }
+
+        public int PlyDepth;
         int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
@@ -17,8 +20,20 @@ namespace ConnectfourCode
             TranspositionTable.Clear();
         }
 
+        public NegaTrans(int plyDepth)
+        {
+            this.PlyDepth = plyDepth;
+        }
 
-        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
+        public int GetBestMove(int player)
+        {
+            NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
+            int bufferBestMove = bestMove;
+            ResetGame();
+            return bufferBestMove;
+        }
+
+        public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
 
         //TODO: Skal med i implementeringen
         {
@@ -35,26 +50,28 @@ namespace ConnectfourCode
                     return evalBuffer * color;
                 }
             }
-            int value = int.MinValue;
-            List<int> moves = possibleMoves();
+            //int value = int.MinValue;
+            List<int> moves = PossibleMoves();
 
             foreach (int move in moves)
             {
-                    MakeMove(move);
-                    value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));
 
-                    if (value >= beta)
-                    {
-                        UndoMove();
-                        return value;
-                    }
-                    if (value > alpha)
-                    {
-                        alpha = value;
-                        if (firstCall)
-                            bestMove = move;
-                    }
+                MakeMove(move);
+                int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
+
+                if (value >= beta)
+                {
                     UndoMove();
+                    return value;
+                }
+                if (value > alpha)
+                {
+                    alpha = value;
+
+                    if (rootNode)
+                        bestMove = move;
+                }
+                UndoMove();
             }
             return alpha;
         }

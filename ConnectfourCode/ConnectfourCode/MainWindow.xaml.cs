@@ -1,6 +1,7 @@
 ﻿using NegamaxTest;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,31 +23,183 @@ namespace ConnectfourCode
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// //test
+    public partial class startMenu : Window
+    {
+        StackPanel windowContent = new StackPanel();
+        StackPanel exitAndStartButton = new StackPanel();
+        StackPanel playerTypes = new StackPanel();
+        Slider plyDepth = new Slider();
+        Button startButton, exitButton, playerOneModeButton, playerTwoModeButton;
+        Label title = new Label(), plyDepthTitle = new Label();
+        Thickness buttonThickness = new Thickness(10, 20, 10, 20);
+        private bool playerOneIsComputerControlled = true, playerTwoIsComputerControlled = false;
+        public bool PlayerOneIsComputerControlled
+        {
+            get { return playerOneIsComputerControlled; }
+        }
+
+        public bool PlayerTwoIsComputerControlled
+        {
+            get { return playerTwoIsComputerControlled; }
+        }
+
+        public int GetPlyDepthValue
+        {
+            get { return Convert.ToInt32(plyDepth.Value); }
+        }
+
+        public startMenu(MainWindow mainWindow)
+        {
+            this.DataContext = mainWindow;
+
+            windowContent.Orientation = Orientation.Vertical;
+            //Adding Title
+                title.Content = "Welcome to ConnectFour!";
+                title.FontSize = 30;
+                title.Margin = new Thickness(0, 20, 0, 20);
+                title.HorizontalAlignment = HorizontalAlignment.Center;
+            windowContent.Children.Add(title);
+            //Ading PlyDepth Slider Label
+                plyDepthTitle.Content = "Select Plydepth: " + 10;
+                plyDepthTitle.FontSize = 16;
+                plyDepthTitle.Margin = new Thickness(0, 20, 0, 20);
+                plyDepthTitle.HorizontalAlignment = HorizontalAlignment.Center;
+            windowContent.Children.Add(plyDepthTitle);
+            //Adding Plydepth Slider
+                plyDepth.Minimum = 1;
+                plyDepth.Maximum = 20;
+                plyDepth.Width = 300;
+                plyDepth.Value = 10;
+                plyDepth.Height = 100;
+                plyDepth.IsSnapToTickEnabled = true;
+                plyDepth.Orientation = Orientation.Horizontal;
+                plyDepth.TickPlacement = System.Windows.Controls.Primitives.TickPlacement.BottomRight;
+                plyDepth.TickFrequency = 1;
+                plyDepth.ValueChanged += (sender, e) =>
+                {
+                    plyDepthTitle.Content = "Select Plydepth: " + plyDepth.Value;
+                };
+            windowContent.Children.Add(plyDepth);
+
+                //Adding Two buttons in Stackpanel for Choosing AI players vs Human players
+                playerTypes.Orientation = Orientation.Horizontal;
+                playerTypes.HorizontalAlignment = HorizontalAlignment.Center;
+                    //Player One
+                    playerOneModeButton = new Button();
+                    playerOneModeButton.HorizontalAlignment = HorizontalAlignment.Center;
+                    playerOneModeButton.Content = PlayerOneIsComputerControlled ? "AI Player" : "Human Player" ;
+                    playerOneModeButton.Margin = buttonThickness;
+                    
+                    playerOneModeButton.Width = 150;
+                    playerOneModeButton.Height = 100;
+                    playerOneModeButton.Click += (sender, e) =>
+                    {
+                        playerOneIsComputerControlled = !playerOneIsComputerControlled;
+                        playerOneModeButton.Content = playerOneIsComputerControlled ? "AI Player" : "Human Player";
+                        
+                    };
+                playerTypes.Children.Add(playerOneModeButton);
+                    //Player Two
+                    playerTwoModeButton = new Button();
+                    playerTwoModeButton.HorizontalAlignment = HorizontalAlignment.Center;
+                    playerTwoModeButton.Content = playerTwoModeButton.Content = PlayerTwoIsComputerControlled ? "AI Player" : "Human Player"; ;
+                    playerTwoModeButton.Margin = buttonThickness;
+                    playerTwoModeButton.Width = 150;
+                    playerTwoModeButton.Height = 100;
+                    playerTwoModeButton.Click += (sender, e) =>
+                    {
+                        playerTwoIsComputerControlled = !playerTwoIsComputerControlled;
+                        playerTwoModeButton.Content = playerTwoIsComputerControlled ? "AI Player" : "Human Player";
+
+                    };
+                playerTypes.Children.Add(playerTwoModeButton);
+
+            windowContent.Children.Add(playerTypes);
+                //Adding two buttons for exit and start game.
+                exitAndStartButton.Orientation = Orientation.Horizontal;
+                exitAndStartButton.HorizontalAlignment = HorizontalAlignment.Center;
+                    //Start Button
+                    startButton = new Button();
+                    startButton.HorizontalAlignment = HorizontalAlignment.Center;
+                    startButton.Content = "Start Game";
+                    startButton.Margin = buttonThickness;
+                    startButton.Width = 150;
+                    startButton.Height = 100;
+                    startButton.Click += (sender, e) =>
+                    {
+                        this.Close();
+                    };
+                exitAndStartButton.Children.Add(startButton);
+                    //Exit Button
+                    exitButton = new Button();
+                    exitButton.HorizontalAlignment = HorizontalAlignment.Center;
+                    exitButton.Content = "Exit";
+                    exitButton.Width = 150;
+                    exitButton.Margin = buttonThickness;
+                    exitButton.Height = 100;
+                    exitButton.Click += (sender, e) =>
+                    {
+                        System.Windows.Application.Current.Shutdown();
+                    };
+                exitAndStartButton.Children.Add(exitButton);
+
+            windowContent.Children.Add(exitAndStartButton);
+
+            this.Title = "New Game";
+            this.Width = 400;
+            this.Height = 600;
+            this.Content = windowContent;
+        }
+
+    }
     public partial class MainWindow : Window
     {
         Ellipse[,] ellipseGameBoard;
-        SolidColorBrush yellowColor, redColor, emptyColor, blackColor;
-        const int rowCount = 6, columnCount = 7, ellipseSize = 100;
-        NegaTrans negamaxTest = new NegaTrans();
+
+        Button resetButton, undoMove, newGameButton;
+
+        SolidColorBrush emptyColor, blackColor;
+        List<SolidColorBrush> playerColors = new List<SolidColorBrush>();
+
+        const int rowCount = 6, columnCount = 7;
+        const double aspect = 760 / 740;
+        int gridElementSize = 100;
+
+        startMenu newGameMenu;
+        NegaTrans negaMaxBoard;
+
+        Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
+
         IterativDeepening negaTest = new IterativDeepening();
-       // Negamax p2 = new Negamax();
-        
+
+        bool[] playerModes = new bool[2];
+
+
+
         public MainWindow()
         {
             InitializeComponent();
+            newGameMenu = new startMenu(this);
+            newGameMenu.ShowDialog();
+            this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
+            this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
+            negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
+
+
             Grid gameGrid = new Grid();
-            this.Width = ellipseSize * columnCount; this.Height = ellipseSize * rowCount;
-            gameGrid.Height = this.Height; gameGrid.Width = this.Width;
-            
+            this.Title = "Connect Four Motherfucker!";
+            this.Width = 740; this.Height = 760;
+            newGameMenu = new startMenu(this);
+
+            gameGrid.Height = rowCount * gridElementSize + 100;
+            gameGrid.Width = columnCount * gridElementSize;
+            gameGrid.Margin = new Thickness(10);
+
             //Define colours used for the users. 
-            yellowColor = new SolidColorBrush();
-            yellowColor.Color = Color.FromArgb(255, 255, 0, 0);
-            redColor = new SolidColorBrush();
-            redColor.Color = Color.FromArgb(255, 255, 255, 0);
-            emptyColor = new SolidColorBrush();
-            emptyColor.Color = Color.FromArgb(0, 0, 0, 0);
-            blackColor = new SolidColorBrush();
-            blackColor.Color = Color.FromArgb(255, 0, 0, 0);
+            playerColors.Add(new SolidColorBrush(Color.FromArgb(255, 255, 0, 0)));
+            playerColors.Add(new SolidColorBrush(Color.FromArgb(255, 255, 255, 0)));
+            emptyColor = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+            blackColor = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
 
             //Intializes the array of ellipses, that are put into the Grid.
             ellipseGameBoard = new Ellipse[rowCount, columnCount];
@@ -58,16 +211,14 @@ namespace ConnectfourCode
 
             foreach (ColumnDefinition col in columns)
             {
-                ColumnDefinition bufferCol = new ColumnDefinition();
-                gameGrid.ColumnDefinitions.Add(bufferCol);
+                gameGrid.ColumnDefinitions.Add(new ColumnDefinition());
             }
             foreach (RowDefinition row in rows)
             {
-                RowDefinition bufferRow = new RowDefinition();
-                gameGrid.RowDefinitions.Add(bufferRow);
+                gameGrid.RowDefinitions.Add(new RowDefinition());
             }
 
-            /*Defines and specializes the Ellipses, which are put into the Grid. 
+            /**Defines and specializes the Ellipses, which are put into the Grid. 
              * Here the colours, width, height and the eventhandlers are added to the
              * Ellipses using delegates, since it is required to target af specific
              * column (bit of a workaround). Finally adds the the Grid to the Form.
@@ -80,20 +231,26 @@ namespace ConnectfourCode
                     Ellipse bufferEllipse = new Ellipse();
                     bufferEllipse.Stroke = blackColor;
                     bufferEllipse.Fill = emptyColor;
-                    bufferEllipse.Height = gameGrid.Height / rowCount - 5;
-                    bufferEllipse.Width = gameGrid.Width / columnCount - 5;
+                    bufferEllipse.Height = gridElementSize - 5;
+                    bufferEllipse.Width = gridElementSize - 5;
                     Grid.SetColumn(bufferEllipse, j);
                     Grid.SetRow(bufferEllipse, i);
 
-                    bufferEllipse.MouseEnter += delegate (object sender, MouseEventArgs e)
+
+                    bufferEllipse.MouseEnter += (sender, e) =>
                     {
-                        MouseEnterHandler(g);
+                        mouseEnterColumn(g);
                     };
-                    bufferEllipse.MouseLeave += delegate (object sender, MouseEventArgs e)
+
+                    bufferEllipse.MouseLeave += (sender, e) =>
                     {
-                        MouseLeaveHandler(g);
+                        for (int f = 0; f < rowCount; f++)
+                        {
+                            ellipseGameBoard[f, g].Stroke = blackColor;
+                        }
                     };
-                    bufferEllipse.MouseDown += delegate (object sender, MouseButtonEventArgs e)
+
+                    bufferEllipse.MouseDown += (sender, e) =>
                     {
                         ColumnClick(g, true);
                     };
@@ -101,80 +258,118 @@ namespace ConnectfourCode
                     gameGrid.Children.Add(bufferEllipse);
                 }
             }
+
+
+
+            gameGrid.RowDefinitions.Add(new RowDefinition());
+
+
+            //Setup resetButton
+            resetButton = new Button();
+            resetButton.Content = "Reset";
+            resetButton.Height = gridElementSize - gridElementSize / 5;
+            resetButton.Width = gridElementSize - gridElementSize / 5;
+            resetButton.Margin = new Thickness(gridElementSize / 5 / 2);
+            Grid.SetRow(resetButton, rowCount + 1);
+            Grid.SetColumn(resetButton, 1);
+            gameGrid.Children.Add(resetButton);
+            resetButton.Click += (sender, e) =>
+            {
+                ResetGame();
+            };
+
+
+
+            //Setup undoButton
+            undoMove = new Button();
+            undoMove.Content = "Undo Last \r\n    Move";
+            undoMove.Height = gridElementSize - gridElementSize / 5;
+            undoMove.Width = gridElementSize - gridElementSize / 5;
+            resetButton.Margin = new Thickness(gridElementSize / 5 / 2);
+            Grid.SetRow(undoMove, rowCount + 2);
+            Grid.SetColumn(undoMove, 3);
+            undoMove.Click += (sender, e) =>
+            {
+                negaMaxBoard.UndoMove();
+                Tuple<int, int> bufferTuple = moveHistory.Pop();
+                ellipseGameBoard[bufferTuple.Item1, bufferTuple.Item2].Fill = emptyColor;
+            };
+            gameGrid.Children.Add(undoMove);
+
+
+            //New Game
+            newGameButton = new Button();
+            newGameButton.Content = "New Game";
+            newGameButton.Height = gridElementSize - gridElementSize / 5;
+            newGameButton.Width = gridElementSize - gridElementSize / 5;
+            newGameButton.Margin = new Thickness(gridElementSize / 5 / 2);
+            Grid.SetRow(newGameButton, rowCount + 1);
+            Grid.SetColumn(newGameButton, 5);
+            gameGrid.Children.Add(newGameButton);
+            newGameButton.Click += (sender, e) =>
+            {
+                ResetGame();
+                newGameMenu.ShowDialog();
+                this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
+                this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
+                negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
+            };
+
+            this.Closed += (sender, e) =>
+            {
+                System.Windows.Application.Current.Shutdown();
+            };
             this.Content = gameGrid;
 
-           //ColumnClick(negamaxTest.GetBestMove(10), false); //Call function 
-
-
-            negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true); // normal negaMax
-            ColumnClick(negamaxTest.bestMove, false);
-            //negamaxTest.ResetBestMove();      // Iterative deepening
-            //ColumnClick(negaTest.Deepening(), false);
+            if (playerModes[0])
+            {
+                ColumnClick(negaMaxBoard.GetBestMove(1), false);
+            }
 
         }
-        private void MouseEnterHandler(int targetColumn)
+
+        private void MainWindow_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            for (int i = 0; i < rowCount; i++)
+            throw new NotImplementedException();
+        }
+
+        private void mouseEnterColumn(int targetColumn)
+        {
+            for (int ellipseRowCounter = 0; ellipseRowCounter < rowCount; ellipseRowCounter++)
             {
-
-                //ellipseGameBoard[i, targetColumn].Stroke = (negamaxTest.GetCurrentPlayer()) ? redColor : yellowColor;
-
-                ellipseGameBoard[i, targetColumn].Stroke = ((negamaxTest.MoveCount/*negaTest.MoveCount*/ & 1) == 0) ? yellowColor : redColor;
+                ellipseGameBoard[ellipseRowCounter, targetColumn].Stroke = playerColors[negaMaxBoard.GetCurrentPlayer()];
             }
         }
-        private void MouseLeaveHandler(int targetColumn)
-        {
-            for (int i = 0; i < rowCount; i++)
-            {
-                ellipseGameBoard[i, targetColumn].Stroke = blackColor;
-            }
-        }
+
         /*Loops from the bottom of the column, and if it finds an empty cell, it fills it with 
          * the current players color. Also makes a move on the bitboard.
          */
-        private void ColumnClick(int targetColumn, bool playerMove)
-        {
-            
+        private void ColumnClick(int targetColumn, bool nextMoveAI)
+        {    
             for (int i = rowCount - 1; i >= 0; i--)
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
 
-                    //ellipseGameBoard[i, targetColumn].Fill = negamaxTest.GetCurrentPlayer() ? redColor : yellowColor;
+                    ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
+                    moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
+                    //negaMaxBoard.MakeMove(targetColumn);
 
-                    ellipseGameBoard[i, targetColumn].Fill = ((negamaxTest.MoveCount/*negaTest.MoveCount*/ & 1) == 0) ? yellowColor : redColor;
-
-                    negamaxTest.MakeMove(targetColumn);
-                    negaTest.MakeMove(targetColumn);
-                    if (negamaxTest.IsWin())//negaTest.IsWin())//negamaxTest.IsWin())
+                    if (negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
                     {
-
-                    /*    MessageBox.Show((negamaxTest.GetCurrentPlayer() ? "Player one" : "Player two") + " won!");
+                        MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer() + 1).ToString() + " won!");
                         ResetGame();
                     }
-                    if (playerMove)
+                    if (nextMoveAI)
                     {
-                        //ColumnClick(negamaxTest.GetBestMove(10), false);
-                    } */
+                        ColumnClick(negaMaxBoard.GetBestMove(1), false);
+                    }
 
-                       MessageBox.Show(((negamaxTest.MoveCount/*negaTest.MoveCount*/ & 1) == 1 ? "Player one" : "Player two") + " won!");
-                       //negaTest.ResetBitBoard();
-                    }
-                    else if (negamaxTest.IsDraw())//negaTest.IsDraw())//negamaxTest.IsDraw())
-                    {
-                        MessageBox.Show("Draw Game");
-                    }
-                    negamaxTest.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
-                    if (playerMove)
-                    {
-                      //ColumnClick(negaTest.Deepening(), false);
-                      ColumnClick(negamaxTest.bestMove, false);
-                    }
-                    //negamaxTest.ResetBestMove();*/
 
                     break;
                 }
-            }   
+            }
+            mouseEnterColumn(targetColumn);
         }
 
         private void ResetGame()
@@ -183,9 +378,8 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
-            negamaxTest.ResetBitBoard();
-            //negaTest.ResetBitBoard();
+
+            negaMaxBoard.ResetGame();
         }
     }
-
 }
