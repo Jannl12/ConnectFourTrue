@@ -108,6 +108,26 @@ namespace PositionTest
         }
 
         [TestMethod]
+        public void NegaMaxDrawMinPlayer()
+        {
+            NegaTrans test = new NegaTrans(9);
+            int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
+
+            foreach (int move in moveArray) // 0 1 2 3 4 5 6
+                test.MakeMove(move);        //|o| |x|o| |x|o|
+            int expectedInt = 1;            //|x| |o|x| |o|x|
+                                            //|o| |x|o| |x|o|
+                                            //|x|x|o|x| |o|x|
+                                            //|o|o|x|o| |x|o|
+                                            //|x|x|o|x| |x|o|
+
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
+            int calcValue = test.bestMove;
+
+            Assert.AreEqual(expectedInt, calcValue);
+        }
+
+        [TestMethod]
         public void NegaMaxStartTestNoAlphaBeta()
         {
             NegaNoAlphaBeta test = new NegaNoAlphaBeta();
