@@ -69,7 +69,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         {
             //Arrange
             BitBoard test = new BitBoard();
-            test.bitGameBoard[0] = 0x540802400107; // 0 0101 0100 0000 1000 0000 0010 0100 0000 0000 0001 0000 0111
+            test.bitGameBoard[0] = 0x540802400107; // 0010101 0000001 0000000 0010010 0000000 0000010 0000111
             test.bitGameBoard[1] = 0x281031A00080; // 0 0010 1000 0001 0000 0011 0001 1010 0000 0000 0000 1000 0000
                                                    //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
