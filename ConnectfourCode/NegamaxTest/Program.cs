@@ -200,6 +200,14 @@ namespace NegamaxTest
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
             testPlyEffect.WriteToExcel("ArrayTest");*/
+            NegaTrans test = new NegaTrans();
+            int[] moveArray = { 3, 3, 3, 3, 3, 3, 2, 1, 5, 4, 4, 4, 4, 5};
+            foreach (int i in moveArray)
+                test.MakeMove(i);
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
+            Console.WriteLine(test.bestMove);
+            Console.ReadKey();
+            //testPlyEffect.WriteToExcel("ArrayTest");*/
         }
     }
 

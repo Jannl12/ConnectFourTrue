@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    public class NegaTrans:BitBoard
+    public class NegaTrans : BitBoard
     {
         public int bestMove { get; set; }
-        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
         public void ResetTranspositionTable()
@@ -35,32 +34,27 @@ namespace ConnectfourCode
                     return evalBuffer * color;
                 }
             }
-            int value = int.MinValue;
+            //int value = int.MinValue;
             List<int> moves = possibleMoves();
 
             foreach (int move in moves)
             {
-                if (depth == 8)
-                {
-                    int val = 0;
-                }
-                    MakeMove(move);
-                    value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));
+                MakeMove(move);
+                int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
 
-                    if (value >= beta)
-                    {
-                        UndoMove();
-                        return value;
-                    }
-                    if(firstCall)
-                        Console.WriteLine("score is {0}, move is {1}", value,move);
-                    if (value > alpha)
-                    {
-                        alpha = value;
-                        if (firstCall)
-                            bestMove = move;
-                    }
+                if (value >= beta)
+                {
                     UndoMove();
+                    return value;
+                }
+
+                if (value > alpha)
+                {
+                    alpha = value;
+                    if (firstCall)
+                        bestMove = move;
+                }
+                UndoMove();
             }
             return alpha;
         }

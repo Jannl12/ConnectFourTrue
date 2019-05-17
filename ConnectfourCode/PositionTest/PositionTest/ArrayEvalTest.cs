@@ -3,52 +3,60 @@
 //using System.Diagnostics;
 //using ConnectfourCode;
 
-//namespace PositionTest
-//{
-//    [TestClass]
-//    public class ArrayEvalTest
-//    {
-//        [TestMethod]
-//        public void EvaluateBoardLeft()
-//        {
-//            //Arrange
-//            ArrayGameBoard test = new ArrayGameBoard();
-//            test.bitGameBoard[0] = 0x7;            // 0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0111
-//            test.bitGameBoard[1] = 0x380;          // 0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0011 1000 0000
+namespace PositionTest
+{
+    [TestClass]
+    public class ArrayEvalTest
+    {
+        [TestMethod]
+        public void EvaluateBoardLeft()
+        {
+            //Arrange
+            ArrayGameBoard test = new ArrayGameBoard();
+            test.gameboard[0, 0] = 1;
+            test.gameboard[1, 0] = 1;
+            test.gameboard[2, 0] = 1;
 
-//            //Act                                       //  1 2 3 4 5 6 7
-//            int expectedValue = 0;                      // | | | | | | | | 6
-//            int calcValue = test.EvaluateBoard();       // | | | | | | | | 5
-//                                                        // | | | | | | | | 4
-//                                                        // |o|x| | | | | | 3
-//                                                        //Assert                                    // |o|x| | | | | | 2
-//            Assert.AreEqual(expectedValue, calcValue);  // |o|x| | | | | | 1
-//        }
+            test.gameboard[0, 1] = 2;
+            test.gameboard[1, 1] = 2;
+            test.gameboard[2, 1] = 2;
 
-//        [TestMethod]
-//        public void EvaluateBoardMiddle()
-//        {
-//            //Arrange
-//            ArrayGameBoard test = new ArrayGameBoard();
-//            test.bitGameBoard[0] = 0xA00000;       // 0 0000 0000 0000 0000 0000 0000 1010 0000 0000 0000 0000 0000
-//            test.bitGameBoard[1] = 0x400000;       // 0 0000 0000 0000 0000 0000 0000 0100 0000 0000 0000 0000 0000
+            //Act                                       //  1 2 3 4 5 6 7
+            int expectedValue = 0;                      // | | | | | | | | 6
+            int calcValue = test.EvaluateBoard();       // | | | | | | | | 5
+                                                        // | | | | | | | | 4
+                                                        // |o|x| | | | | | 3
+                                                        //Assert                                    // |o|x| | | | | | 2
+            Assert.AreEqual(expectedValue, calcValue);  // |o|x| | | | | | 1
+        }
 
-//            //  1 2 3 4 5 6 7
-//            //Act                                       // | | | | | | | | 6
-//            int expectedValue = 0;                      // | | | | | | | | 5
-//            int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
-//                                                        // | | | |o| | | | 3
-//                                                        //Assert                                    // | | | |x| | | | 2
-//            Assert.AreEqual(expectedValue, calcValue);  // | | | |o| | | | 1
-//        }
 
-//        [TestMethod]
-//        public void EvaluateBoardRight()
-//        {
-//            //Arrange
-//            ArrayGameBoard test = new ArrayGameBoard();
-//            test.bitGameBoard[0] = 0x1C0000000000; // 0 0001 1100 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000
-//            test.bitGameBoard[1] = 0x3800000000;   // 0 0000 0000 0011 1000 0000 0000 0000 0000 0000 0000 0000 0000
+        [TestMethod]
+        public void EvaluateBoardMiddle()
+        {
+            //Arrange
+            ArrayGameBoard test = new ArrayGameBoard();
+            test.gameboard[0, 3] = 1;
+            test.gameboard[2, 3] = 1;
+            test.gameboard[1, 3] = 2;
+                                                        //  1 2 3 4 5 6 7
+            //Act                                       // | | | | | | | | 6
+            int expectedValue = 0;                      // | | | | | | | | 5
+            int calcValue = test.EvaluateBoard();       // | | | | | | | | 4
+                                                        // | | | |o| | | | 3
+            //Assert                                    // | | | |x| | | | 2
+            Assert.AreEqual(expectedValue, calcValue);  // | | | |o| | | | 1
+        }
+
+        [TestMethod]
+        public void EvaluateBoardRight()
+        {
+            //Arrange
+            ArrayGameBoard test = new ArrayGameBoard();
+            test.gameboard[0, 5] = 2;
+            test.gameboard[1, 5] = 2;
+            test.gameboard[0, 6] = 1;
+            test.gameboard[0, 6] = 1;
 
 //            //  1 2 3 4 5 6 7
 //            //Act                                       // | | | | | | | | 6
@@ -59,21 +67,46 @@
 //            Assert.AreEqual(expectedValue, calcValue);  // | | | | | |x|o| 1
 //        }
 
-//        [TestMethod]
-//        public void EvaluateBoardAlmostAllCombinations()
-//        {
-//            //Arrange
-//            ArrayGameBoard test = new ArrayGameBoard();
-//            test.bitGameBoard[0] = 0x540802400107; // 0 0101 0100 0000 1000 0000 0010 0100 0000 0000 0001 0000 0111
-//            test.bitGameBoard[1] = 0x281031A00080; // 0 0010 1000 0001 0000 0011 0001 1010 0000 0000 0000 1000 0000
-//                                                   //  1 2 3 4 5 6 7
-//                                                   //Act                                       // | | | | | | | | 6
-//            int expectedValue = -1;                     // | | | |o| | |o| 5
-//            int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
-//                                                        // |o| | |x| | |o| 3
-//                                                        //Assert                                    // |o|o| |o|x|x|x| 2
-//            Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|x|o|o| 1
-//        }
+        [TestMethod]
+        public void EvaluateBoardAlmostAllCombinations()
+        {
+            //Arrange
+            ArrayGameBoard test = new ArrayGameBoard();
+            //kolonne 0
+            test.gameboard[0, 0] = 1;
+            test.gameboard[1, 0] = 1;
+            test.gameboard[2, 0] = 1;
+            //kolonne 1
+            test.gameboard[0, 1] = 1;
+            test.gameboard[1, 1] = 2;
+            //kolonne 2
+
+            //kolonne 3
+            test.gameboard[0, 3] = 2;
+            test.gameboard[1, 3] = 1;
+            test.gameboard[2, 3] = 2;
+            test.gameboard[3, 3] = 2;
+            test.gameboard[4, 3] = 1;
+
+            //kolonne 4
+            test.gameboard[0, 4] = 2;
+            test.gameboard[1, 4] = 2;
+
+            //kolonne 5
+            test.gameboard[0, 3] = 2;
+            test.gameboard[1, 3] = 1;
+            test.gameboard[2, 3] = 2;
+            test.gameboard[3, 3] = 2;
+            test.gameboard[4, 3] = 1;
+
+            //  1 2 3 4 5 6 7
+            //Act                                       // | | | | | | | | 6
+            int expectedValue = -1;                     // | | | |o| | |o| 5
+            int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
+                                                        // |o| | |x| | |o| 3
+            //Assert                                    // |o|o| |o|x|x|x| 2
+            Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|x|o|o| 1
+        }
 
 //        [TestMethod]
 //        public void EvaluateBoardOnlyMiddle()
@@ -249,3 +282,7 @@
 //            Assert.AreEqual(expectedBool, calcValue);
 //        }
 //    }
+         //   Assert.AreEqual(expectedBool, calcValue);
+        //}*/
+    }
+}
