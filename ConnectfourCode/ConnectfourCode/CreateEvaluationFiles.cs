@@ -72,7 +72,7 @@ namespace ControlFile
             {
                 foreach (KeyValuePair<string, int> item in getScoreValues(playerValues, inputScores, spanSize, 4, emptySlotValue, playerValue))
                 {
-                    returnDictionary.Add(Int32.Parse(item.Key), item.Value);
+                    returnDictionary.Add(int.Parse(item.Key), item.Value);
                 }
             }
             return returnDictionary;
