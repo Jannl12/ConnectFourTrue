@@ -68,10 +68,6 @@
       <Project>{bb90cfb3-ca58-4cb1-98e2-b3d34d53b18d}</Project>
       <Name>ConnectfourCode</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NegamaxTest\NegamaxTest.csproj">
-      <Project>{c541a513-0f39-48f4-9184-bd3bc2de6233}</Project>
-      <Name>NegamaxTest</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">

@@ -64,6 +64,8 @@ namespace ConnectfourCode
                     UndoMove();
                     return value;
                 }
+                if(rootNode)
+                    Console.WriteLine("move is {0}, with a score of {1}", move,value);
                 if (value > alpha)
                 {
                     alpha = value;

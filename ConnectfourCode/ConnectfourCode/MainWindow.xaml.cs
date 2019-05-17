@@ -353,9 +353,9 @@ namespace ConnectfourCode
 
                     ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
                     moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    //negaMaxBoard.MakeMove(targetColumn);
+                    negaMaxBoard.MakeMove(targetColumn);
 
-                    if (negaMaxBoard.MakeMoveAndCheckIfWin(targetColumn))
+                    if (negaMaxBoard.IsWin())
                     {
                         MessageBox.Show("Player " + (negaMaxBoard.GetCurrentPlayer() + 1).ToString() + " won!");
                         ResetGame();

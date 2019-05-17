@@ -72,34 +72,11 @@ namespace PositionTest
         {
             //Arrange
             ArrayGameBoard test = new ArrayGameBoard();
-            //kolonne 0
-            test.gameboard[0, 0] = 1;
-            test.gameboard[1, 0] = 1;
-            test.gameboard[2, 0] = 1;
-            //kolonne 1
-            test.gameboard[0, 1] = 1;
-            test.gameboard[1, 1] = 2;
-            //kolonne 2
+            int[] moveArray = { 0, 1, 0, 3, 1, 4, 3, 3, 0, 3, 5, 5, 6, 6, 6, 6, 6, 4, 3}; //{ 3, 3, 3, 0, 3, 0, 1, 0, 4, 1, 4, 5, 5, 6, 6, 6, 6, 6 };
+            foreach (int move in moveArray)
+                test.MakeMove(move);
 
-            //kolonne 3
-            test.gameboard[0, 3] = 2;
-            test.gameboard[1, 3] = 1;
-            test.gameboard[2, 3] = 2;
-            test.gameboard[3, 3] = 2;
-            test.gameboard[4, 3] = 1;
-
-            //kolonne 4
-            test.gameboard[0, 4] = 2;
-            test.gameboard[1, 4] = 2;
-
-            //kolonne 5
-            test.gameboard[0, 3] = 2;
-            test.gameboard[1, 3] = 1;
-            test.gameboard[2, 3] = 2;
-            test.gameboard[3, 3] = 2;
-            test.gameboard[4, 3] = 1;
-
-            //  1 2 3 4 5 6 7
+                                                        //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = -1;                     // | | | |o| | |o| 5
             int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
