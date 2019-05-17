@@ -29,7 +29,6 @@ namespace ConnectfourCode
         {
             NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
             int bufferBestMove = bestMove;
-            bestMove = 3;
             ResetGame();
             return bufferBestMove;
         }
@@ -65,6 +64,8 @@ namespace ConnectfourCode
                     UndoMove();
                     return value;
                 }
+                if(rootNode)
+                    Console.WriteLine("move is {0}, with a score of {1}", move,value);
                 if (value > alpha)
                 {
                     alpha = value;
