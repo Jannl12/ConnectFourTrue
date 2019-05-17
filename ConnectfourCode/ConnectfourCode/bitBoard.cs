@@ -86,7 +86,7 @@ namespace ConnectfourCode
          */
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[(moveCount) % 2 + 1]; //MoveCount +1, since the opposit player is desired.
+            ulong bitboard = bitGameBoard[(moveCount+1) % 2 ]; //MoveCount +1, since the opposit player is desired.
 
             for (int i = 0; i < directions.Length; i++)
             {

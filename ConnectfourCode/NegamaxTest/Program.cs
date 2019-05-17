@@ -178,7 +178,7 @@ namespace NegamaxTest
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
             testPlyEffect.WriteToExcel("ArrayTest");*/
-            NegaTrans test = new NegaTrans(9);
+            var test = new NegamaxArray();
             int[] moveArray = { 3, 3, 3, 3, 3, 3, 2, 1, 5, 4, 4, 4, 4, 5};
             foreach (int i in moveArray)
                 test.MakeMove(i);

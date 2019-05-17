@@ -5,7 +5,7 @@ using ConnectfourCode;
 
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
-    [TestClass]
+    /*[TestClass]
     public class EvaluateBoardTest
     {
         [TestMethod]
@@ -270,5 +270,5 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
         //    Assert.AreEqual(expectedValue, calcValue);
 
         //}
-    //}
+    //}*/
 }
