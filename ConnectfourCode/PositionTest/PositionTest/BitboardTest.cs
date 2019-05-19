@@ -9,6 +9,21 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
     public class EvaluateBoardTest
     {
         [TestMethod]
+        public void EvaluateBoardAlmostAllCombinations()
+        {
+            //Arrange
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0x540802400107; // 0010101 0000001 0000000 0010010 0000000 0000010 0000111
+            test.bitGameBoard[1] = 0x281031A00080; // 0 0010 1000 0001 0000 0011 0001 1010 0000 0000 0000 1000 0000
+                                                   //  1 2 3 4 5 6 7
+                                                   //Act                                       // | | | | | | | | 6
+            int expectedValue = -1;                     // | | | |o| | |o| 5
+            int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
+                                                        // |o| | |x| | |o| 3
+                                                        //Assert                                    // |o|o| |o|x|x|x| 2
+            Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|x|o|o| 1
+        }
+        [TestMethod]
         public void EvaluateBoardLeft()
         {
             //Arrange
@@ -64,22 +79,6 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             sw.Stop();                                           // | | | | | |x|o| 3
             //Assert                                    // | | | | | |x|o| 2
             Assert.IsTrue(sw.Elapsed <= sw2.Elapsed);  // | | | | | |x|o| 1
-        }
-
-        [TestMethod]
-        public void EvaluateBoardAlmostAllCombinations()
-        {
-            //Arrange
-            BitBoard test = new BitBoard();
-            test.bitGameBoard[0] = 0x540802400107; // 0010101 0000001 0000000 0010010 0000000 0000010 0000111
-            test.bitGameBoard[1] = 0x281031A00080; // 0 0010 1000 0001 0000 0011 0001 1010 0000 0000 0000 1000 0000
-                                                   //  1 2 3 4 5 6 7
-                                                   //Act                                       // | | | | | | | | 6
-            int expectedValue = -1;                     // | | | |o| | |o| 5
-            int calcValue = test.EvaluateBoard();       // | | | |x| | |x| 4
-                                                        // |o| | |x| | |o| 3
-                                                        //Assert                                    // |o|o| |o|x|x|x| 2
-            Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|x|o|o| 1
         }
         //        [TestMethod]
         //        public void EvaluateBoardLeft()
