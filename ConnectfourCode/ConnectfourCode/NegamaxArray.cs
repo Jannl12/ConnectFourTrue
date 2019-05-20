@@ -23,8 +23,8 @@ namespace ConnectfourCode
                 return evalBuffer * color;
             }
             int value = int.MinValue;
-            List<int> moves = possibleMoves();
-            foreach (int move in moves)
+
+            foreach (int move in PossibleMoves())
             {
                 MakeMove(move);
                 value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));

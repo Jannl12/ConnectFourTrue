@@ -30,9 +30,9 @@ namespace ConnectfourCode
             ResetGame();
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
                 new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } }, 
-                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '1');
+                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '2');
 
-            boardCheckLocations = getSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
+            boardCheckLocations = GetSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
 
         public int MoveCount()
@@ -51,13 +51,13 @@ namespace ConnectfourCode
             return returnDictionary;
         }
 
-        private List<List<Tuple<int, int>>> getSearchCoordinates(string searchLocation)
+        private List<List<Tuple<int, int>>> GetSearchCoordinates(string searchLocation)
         {
             List<List<Tuple<int, int>>> returnList = new List<List<Tuple<int, int>>>();
-            foreach(string set in searchLocation.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            foreach(string coordinates in searchLocation.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 List<Tuple<int, int>> bufferDirection = new List<Tuple<int, int>>();
-                foreach (string coordinatePair in set.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (string coordinatePair in coordinates.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     string[] stringBuffer = coordinatePair.Split(',');
                     bufferDirection.Add(new Tuple<int, int> ( int.Parse(stringBuffer[0]), int.Parse(stringBuffer[1]) ));
@@ -71,6 +71,11 @@ namespace ConnectfourCode
         public int GetCurrentPlayer()
         {
             return moveCount % 2;
+        }
+
+        public int GetPreviousPlayer()
+        {
+            return (moveCount + 1) % 2;
         }
 
         public void MakeMove(int coloumnInput)
@@ -89,7 +94,7 @@ namespace ConnectfourCode
                 columnHeight[latestTuple.Item2]--;
         }
 
-        protected List<int> possibleMoves()
+        protected List<int> PossibleMoves()
         {
             List<int> returnList = new List<int>();
             int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
@@ -110,9 +115,9 @@ namespace ConnectfourCode
             columnHeight = new int[7];
         }
 
-        public int GetBoardKey()
+        public ulong GetBoardKey()
         {
-            return gameboard.GetHashCode();
+            return Convert.ToUInt64(gameboard.GetHashCode());
         }
 
         override public int GetHashCode()
