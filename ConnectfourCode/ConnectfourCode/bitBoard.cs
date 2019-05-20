@@ -22,14 +22,14 @@ namespace ConnectfourCode
         protected int[] columnHeight;
 
 
-        protected Stack<int> moveHistory = new Stack<int>();
+        public Stack<int> moveHistory = new Stack<int>();
         private int boardHeight = 6 - 1, boardWidth = 7;
         private int[] boardScores = { 0, 0, 1, 4, 1000 };
         private int[] directions = { 1, 7, 6, 8 };
 
 
 
-        protected int moveCount
+        public int moveCount
         {
             get { return moveHistory.Count(); }
         }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
 using ConnectfourCode;
 using Microsoft.Office.Interop.Excel;
+using OpenQA.Selenium.Firefox;
 
 namespace TestMaybeWorking3
 {
@@ -11,19 +14,19 @@ namespace TestMaybeWorking3
         static void Main(string[] args)
         {
 
-            // Application excelApplication = new Application();
-            // excelApplication.Visible = true;
-            // var excelWorkBook = excelApplication.Workbooks.Add();
-            // var xlsxSheet = excelWorkBook.Sheets as Sheets;
-            // var excelWorkSheet = (Worksheet)xlsxSheet.Add(xlsxSheet[1]);
-            //int row = 0;
-            //excelWorkSheet.Cells[++row, 1] = "Values";
-            /*Negamax againstOnlineSolver = new Negamax();
-            int count = 2 * 15 * 20;
-            int[] plyDeths = { 9 };// 5,6,7,8,9,10,11,12 };
+            Application excelApplication = new Application();
+            excelApplication.Visible = true;
+            var excelWorkBook = excelApplication.Workbooks.Add();
+            var xlsxSheet = excelWorkBook.Sheets as Sheets;
+            Worksheet excelWorkSheet;
+            
+            NegaTrans againstOnlineSolver = new NegaTrans(9);
+            Random rnd = new Random();
+            //int count = 2 * 15 * 20;
+            int[] plyDeths = { 8 };// { 5, 6, 7, 8, 9, 10, 11, 12 };
 
-            foreach (int ply in plyDeths)
-            {*/
+            //foreach (int ply in plyDeths)
+            //{*/
 
             /* for (int threeRow = 95; threeRow < 105; threeRow += 5)
              {
@@ -34,65 +37,97 @@ namespace TestMaybeWorking3
                      //againstOnlineSolver.Two1 =  twoRow;// twoRow;
                      for (int oneRow = 10; oneRow < 30; oneRow++)
                      {*/
-            //  againstOnlineSolver.ResetBitBoard();
-            //  againstOnlineSolver.One1 = oneRow;// oneRow;
-
-
-            /*int color = 1;
-            var driver = new FirefoxDriver();
-            string url = "https://connect4.gamesolver.org/?pos=";
-            while (!againstOnlineSolver.IsDraw() && !againstOnlineSolver.IsWin())
+            foreach (int ply in plyDeths)
             {
-                if (color == 1)
+                excelWorkSheet = (Worksheet)xlsxSheet.Add(xlsxSheet[1]);
+                excelWorkSheet.Name= "ply" + ply.ToString();
+                int row = 0;
+                excelWorkSheet.Cells[++row, 1] = "Who Wins?";
+                for (int turn = 0; turn < 100; turn++)
                 {
-                    againstOnlineSolver.NegaMax(int.MinValue + 1, int.MaxValue, ply, 1, true);
-                    againstOnlineSolver.MakeMove(againstOnlineSolver.bestMove);
-                    //if (againstOnlineSolver.IsWin() || againstOnlineSolver.MoveCount > 7)
-                    //{
-                        //excelWorkSheet.Cells[++row, 1] = threeRow.ToString() + "," + twoRow.ToString() + "," + oneRow.ToString();
-                       // excelWorkSheet.Cells[row, 2] = againstOnlineSolver.MoveCount;
-                   // }
-                    url += (againstOnlineSolver.moveHistory[againstOnlineSolver.moveHistory.Count - 1] + 1).ToString();
-                    color *= -1;
-                }
-                else
-                {
-                    driver.Url = url;
-                    driver.Navigate();
+                    againstOnlineSolver.ResetGame();
+                    //againstOnlineSolver.One1 = oneRow;// oneRow;
 
-                    Thread.Sleep(1000);
-                    var source = driver.PageSource;
-                    //fully navigate the dom
-                    int[] solutionValues = new int[7];
-                    for (int i = 0; i < 7; i++)
+
+                    int color = 1;
+                    var driver = new FirefoxDriver();
+                    string url = "https://connect4.gamesolver.org/?pos=";
+                    while (!againstOnlineSolver.IsDraw() && !againstOnlineSolver.IsWin())
                     {
-                        var classElement = driver.FindElementByClassName("col" + i.ToString());
-                        if (classElement.Text != "")
-                            solutionValues[i] = Convert.ToInt32(classElement.Text);
+                        if (color == 1)
+                        {
+                            againstOnlineSolver.NegaMax(int.MinValue + 1, int.MaxValue, ply, 1, true);
+                            againstOnlineSolver.MakeMove(againstOnlineSolver.bestMove);
+                            /*if (againstOnlineSolver.IsWin() || againstOnlineSolver.MoveCount > 7)
+                             {
+                                 excelWorkSheet.Cells[++row, 1] = threeRow.ToString() + "," + twoRow.ToString() + "," + oneRow.ToString();
+                                 excelWorkSheet.Cells[row, 2] = againstOnlineSolver.MoveCount;
+                             }*/
+                            url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
+                            color *= -1;
+                        }
                         else
-                            solutionValues[i] = -100;
+                        {
+                            driver.Url = url;
+                            driver.Navigate();
+
+                            Thread.Sleep(1000);
+                            var source = driver.PageSource;
+                            //fully navigate the dom
+                            int[] solutionValues = new int[7];
+                            for (int i = 0; i < 7; i++)
+                            {
+                                var classElement = driver.FindElementByClassName("col" + i.ToString());
+                                if (classElement.Text != "")
+                                    solutionValues[i] = Convert.ToInt32(classElement.Text);
+                                else
+                                    solutionValues[i] = -100;
+                            }
+                            //var pathElement = driver.FindElementById("solution");
+
+
+                            //string[] solutionStringValues = Regex.Split(pathElement.Text, Environment.NewLine);
+                            //int[] solutionValues = Array.ConvertAll(solutionStringValues, new Converter<string, int>(ConvertStringArray.StringToInt));
+                            int maxValue = solutionValues.Max();
+                            //if (maxValue >= 0)
+                            //    break;
+                            List<int> maxIndexes = new List<int>();
+                            for (int i = 0; i < solutionValues.Length; i++)
+                                if (solutionValues[i] == maxValue)
+                                    maxIndexes.Add(i);
+
+                            int r = rnd.Next(maxIndexes.Count);
+                            //int maxIndex = solutionValues.ToList().IndexOf(maxValue);
+                            againstOnlineSolver.MakeMove(maxIndexes[r]);
+                            url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
+                            color *= -1;
+                        }
                     }
-                    //var pathElement = driver.FindElementById("solution");
-
-
-                    //string[] solutionStringValues = Regex.Split(pathElement.Text, Environment.NewLine);
-                    //int[] solutionValues = Array.ConvertAll(solutionStringValues, new Converter<string, int>(ConvertStringArray.StringToInt));
-                    int maxValue = solutionValues.Max();
-                    if (maxValue >= 0)
-                        break;
-
-                    int maxIndex = solutionValues.ToList().IndexOf(maxValue);
-                    againstOnlineSolver.MakeMove(maxIndex);
-                    url += (againstOnlineSolver.moveHistory[againstOnlineSolver.moveHistory.Count - 1] + 1).ToString();
-                    color *= -1;
+                    driver.Close();
+                    string result;
+                    if (againstOnlineSolver.IsDraw())
+                    {
+                        result = "Draw";
+                    }
+                    else if (color == 1)
+                    {
+                        result = "Online Won";
+                    }
+                    else
+                    {
+                        result = "Computer Won";
+                    }
+                    excelWorkSheet.Cells[++row, 1] = result;
                 }
             }
-            driver.Close();
-            Console.WriteLine($"Number of simulations missing: {--count}");
-    //    }
-   // }
+            excelWorkBook.SaveAs("AlgoritmVsOnlineSolverply8.xlsx");
+            GC.Collect();
+            GC.WaitForPendingFinalizers(); 
+//Console.WriteLine($"Number of simulations missing: {--count}");
+//    }
+// }
 //  }
-}
+
 //excelWorkBook.SaveAs("AgainstOnlineSolverPly7_2");*/
 
             //}
@@ -179,7 +214,7 @@ namespace TestMaybeWorking3
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
             testPlyEffect.WriteToExcel("ArrayTest");*/
-            NegaTrans test = new NegaTrans(9);
+            /*NegaTrans test = new NegaTrans(9);
             int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -194,7 +229,16 @@ namespace TestMaybeWorking3
 
             Console.WriteLine(test.bestMove);
             //Console.WriteLine(test.EvaluateBoard());
-            Console.ReadKey();
+            Console.ReadKey();*/
+            /*TestPlyEffect testPly = new TestPlyEffect();
+            
+            for (int i = 1; i < 13; i++)
+            {
+                testPly.setPlyDepth(i, i);
+                testPly.PlayConnectFour();
+                testPly.CreateSheet("PlyDepth" + i.ToString());
+            }
+            testPly.WriteToExcel("TimeTestPly.xlsx");*/
         }
     }
 
@@ -205,7 +249,7 @@ namespace TestMaybeWorking3
             return Convert.ToInt32(s);
         }
     }
-    public class TestPlyEffect<T> where T : NegamaxArray/*NegaNoAlphaBeta*//*NegaTransNegamax*/, new()
+    public class TestPlyEffect//<T> where T : NegaTrans/*NegaNoAlphaBeta*//*NegaTransNegamax*/, new()
     {
         private List<List<long>> data = new List<List<long>>();
         private int firstPlayerPlyDepth;
@@ -216,21 +260,26 @@ namespace TestMaybeWorking3
         private int plyDepth;
         private string[] headers = { "MoveCount", "Color", "PlyDepth", "BestMove", "Time (ms)", "Result" };
         private string result = "No result";
-        private T plyNega = new T();
+        private NegaTrans plyNega = new NegaTrans(1);
         Application excelApplication = new Application();
         private Workbook excelWorkbook;
         Sheets xlsxSheet;
         Worksheet excelWorkSheet;
 
 
-        public TestPlyEffect(int p1, int p2)
+        public TestPlyEffect()//int p1, int p2)
         {
-            firstPlayerPlyDepth = p1;
-            secondPlayerPlyDepth = p2;
+            //firstPlayerPlyDepth = p1;
+            //secondPlayerPlyDepth = p2;
             excelApplication.Visible = true;
             excelWorkbook = excelApplication.Workbooks.Add();
             xlsxSheet = excelWorkbook.Sheets as Sheets;
 
+        }
+        public void setPlyDepth(int p1, int p2)
+        {
+            firstPlayerPlyDepth = p1;
+            secondPlayerPlyDepth = p2;
         }
         public void PlayConnectFour()
         {
@@ -269,7 +318,7 @@ namespace TestMaybeWorking3
             plyNega.NegaMax(alpha, beta, plyDepth, color, true);
             Watch.Stop();
             //plyNega.ResetTranspositionTable();
-            tempData.Add(plyNega.MoveCount());
+            tempData.Add(plyNega.moveCount);
             tempData.Add(color);
             tempData.Add(plyDepth);
             tempData.Add(plyNega.bestMove);
@@ -303,6 +352,7 @@ namespace TestMaybeWorking3
         }
     }
 }
+
 
 /*//TODO: Add a loop to this and make it write the moves in console
            Negamax test = new Negamax();
