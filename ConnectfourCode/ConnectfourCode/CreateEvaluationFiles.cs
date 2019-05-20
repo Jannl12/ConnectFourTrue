@@ -80,14 +80,17 @@ namespace ControlFile
                         returnDictionary.Add(bufferString, bufferScore);
                     }
                     bufferScore = 0;
+
                 }
             }
             return returnDictionary;
         }
 
         public static Dictionary<int, int> GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
+
             Dictionary<int, int> pointsPerDiskWithinCombinationLength, int[] spanSizes, 
             int combinatioLength, char[] playerValues, char emptySlotValue, char mainPlayerValue)
+
         {
             Dictionary<int, int> returnDictionary = new Dictionary<int, int>();
 
@@ -95,8 +98,9 @@ namespace ControlFile
             {
                 foreach (KeyValuePair<string, int> item in GetScoreValuesForCombinations(
                     playerValues, pointsPerDiskWithinCombinationLength, spanSize, 4, emptySlotValue, mainPlayerValue))
+
                 {
-                    returnDictionary.Add(Int32.Parse(item.Key), item.Value);
+                    returnDictionary.Add(int.Parse(item.Key), item.Value);
                 }
             }
             return returnDictionary;

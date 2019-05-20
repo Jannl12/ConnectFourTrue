@@ -1,17 +1,16 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using ConnectfourCode;
 using Microsoft.Office.Interop.Excel;
 
-namespace NegamaxTest
+namespace TestMaybeWorking3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            
-            
+
             // Application excelApplication = new Application();
             // excelApplication.Visible = true;
             // var excelWorkBook = excelApplication.Workbooks.Add();
@@ -174,20 +173,28 @@ namespace NegamaxTest
             test.CreateSheet("p1-5_P2-7");
             test.WriteToExcel("ThisIsTest");*/
             //TestPlyEffect<NegamaxArray/*NegaNoAlphaBeta*//*NegaTransNegamax*/> testPlyEffect = new TestPlyEffect<NegamaxArray/*Negamax/*NegaTrans/*NegaNoAlphaBeta*/>(9, 9);
-           /* for (int i = 0; i < 1; i++)
+            /*for (int i = 0; i < 1; i++)
             {
                 testPlyEffect.PlayConnectFour();
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
             testPlyEffect.WriteToExcel("ArrayTest");*/
-            var test = new NegamaxArray();
-            int[] moveArray = { 3, 3, 3, 3, 3, 3, 2, 1, 5, 4, 4, 4, 4, 5};
-            foreach (int i in moveArray)
-                test.MakeMove(i);
-            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
+            NegaTrans test = new NegaTrans(9);
+            int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
+
+            foreach (int move in moveArray) // 0 1 2 3 4 5 6
+                test.MakeMove(move);        //|o| |x|o| |x|o|
+            int expectedInt = 1;            //|x| |o|x| |o|x|
+                                            //|o| |x|o| |x|o|
+                                            //|x|x|o|x| |o|x|
+                                            //|o|o|x|o| |x|o|
+                                            //|x|x|o|x| |x|o|
+
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
+
             Console.WriteLine(test.bestMove);
+            //Console.WriteLine(test.EvaluateBoard());
             Console.ReadKey();
-            //testPlyEffect.WriteToExcel("ArrayTest");*/
         }
     }
 
@@ -223,7 +230,7 @@ namespace NegamaxTest
             excelApplication.Visible = true;
             excelWorkbook = excelApplication.Workbooks.Add();
             xlsxSheet = excelWorkbook.Sheets as Sheets;
-            
+
         }
         public void PlayConnectFour()
         {

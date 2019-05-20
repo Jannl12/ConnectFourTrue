@@ -61,7 +61,9 @@ namespace ConnectfourCode
         public void UndoMove()
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Pop()];
+
             bitGameBoard[(moveCount + 1) % 2] ^= moveBuffer;
+
         }
 
 
@@ -92,6 +94,7 @@ namespace ConnectfourCode
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
             ulong bitboard = bitGameBoard[GetPrevoiusPlayer()]; //MoveCount +1, since the opposit player is desired.
+
 
             for (int i = 0; i < directions.Length; i++)
             {
@@ -136,7 +139,7 @@ namespace ConnectfourCode
         public ulong GetBoardKey()
         {
             ulong buffer = 0;
-            foreach (ulong inputlong in this.bitGameBoard)
+            foreach (ulong inputlong in bitGameBoard)
             {
                 buffer ^= inputlong;
             }
@@ -180,7 +183,7 @@ namespace ConnectfourCode
                 int returnValue = 0;
                 for (int playerIterator = 0; playerIterator < bitGameBoard.Count(); playerIterator++)
                 {
-                    ulong[,] allCombinations = {{bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //4
+                    ulong[,] allCombinations = {//{bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //4
 				                            { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //3
                                             { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //3
                                             { bitGameBoard[playerIterator], emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //3
@@ -190,14 +193,13 @@ namespace ConnectfourCode
                                             { bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //2
                                             { emptySlotsBitBoard,           bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //2 
                                             { emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //2
-                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //2
-							                { bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             emptySlotsBitBoard},            //1
-                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //1 
-                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //1
-                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]} };//1
-                    int[] numberOfboardsInSpan = { 4, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1 };
-                    for (int combination = 0; combination < 15; combination++)
-
+                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]} };//,  //2
+							                //{ bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             emptySlotsBitBoard},            //1
+                                            //{ emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //1 
+                                            //{ emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //1
+                                            //{ emptySlotsBitBoard,           emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]} };//1
+                    int[] numberOfboardsInSpan = { 3, 3, 3, 3, 2, 2, 2, 2, 2, 2 };//, 1, 1, 1, 1 };
+                    for (int combination = 0; combination < allCombinations.GetLength(0); combination++)
                     {
                         int evaluationBuffer = findCombinationAndGiveScore(allCombinations[combination, 0],
                                                             allCombinations[combination, 1],
