@@ -41,7 +41,7 @@ namespace ConnectfourCode
         public void MakeMove(int columnInput)
         {
             ulong moveBuffer = 1UL << columnHeight[columnInput]++;
-            bitGameBoard[(moveCount & 1)] ^= moveBuffer;
+            bitGameBoard[GetCurrentPlayer()] ^= moveBuffer;
             moveHistory.Push(columnInput);
         }
 
@@ -51,12 +51,19 @@ namespace ConnectfourCode
             return (moveCount) % 2;
         }
 
+        public int GetPrevoiusPlayer()
+        {
+            return (moveCount + 1) % 2;
+        }
+
         /**<summary><c>UndoMove</c> undoes the move that the player did based on <paramref name="movehistory"/>.</summary>
          */
         public void UndoMove()
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Pop()];
-            bitGameBoard[GetCurrentPlayer()] ^= moveBuffer;
+
+            bitGameBoard[(moveCount + 1) % 2] ^= moveBuffer;
+
         }
 
 
@@ -86,7 +93,8 @@ namespace ConnectfourCode
          */
         public bool IsWin()
         { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[(moveCount + 1) % 2 ]; //MoveCount +1, since the opposit player is desired.
+            ulong bitboard = bitGameBoard[GetPrevoiusPlayer()]; //MoveCount +1, since the opposit player is desired.
+
 
             for (int i = 0; i < directions.Length; i++)
             {
@@ -118,6 +126,11 @@ namespace ConnectfourCode
                 }
             }
             return returnList;
+        }
+
+        public bool CanPlay(int i)
+        {
+            return (((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) != 1UL;
         }
 
         /**<summary>Creates a unique key based on the current state of the ulongs in <paramref name="bitGameBoard"/>.</summary>
