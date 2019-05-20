@@ -2,10 +2,11 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using ConnectfourCode;
+using System.Collections.Generic;
 
 namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
-    [TestClass]
+    /*[TestClass]
     public class EvaluateBoardTest
     {
         [TestMethod]
@@ -177,5 +178,39 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|o| |o| 1
         }
     }
+}
+
+
+        }
+        [TestMethod]
+        public void CanPlay6SamnColumn7()
+        {
+            BitBoard test = new BitBoard();
+            test.bitGameBoard[0] = 0xFC0000000000;
+            test.bitGameBoard[0] = 0;  //Hexa decimal for 7 in the 7th column
+            bool expectedBool = true;
+
+            bool calcValue = test.CanPlay(6);
+
+            Assert.AreEqual(expectedBool, calcValue);
+        }
+    }
+    //[TestClass]
+    //public class TestCountSetBits
+    //{
+    //    [TestMethod]
+        //public void TestCSB3Bit()
+        //{
+        //    BitBoard test = new BitBoard();
+        //    test.bitGameBoard[0] = 0x55;
+        //    test.bitGameBoard[1] = 0x15;
+        //    int expectedValue = 3;
+
+        //    int calcValue = test.CountSetBits(0x7);
+
+        //    Assert.AreEqual(expectedValue, calcValue);
+
+        //}
+    //}*/
 }
 
