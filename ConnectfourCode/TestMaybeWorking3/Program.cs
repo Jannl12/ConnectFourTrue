@@ -179,22 +179,20 @@ namespace TestMaybeWorking3
                 testPlyEffect.CreateSheet("Run" + (i + 1).ToString());
             }
             testPlyEffect.WriteToExcel("ArrayTest");*/
-            var test = new NegamaxArray();
+            NegaTrans test = new NegaTrans(9);
+            int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
 
-            int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6 };
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
-                test.MakeMove(move);        //| |o| | |o|o|x|
-                         //| |o| |x|x|x|o|
-                         //|x|x| |o|o|x|x|
-                                            //|o|o|x|x|x|o|o|
-                                            //|x|o|x|o|x|x|o|
-                                            //|o|x|o|x|x|o|o|    
+                test.MakeMove(move);        //|o| |x|o| |x|o|
+            int expectedInt = 1;            //|x| |o|x| |o|x|
+                                            //|o| |x|o| |x|o|
+                                            //|x|x|o|x| |o|x|
+                                            //|o|o|x|o| |x|o|
+                                            //|x|x|o|x| |x|o|
 
-            //Act
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
 
-            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
-
-            Console.WriteLine(test.EvaluateBoard());
+            Console.WriteLine(test.bestMove);
             //Console.WriteLine(test.EvaluateBoard());
             Console.ReadKey();
         }
