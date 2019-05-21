@@ -82,6 +82,24 @@ namespace ArrayGameBoardEvaluateTest //TODO: MAKE THIS  AGBtest GREAT AGAIN!!!!!
             Assert.AreEqual(expectedValue, calcValue);  // |x|o| |o|o|x|x| 1
         }
 
+        [TestMethod]
+        public void EvaluateBoardIsWin()
+        {
+            //Arrange
+            ArrayGameBoard AGBtest = new ArrayGameBoard();
+            int[] moveArray = { 0, 1, 0, 1, 0, 1, 0 };
+            foreach (int move in moveArray)
+                AGBtest.MakeMove(move);
+
+            //  1 2 3 4 5 6 7
+            //Act                                       // | | | | | | | | 6
+            int expectedValue = 1000;                     // | | | |x| | |x| 5
+            int calcValue = AGBtest.EvaluateBoard();    // | | | |o| | |o| 4
+                                                        // |x| | |o| | |x| 3
+                                                        //Assert                                    // |x|x| |x|o|o|o| 2
+            Assert.AreEqual(expectedValue, calcValue);  // |x|o| |o|o|x|x| 1
+        }
+
 
 
 
