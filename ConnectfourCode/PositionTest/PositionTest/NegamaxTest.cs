@@ -80,12 +80,10 @@ namespace PositionTest
           
             int expectedInt = 3;
 
-
             test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);
-
         }
 
         [TestMethod]
