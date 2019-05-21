@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace ConnectfourCode
 {
-    public class NegaTrans : BitBoard
+    public class NegaTrans : ArrayGameBoard//BitBoard
     {
 
         public int bestMove { get; set; }
 
         public int PlyDepth;
-        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
         public void ResetTranspositionTable()
@@ -36,7 +31,6 @@ namespace ConnectfourCode
 
         public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
 
-        //TODO: Skal med i implementeringen
         {
             ulong lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
@@ -47,13 +41,11 @@ namespace ConnectfourCode
                 else
                 {
                     evalBuffer = EvaluateBoard();
-                    //if (evalBuffer == 1)
-                    //   Thread.Sleep(1);
+
                     TranspositionTable[lookUpBoardKey] = evalBuffer;
                     return evalBuffer * color;
                 }
             }
-            //int value = int.MinValue;
             List<int> moves = PossibleMoves();
             foreach (int move in moves)
             {
@@ -66,8 +58,6 @@ namespace ConnectfourCode
                     UndoMove();
                     return value;
                 }
-                if(rootNode)
-                    Console.WriteLine("move is {0}, with a score of {1}", move,value);
                 if (value > alpha)
                 {
                     alpha = value;

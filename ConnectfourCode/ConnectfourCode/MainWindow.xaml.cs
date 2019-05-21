@@ -167,7 +167,7 @@ namespace ConnectfourCode
 
         startMenu newGameMenu;
         NegaTrans negaMaxBoard;
-        NegamaxArray test = new NegamaxArray();
+        NegamaxArray test = new NegamaxArray(1);
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
 
