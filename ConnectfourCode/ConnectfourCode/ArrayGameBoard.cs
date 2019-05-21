@@ -20,7 +20,7 @@ namespace ConnectfourCode
 
         Dictionary<int, int> knownScores;
 
-        protected int moveCount
+        public int moveCount
         {
             get { return moveHistory.Count(); }
         }

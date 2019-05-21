@@ -48,7 +48,7 @@ namespace ConnectfourCode
 
         public int GetCurrentPlayer()
         {
-            return (moveCount) % 2;
+            return moveCount % 2;
         }
 
         public int GetPrevoiusPlayer()

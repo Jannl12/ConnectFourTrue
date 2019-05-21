@@ -1,33 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace ConnectfourCode
 {
     public class NegamaxArray : ArrayGameBoard
     {
+
         public int bestMove { get; set; }
-        int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
 
+        public int PlyDepth;
+        Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
-        public int NegaMax(int alpha, int beta, int depth, int color, bool firstCall)
-
-        //TODO: Skal med i implementeringen
+        public void ResetTranspositionTable()
         {
+            TranspositionTable.Clear();
+        }
 
+        public NegamaxArray(int plyDepth)
+        {
+            this.PlyDepth = plyDepth;
+        }
+
+        public int GetBestMove(int player)
+        {
+            NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
+            int bufferBestMove = bestMove;
+            ResetGame();
+            return bufferBestMove;
+        }
+
+        public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
+
+        {
+            ulong lookUpBoardKey = GetBoardKey();
+            int evalBuffer = 0;
             if (IsWin() || depth == 0 || IsDraw())
             {
-                int evalBuffer = EvaluateBoard();
-                return evalBuffer * color;
-            }
-            int value = int.MinValue;
+                if (TranspositionTable.TryGetValue(lookUpBoardKey, out evalBuffer))
+                    return evalBuffer * color;
+                else
+                {
+                    evalBuffer = EvaluateBoard();
 
-            foreach (int move in PossibleMoves())
+                    TranspositionTable[lookUpBoardKey] = evalBuffer;
+                    return evalBuffer * color;
+                }
+            }
+            List<int> moves = PossibleMoves();
+            foreach (int move in moves)
             {
+
                 MakeMove(move);
-                value = Math.Max(value, -NegaMax(-beta, -alpha, depth - 1, -color, false));
+                int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
 
                 if (value >= beta)
                 {
@@ -37,7 +61,8 @@ namespace ConnectfourCode
                 if (value > alpha)
                 {
                     alpha = value;
-                    if (firstCall)
+
+                    if (rootNode)
                         bestMove = move;
                 }
                 UndoMove();
