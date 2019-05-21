@@ -200,14 +200,27 @@ namespace TestMaybeWorking3
             }
             excelWorkBook.SaveAs("testParameterNew.xlsx");
         }*/
-            TestPlyEffect testTime = new TestPlyEffect();
+            /*TestPlyEffect testTime = new TestPlyEffect();
             for (int i = 0; i < 10; i++)
             {             
                 testTime.setPlyDepth(9, 9);
                 testTime.PlayConnectFour();
-               // testTime.CreateSheet("run number" + i.ToString());
+                testTime.CreateSheet("run number" + i.ToString());
             }
-            //testTime.WriteToExcel("NegaArrayTime.xlsx");
+            testTime.WriteToExcel("NegaArrayTime.xlsx");*/
+            NegaTrans test = new NegaTrans(9);
+            int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
+
+            foreach (int move in moveArray) // 0 1 2 3 4 5 6
+                test.MakeMove(move);        //|o| |x|o| |x|o|
+            int expectedInt = 1;            //|x| |o|x| |o|x|
+                                            //|o| |x|o| |x|o|
+                                            //|x|x|o|x| |o|x|
+                                            //|o|o|x|o| |x|o|
+                                            //|x|x|o|x| |x|o|
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
+            Console.WriteLine(test.bestMove);
+            Console.ReadKey();
         }
     }
 

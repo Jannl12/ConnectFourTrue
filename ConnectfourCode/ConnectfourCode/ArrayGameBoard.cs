@@ -18,7 +18,7 @@ namespace ConnectfourCode
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         public List<List<Tuple<int, int>>> boardCheckLocations;
 
-        Dictionary<int, int>[] knownScores;
+        Dictionary<int, int> knownScores;
 
         public int moveCount
         {
@@ -28,12 +28,9 @@ namespace ConnectfourCode
         public ArrayGameBoard()
         {
             ResetGame();
-            knownScores[0] = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
-                new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } }, 
-                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '1');
-            knownScores[1] = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
+            knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
                 new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } },
-                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '2');
+                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '1');
 
             boardCheckLocations = GetSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
@@ -84,8 +81,8 @@ namespace ConnectfourCode
         public void MakeMove(int coloumnInput)
         {
             Tuple<int, int> latestTuple = new Tuple<int, int>((columnHeight[coloumnInput]), coloumnInput);
-            moveHistory.Push(latestTuple);
             gameboard[latestTuple.Item1, latestTuple.Item2] = GetCurrentPlayer() + 1;
+            moveHistory.Push(latestTuple);    
             columnHeight[latestTuple.Item2]++;
 
         }
@@ -148,13 +145,12 @@ namespace ConnectfourCode
         public bool IsWin()
         {
             int g = EvaluateBoard();
-            return g >= 1000 || g <= -1000;
+            return g == 1000;
         }
 
         public bool IsDraw()
         {
-            bool Value = columnHeight.Sum() == 42 ? true : false;
-            return Value;
+            return columnHeight.Sum() == 42;
         }
 
         public int EvaluateBoard()
@@ -168,9 +164,11 @@ namespace ConnectfourCode
                 {
                     lookupKeyBuffer += gameboard[coordinate.Item1, coordinate.Item2] * Math.Pow(10 , i--);
                 }
-                returnValue += knownScores[GetCurrentPlayer()].TryGetValue(Convert.ToInt32(lookupKeyBuffer), out lookupValueBuffer) ? lookupValueBuffer : 0;
+                returnValue += knownScores.TryGetValue(Convert.ToInt32(lookupKeyBuffer), out lookupValueBuffer) ? lookupValueBuffer : 0;
+                if (lookupValueBuffer == 1000 || lookupValueBuffer == -1000)
+                    return 1000; //TODO: Make "Global" win value
             }
-            return returnValue;
+            return GetCurrentPlayer() == 0 ?  returnValue : returnValue * -1;
         }
     }
 }
