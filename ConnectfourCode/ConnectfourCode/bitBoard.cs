@@ -62,7 +62,7 @@ namespace ConnectfourCode
         {
             ulong moveBuffer = 1UL << --columnHeight[moveHistory.Pop()];
 
-            bitGameBoard[(moveCount + 1) % 2] ^= moveBuffer;
+            bitGameBoard[GetCurrentPlayer()] ^= moveBuffer;
 
         }
 
@@ -172,7 +172,7 @@ namespace ConnectfourCode
 
             if (IsWin())
             {
-                return (moveCount + 1) % 2 == 0 ? win - moveCount : -2 * win + moveCount;
+                return GetPrevoiusPlayer() == 0 ? win - moveCount : -2 * win + moveCount;
             }
             else if (IsDraw())
             {

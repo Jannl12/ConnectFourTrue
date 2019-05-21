@@ -359,7 +359,7 @@ namespace ConnectfourCode
 
                     if (negaMaxBoard.IsWin())
                     {
-                        MessageBox.Show("Player " + (negaMaxBoard.GetPreviousPlayer() + 1).ToString() + " won!");
+                        //MessageBox.Show("Player " + (negaMaxBoard.GetPreviousPlayer() + 1).ToString() + " won!");
                         ResetGame();
                     }
                     else if (nextMoveAI)
