@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
+    //https://github.com/PascalPons/connect4/blob/master/Solver.cpp
     class NegaMaxAGB : ArrayGameBoard
     {
         private Dictionary<int, int> rootMoves = new Dictionary<int, int>();
@@ -40,28 +41,60 @@ namespace ConnectfourCode
         private int Negamax(int alpha, int beta, int depth, int color, bool rootNode)
         {
             int boardEvaluationBuffer;
-            if(depth == 0)
+
+            int min = -(42 - 2 - moveCount) / 2;
+            if (alpha < min)
             {
-                ulong boardKeyBuffer = GetBoardKey();
-                if (transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
+                alpha = min;
+                if (alpha >= beta)
                 {
-                    return boardEvaluationBuffer * color;
+                    return alpha;
                 }
-                else
-                {
-                    boardEvaluationBuffer = EvaluateBoard();
-                    transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
-                    return boardEvaluationBuffer * color;
-                }
-            } else if(IsDraw())
-            {
-                return 0;
-            }
-            else if (IsWin())
-            {
-                return 1000 * color;
             }
 
+            int max = (42 - 1 - moveCount) / 2;
+            if (beta > max)
+            {
+                beta = max;
+                if (alpha >= beta)
+                {
+                    return beta;
+                }
+            }
+
+            ulong boardKeyBuffer = GetBoardKey();
+            if(transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
+            {
+                if (boardKeyBuffer > 1000 - -1000 - 2)
+                {
+                    min = 
+                }
+            }
+            
+
+            //if (depth == 0)
+            //{
+                
+            //    if (transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
+            //    {
+            //        return boardEvaluationBuffer * color;
+            //    }
+            //    else
+            //    {
+            //        boardEvaluationBuffer = EvaluateBoard();
+            //        transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
+            //        return boardEvaluationBuffer * color;
+            //    }
+            //} else if(IsDraw())
+            //{
+            //    return 0;
+            //}
+            //else if (IsWin())
+            //{
+            //    return 1000 * color;
+            //}
+
+            
             foreach (int move in PossibleMoves())
             {
                 MakeMove(move);
