@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConnectfourCode
 {
-    public class NegaTrans : ArrayGameBoard
+    public class NegaTrans : BitBoard
     {
 
         public int bestMove { get; set; }
@@ -46,13 +47,15 @@ namespace ConnectfourCode
                 else
                 {
                     evalBuffer = EvaluateBoard();
+                    //if (evalBuffer == 1)
+                    //   Thread.Sleep(1);
                     TranspositionTable[lookUpBoardKey] = evalBuffer;
                     return evalBuffer * color;
                 }
             }
             //int value = int.MinValue;
-
-            foreach (int move in PossibleMoves())
+            List<int> moves = PossibleMoves();
+            foreach (int move in moves)
             {
 
                 MakeMove(move);
