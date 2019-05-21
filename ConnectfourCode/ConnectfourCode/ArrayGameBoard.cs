@@ -100,7 +100,7 @@ namespace ConnectfourCode
             int[] turnArray = { 3, 2, 4, 1, 5, 0, 6 };
             foreach (int i in turnArray)
             {
-                if(columnHeight[i] <= 5)
+                if (gameboard[5, i] == 0)
                 {
                     returnList.Add(i);
                 }
@@ -144,8 +144,7 @@ namespace ConnectfourCode
 
         public bool IsWin()
         {
-            int g = EvaluateBoard();
-            return g == 1000;
+            return EvaluateBoard() >= 1000;
         }
 
         public bool IsDraw()

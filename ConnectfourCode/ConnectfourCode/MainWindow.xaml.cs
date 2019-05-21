@@ -166,7 +166,7 @@ namespace ConnectfourCode
         int gridElementSize = 100;
 
         startMenu newGameMenu;
-        NegaTrans negaMaxBoard;
+        NegaMaxAGB negaMaxBoard;
         NegamaxArray test = new NegamaxArray(1);
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
@@ -184,7 +184,7 @@ namespace ConnectfourCode
             newGameMenu.ShowDialog();
             this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
             this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
-            negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
+            negaMaxBoard = new NegaMaxAGB(newGameMenu.GetPlyDepthValue);
 
 
             Grid gameGrid = new Grid();
@@ -310,7 +310,7 @@ namespace ConnectfourCode
                 newGameMenu.ShowDialog();
                 this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
                 this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
-                negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
+                negaMaxBoard = new NegaMaxAGB(newGameMenu.GetPlyDepthValue);
             };
 
             this.Closed += (sender, e) =>
@@ -359,12 +359,12 @@ namespace ConnectfourCode
 
                     if (negaMaxBoard.IsWin())
                     {
-                        //MessageBox.Show("Player " + (negaMaxBoard.GetPreviousPlayer() + 1).ToString() + " won!");
+                        MessageBox.Show("Player " + (negaMaxBoard.GetPreviousPlayer() + 1).ToString() + " won!");
                         ResetGame();
                     }
                     else if (nextMoveAI)
                     {
-                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1), playerModes[negaMaxBoard.GetCurrentPlayer()]);
+                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1), false);
                     }
                     break;
                 }
