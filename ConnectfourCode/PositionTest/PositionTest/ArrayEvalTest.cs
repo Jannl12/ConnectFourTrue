@@ -151,7 +151,7 @@ namespace ArrayGameBoardEvaluateTest //TODO: MAKE THIS  AGBtest GREAT AGAIN!!!!!
                 AGBtest.MakeMove(move);
                                                         //  1 2 3 4 5 6 7
             //Act                                       // | | | |x| | | | 6
-            int expectedValue = 2;                      // | | | |x|x| | | 5
+            int expectedValue = -2;                     // | | | |x|x| | | 5
             int calcValue = AGBtest.EvaluateBoard();    // | | | |o|x| | | 4
                                                         // | | | |x|o| | | 3
             //Assert                                    // | | | |o|x| | | 2
@@ -172,6 +172,24 @@ namespace ArrayGameBoardEvaluateTest //TODO: MAKE THIS  AGBtest GREAT AGAIN!!!!!
             int calcValue = AGBtest.EvaluateBoard();    // | | | |o|x| | | 4
                                                         // | | | |x|o| | | 3
             //Assert                                    // | | | |o|x| | | 2
+            Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|o| |o| 1
+        }
+
+        [TestMethod]
+        public void EvaluateBoardIsWin()
+        {
+            //Arrange
+            ArrayGameBoard AGBtest = new ArrayGameBoard();
+            int[] moveArray = { 0,0,1,1,2,2,3};
+            foreach (int move in moveArray)
+                AGBtest.MakeMove(move);
+
+            //  1 2 3 4 5 6 7   
+            //Act                                       // | | | | | | | | 6
+            bool expectedValue = true;                      // | | | |x|x| | | 5
+            int calcValue = AGBtest.EvaluateBoard();    // | | | |o|x| | | 4
+                                                        // | | | |x|o| | | 3
+                                                        //Assert                                    // | | | |o|x| | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|o| |o| 1
         }
     }  
