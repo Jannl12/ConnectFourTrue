@@ -98,7 +98,7 @@ namespace ArrayGameBoardEvaluateTest //TODO: MAKE THIS  AGBtest GREAT AGAIN!!!!!
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = 0;                      // | | | | | | | | 5
-            int calcValue = AGBtest.EvaluateBoard();       // | | | | | | | | 4
+            int calcValue = AGBtest.EvaluateBoard();    // | | | | | | | | 4
                                                         // | | | | | | | | 3
                                                         //Assert                                    // | | | | | | | | 2
             Assert.AreEqual(expectedValue, calcValue);  // | | | |o| | | | 1

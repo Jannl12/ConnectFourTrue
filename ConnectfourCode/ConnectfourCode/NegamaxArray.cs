@@ -35,14 +35,13 @@ namespace ConnectfourCode
             ulong lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
             if (IsWin()) {
-                IsWin();
-                return (GetPreviousPlayer() == 0 ? 1000 - moveCount : -2 * 1000 + moveCount) * color;
+                int buffer = (GetPreviousPlayer() == 0 ? 1000 - moveCount : -2 * 1000 + moveCount) * color;
+                return buffer;
             }
         
-            else if (IsDraw()) {
-                IsDraw();
+            else if (IsDraw()) 
                 return 0;
-            }
+            
             else if (depth == 0)
             {
                 if (TranspositionTable.TryGetValue(lookUpBoardKey, out evalBuffer))
