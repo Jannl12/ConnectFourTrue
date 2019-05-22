@@ -57,19 +57,25 @@ namespace ConnectfourCode
                 {
                     return boardEvaluationBuffer * color;
                 }
-            }
-            else if(IsDraw())
+            } 
+            else
             {
-                return 0;
+                if (IsDraw())
+                {
+                    return 0;
+                }
+                if (IsWin(out boardEvaluationBuffer))
+                {
+                    transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
+                    return 1000 * color;
+                }
+                else if (depth == 0)
+                {
+                    transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
+                    return boardEvaluationBuffer * color;
+                }
             }
-            else if(IsWin(out boardEvaluationBuffer))
-            {
-                return 1000 * color;
-            }
-            else if(depth == 0)
-            {
-                return boardEvaluationBuffer * color;
-            }
+            
             
             
             
