@@ -34,15 +34,12 @@ namespace ConnectfourCode
         {
             int lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
-            if (IsWin()) {
-                IsWin();
+            if (IsWin()) 
                 return (GetPreviousPlayer() == 0 ? 1000 - moveCount : -2 * 1000 + moveCount) * color;
-            }
         
-            else if (IsDraw()) {
-                IsDraw();
+            else if (IsDraw()) 
                 return 0;
-            }
+            
             else if (depth == 0)
             {
                 if (TranspositionTable.TryGetValue(lookUpBoardKey, out evalBuffer))
@@ -67,8 +64,7 @@ namespace ConnectfourCode
                     UndoMove();
                     return value;
                 }
-                if (rootNode)
-                    System.Console.WriteLine("Current move is {0}, with a score of {1}", move, value);
+
                 if (value > alpha)
                 {
                     alpha = value;
