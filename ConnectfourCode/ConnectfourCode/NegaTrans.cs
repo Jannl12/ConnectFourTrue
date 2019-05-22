@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
 
 namespace ConnectfourCode
 {
@@ -7,7 +7,7 @@ namespace ConnectfourCode
     {
 
         public int bestMove { get; set; }
-
+        Dictionary<int, int> bestMoves = new Dictionary<int, int>();
         public int PlyDepth;
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
@@ -24,9 +24,16 @@ namespace ConnectfourCode
         public int GetBestMove(int player)
         {
             NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
-            int bufferBestMove = bestMove;
-            ResetGame();
-            return bufferBestMove;
+            KeyValuePair<int, int> tester = new KeyValuePair<int, int>();
+            foreach ( KeyValuePair<int, int> move in bestMoves)
+            {
+                if(move.Value > tester.Value)
+                {
+                    tester = move;
+                }
+            } 
+            bestMoves = new Dictionary<int, int>();
+            return tester.Key;
         }
 
         public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
@@ -53,17 +60,27 @@ namespace ConnectfourCode
                 MakeMove(move);
                 int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
 
-                if (value >= beta)
-                {
-                    UndoMove();
-                    return value;
-                }
                 if (value > alpha)
                 {
                     alpha = value;
 
-                    if (rootNode)
-                        bestMove = move;
+                }
+                if (alpha >= beta)
+                {
+                    if (value > alpha)
+                    {
+                        alpha = value;
+
+                        if (rootNode)
+                            bestMove = move;
+                    }
+                    UndoMove();
+                    return value;
+                }
+                
+                if(rootNode)
+                {
+                    bestMoves.Add(move, value);
                 }
                 UndoMove();
             }
