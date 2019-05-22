@@ -149,6 +149,12 @@ namespace ConnectfourCode
             }
         }
 
+        protected bool IsWin(out int returnBoardEvaluation)
+        {
+            returnBoardEvaluation = EvaluateBoard();
+            return returnBoardEvaluation >= 1000;
+        }
+
         public bool IsWin()
         {
             return EvaluateBoard() >= 1000;

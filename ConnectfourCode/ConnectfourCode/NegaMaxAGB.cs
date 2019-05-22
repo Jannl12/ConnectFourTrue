@@ -43,31 +43,36 @@ namespace ConnectfourCode
 
         private int Negamax(int alpha, int beta, int depth, int color, bool rootNode)
         {
-            
 
-            if (depth == 0)
+            int boardEvaluationBuffer, boardKeyBuffer = GetBoardKey();
+
+            
+            if(transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
             {
-                int boardEvaluationBuffer;
-                int boardKeyBuffer = GetBoardKey();
-                if (transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
+                if (boardEvaluationBuffer == 1000)
                 {
-                    return boardEvaluationBuffer * color;
+                    return 1000 * color;
                 }
-                else
+                else if(depth == 0)
                 {
-                    boardEvaluationBuffer = EvaluateBoard();
-                    transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
                     return boardEvaluationBuffer * color;
                 }
             }
-            else if (IsDraw())
+            else if(IsDraw())
             {
                 return 0;
             }
-            else if (IsWin())
+            else if(IsWin(out boardEvaluationBuffer))
             {
                 return 1000 * color;
             }
+            else if(depth == 0)
+            {
+                return boardEvaluationBuffer * color;
+            }
+            
+            
+            
 
             int value = int.MinValue + 1;
             foreach (int move in PossibleMoves())
