@@ -17,6 +17,7 @@ namespace ConnectfourCode
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         public List<List<Tuple<int, int>>> boardCheckLocations;
+        ulong hashCode = 0;
 
         Dictionary<int, int> knownScores;
 
@@ -115,9 +116,15 @@ namespace ConnectfourCode
             columnHeight = new int[7];
         }
 
-        public ulong GetBoardKey()
+        public int GetBoardKey()
         {
-            return Convert.ToUInt64(gameboard.GetHashCode());
+            int hashCode = gameboard.Length;
+            
+            foreach(int i in gameboard)
+            {
+                hashCode = unchecked(hashCode * 17 + i);
+            }
+            return hashCode;
         }
 
         override public int GetHashCode()

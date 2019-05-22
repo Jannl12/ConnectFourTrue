@@ -9,7 +9,7 @@ namespace ConnectfourCode
         public int bestMove { get; set; }
 
         public int PlyDepth;
-        Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
+        Dictionary<int, int> TranspositionTable = new Dictionary<int, int>();
 
         public void ResetTranspositionTable()
         {
@@ -32,7 +32,7 @@ namespace ConnectfourCode
         public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
 
         {
-            ulong lookUpBoardKey = GetBoardKey();
+            int lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
             if (IsWin()) {
                 IsWin();
