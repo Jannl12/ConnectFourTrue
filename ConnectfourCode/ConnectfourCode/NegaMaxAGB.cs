@@ -51,11 +51,11 @@ namespace ConnectfourCode
             {
                 if (boardEvaluationBuffer == 1000)
                 {
-                    return 1000 * color;
+                    return (GetPreviousPlayer() == 0 ? 1000 - moveCount : -2 * 1000 + moveCount) * color;
                 }
                 else if(depth == 0)
                 {
-                    return boardEvaluationBuffer * color;
+                    return boardEvaluationBuffer;
                 }
             } 
             else
@@ -67,12 +67,12 @@ namespace ConnectfourCode
                 if (IsWin(out boardEvaluationBuffer))
                 {
                     transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
-                    return 1000 * color;
+                    return (GetPreviousPlayer() == 0 ? 1000 - moveCount : -2 * 1000 + moveCount) * color;
                 }
                 else if (depth == 0)
                 {
                     transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
-                    return boardEvaluationBuffer * color;
+                    return boardEvaluationBuffer;
                 }
             }
             
