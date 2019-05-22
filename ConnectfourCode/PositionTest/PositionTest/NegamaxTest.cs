@@ -108,7 +108,7 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxDrawMinPlayer()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
             int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
