@@ -176,7 +176,7 @@ namespace ArrayGameBoardEvaluateTest //TODO: MAKE THIS  AGBtest GREAT AGAIN!!!!!
         }
 
         [TestMethod]
-        public void EvaluateBoardIsWin()
+        public void EvaluateBoardIsWin2()
         {
             //Arrange
             ArrayGameBoard AGBtest = new ArrayGameBoard();
@@ -186,10 +186,10 @@ namespace ArrayGameBoardEvaluateTest //TODO: MAKE THIS  AGBtest GREAT AGAIN!!!!!
 
             //  1 2 3 4 5 6 7   
             //Act                                       // | | | | | | | | 6
-            bool expectedValue = true;                      // | | | |x|x| | | 5
+            bool expectedValue = true;                  // | | | |x|x| | | 5
             int calcValue = AGBtest.EvaluateBoard();    // | | | |o|x| | | 4
                                                         // | | | |x|o| | | 3
-                                                        //Assert                                    // | | | |o|x| | | 2
+            //Assert                                    // | | | |o|x| | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|o| |o| 1
         }
     }  
