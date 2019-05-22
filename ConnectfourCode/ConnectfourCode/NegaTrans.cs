@@ -3,7 +3,7 @@
 
 namespace ConnectfourCode
 {
-    public class NegaTrans : ArrayGameBoard//BitBoard
+    public class NegaTrans : BitBoard
     {
 
         public int bestMove { get; set; }
