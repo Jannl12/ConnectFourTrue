@@ -173,7 +173,7 @@ namespace ConnectfourCode
 
             if (IsWin())
             {
-                return GetPrevoiusPlayer() == initalPlayer ? win - moveCount : -2 * win + moveCount;
+                return GetPrevoiusPlayer() == initalPlayer ? win - moveCount : 2 * win - moveCount;
             }
             else if (IsDraw())
             {

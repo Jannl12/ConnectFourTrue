@@ -31,7 +31,7 @@ namespace ConnectfourCode
         public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
         {
             if (rootNode)
-                initalMoveCount = moveCount;
+                initalPlayer = GetCurrentPlayer();
 
             ulong lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
