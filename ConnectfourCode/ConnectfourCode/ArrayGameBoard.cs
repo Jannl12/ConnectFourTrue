@@ -157,7 +157,7 @@ namespace ConnectfourCode
 
         public bool IsWin()
         {
-            return EvaluateBoard() >= 1000;
+            return EvaluateBoard() == 1000;
         }
 
         public bool IsDraw()
