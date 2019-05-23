@@ -174,7 +174,7 @@ namespace ConnectfourCode
             if (IsWin())
             {
                 int color = GetPrevoiusPlayer() == 0 ? 1 : -1;
-                return (GetPrevoiusPlayer() == initalPlayer ? win + moveCount : 2 * win + moveCount)*color;
+                return (GetPrevoiusPlayer() == initalPlayer ? -win + moveCount : 2 * win - moveCount)*color;
             }
             else if (IsDraw())
             {
