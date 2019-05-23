@@ -3,13 +3,13 @@
 
 namespace ConnectfourCode
 {
-    public class NegaTrans : ArrayGameBoard//BitBoard
+    public class NegaTrans : BitBoard
     {
 
         public int bestMove { get; set; }
 
         public int PlyDepth;
-        Dictionary<int, int> TranspositionTable = new Dictionary<int, int>();
+        Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
 
         public void ResetTranspositionTable()
         {
@@ -25,14 +25,15 @@ namespace ConnectfourCode
         {
             NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
             int bufferBestMove = bestMove;
-            ResetGame();
             return bufferBestMove;
         }
 
         public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
-
         {
-            int lookUpBoardKey = GetBoardKey();
+            if (rootNode)
+                initalMoveCount = moveCount;
+
+            ulong lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
             if (IsWin() || depth == 0 || IsDraw())
             {
@@ -46,10 +47,8 @@ namespace ConnectfourCode
                     return evalBuffer * color;
                 }
             }
-            List<int> moves = PossibleMoves();
-            foreach (int move in moves)
+            foreach (int move in PossibleMoves())
             {
-
                 MakeMove(move);
                 int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
 

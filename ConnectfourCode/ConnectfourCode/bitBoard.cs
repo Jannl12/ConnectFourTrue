@@ -24,8 +24,9 @@ namespace ConnectfourCode
 
         public Stack<int> moveHistory = new Stack<int>();
         private int boardHeight = 6 - 1, boardWidth = 7;
-        private int[] boardScores = { 0, 0, 1, 4, 1000 };
+        private int[] boardScores = { 0, 1, 4};
         private int[] directions = { 1, 7, 6, 8 };
+        protected int initalMoveCount = 0;
 
 
 
@@ -107,6 +108,11 @@ namespace ConnectfourCode
             return false;
         }
 
+        protected int GetInitialPlayer()
+        {
+            return initalMoveCount % 2;
+        }
+
 
         /**<summary><c>possibleMoves</c> creates a list of possible moves, based on which bits are set in
          * the ulongs of the <paramref name="bitGameBoard">.</paramref></summary>
@@ -172,7 +178,7 @@ namespace ConnectfourCode
 
             if (IsWin())
             {
-                return GetPrevoiusPlayer() == 0 ? win - moveCount : -2 * win + moveCount;
+                return GetPrevoiusPlayer() == GetInitialPlayer() ? win - moveCount : -2 * win + moveCount;
             }
             else if (IsDraw())
             {
@@ -198,7 +204,7 @@ namespace ConnectfourCode
                                             //{ emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //1 
                                             //{ emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //1
                                             //{ emptySlotsBitBoard,           emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]} };//1
-                    int[] numberOfboardsInSpan = { 3, 3, 3, 3, 2, 2, 2, 2, 2, 2 };//, 1, 1, 1, 1 };
+                    int[] numberOfboardsInSpan = { 2, 2, 2, 2, 1, 1, 1, 1, 1, 1 };//, 0, 0, 0, 0 };
                     for (int combination = 0; combination < allCombinations.GetLength(0); combination++)
                     {
                         int evaluationBuffer = findCombinationAndGiveScore(allCombinations[combination, 0],

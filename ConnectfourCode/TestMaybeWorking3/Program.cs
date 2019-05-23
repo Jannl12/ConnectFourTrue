@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using ConnectfourCode;
 using Microsoft.Office.Interop.Excel;
+using NegamaxTest;
 using OpenQA.Selenium.Firefox;
 
 namespace TestMaybeWorking3
@@ -14,7 +15,7 @@ namespace TestMaybeWorking3
         static void Main(string[] args)
         {
 
-            /*   Application excelApplication = new Application();
+              /* Application excelApplication = new Application();
                excelApplication.Visible = true;
                var excelWorkBook = excelApplication.Workbooks.Add();
                var xlsxSheet = excelWorkBook.Sheets as Sheets;
@@ -23,7 +24,7 @@ namespace TestMaybeWorking3
                NegaTrans againstOnlineSolver = new NegaTrans(9);
                Random rnd = new Random();
                //int count = 2 * 15 * 20;
-               int[] plyDepths = { 10, 11 };// { 5, 6, 7, 8, 9, 10, 11, 12 };
+               int[] plyDepths = { 5, 6 , 7, 12 };// { 5, 6, 7, 8, 9, 10, 11, 12 };
 
                //foreach (int ply in plyDeths)
                //{*/
@@ -63,7 +64,7 @@ namespace TestMaybeWorking3
                                   excelWorkSheet.Cells[++row, 1] = threeRow.ToString() + "," + twoRow.ToString() + "," + oneRow.ToString();
                                   excelWorkSheet.Cells[row, 2] = againstOnlineSolver.MoveCount;
                               }*/
-            /*        url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
+                 /*   url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
                     color *= -1;
                 }
                 else
@@ -205,9 +206,9 @@ namespace TestMaybeWorking3
             {             
                 testTime.setPlyDepth(9, 9);
                 testTime.PlayConnectFour();
-                testTime.CreateSheet("run number" + i.ToString());
+                testTime.CreateSheet("Run" + i.ToString());
             }
-            testTime.WriteToExcel("NegaArrayTime.xlsx");
+            testTime.WriteToExcel("NoAlphaBeta.xlsx");
            /* NegaTrans test = new NegaTrans(9);
             int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
 
@@ -242,7 +243,7 @@ namespace TestMaybeWorking3
         private int plyDepth;
         private string[] headers = { "MoveCount", "Color", "PlyDepth", "BestMove", "Time (ms)", "Result" };
         private string result = "No result";
-        private NegamaxArray plyNega = new NegamaxArray(1);
+        private NegaTrans plyNega = new NegaTrans(1);
         Application excelApplication = new Application();
         private Workbook excelWorkbook;
         Sheets xlsxSheet;
@@ -274,6 +275,7 @@ namespace TestMaybeWorking3
                 else if (plyNega.IsDraw())
                     result = "Draw Game";
             }
+            //plyNega.ResetTranspositionTable();
             plyNega.ResetGame();
         }
 
@@ -299,7 +301,6 @@ namespace TestMaybeWorking3
             Watch.Start();
             plyNega.NegaMax(alpha, beta, plyDepth, color, true);
             Watch.Stop();
-            //plyNega.ResetTranspositionTable();
             tempData.Add(plyNega.moveCount);
             tempData.Add(color);
             tempData.Add(plyDepth);

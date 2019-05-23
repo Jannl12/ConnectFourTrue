@@ -43,13 +43,13 @@ namespace ConnectfourCode
             else if (depth == 0)
             {
                 if (TranspositionTable.TryGetValue(lookUpBoardKey, out evalBuffer))
-                    return evalBuffer * color;
+                    return evalBuffer;
                 else
                 {
                     evalBuffer = EvaluateBoard();
 
                     TranspositionTable[lookUpBoardKey] = evalBuffer;
-                    return evalBuffer * color;
+                    return evalBuffer;
                 }
             }
             List<int> moves = PossibleMoves();
