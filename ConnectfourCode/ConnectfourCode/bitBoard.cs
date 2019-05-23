@@ -26,7 +26,7 @@ namespace ConnectfourCode
         private int boardHeight = 6 - 1, boardWidth = 7;
         private int[] boardScores = { 0, 1, 4};
         private int[] directions = { 1, 7, 6, 8 };
-        protected int initalMoveCount = 0;
+        protected int initalPlayer = 0;
 
 
 
@@ -108,11 +108,6 @@ namespace ConnectfourCode
             return false;
         }
 
-        protected int GetInitialPlayer()
-        {
-            return initalMoveCount % 2;
-        }
-
 
         /**<summary><c>possibleMoves</c> creates a list of possible moves, based on which bits are set in
          * the ulongs of the <paramref name="bitGameBoard">.</paramref></summary>
@@ -178,7 +173,7 @@ namespace ConnectfourCode
 
             if (IsWin())
             {
-                return GetPrevoiusPlayer() == GetInitialPlayer() ? win - moveCount : -2 * win + moveCount;
+                return GetPrevoiusPlayer() == initalPlayer ? win - moveCount : -2 * win + moveCount;
             }
             else if (IsDraw())
             {
