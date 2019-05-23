@@ -14,6 +14,7 @@ namespace ConnectfourCode
     {
         public int[,] gameboard = new int[6, 7];
         int[] columnHeight = new int[7];
+        protected int initalPlayer = 0;
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         public List<List<Tuple<int, int>>> boardCheckLocations;

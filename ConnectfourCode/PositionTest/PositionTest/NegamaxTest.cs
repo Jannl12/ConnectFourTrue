@@ -125,18 +125,60 @@ namespace PositionTest
             Assert.AreEqual(expectedInt, calcValue);
         }
 
-        [TestMethod]
-        public void NegaMaxStartTestNoAlphaBeta()
-        {
-            NegaNoAlphaBeta test = new NegaNoAlphaBeta();
-            int expectedInt = 3;
+        //[TestMethod]
+        //public void NegaMaxStartTestNoAlphaBeta()
+        //{
+        //    NegaNoAlphaBeta test = new NegaNoAlphaBeta();
+        //    int expectedInt = 3;
 
-            test.NegaMax(9, 1, true);
+        //    test.NegaMax(9, 1, true);
+
+        //    int calcValue = test.bestMove;
+
+        //    Assert.AreEqual(expectedInt, calcValue);
+
+        //}
+        [TestMethod]
+        public void NegaMaxStartTestMaxEnd()
+        {
+            NegaTrans test = new NegaTrans(9);
+            int[] moveArray = { 2, 3, 2, 1, 1, 0, 0, 5, 1, 6 };
+
+            foreach (int move in moveArray) // 0 1 2 3 4 5 6
+                test.MakeMove(move);        //| | | | | | | |
+            int expectedInt = 3;            //| | | | | | | |
+                                            //| | | | | | | |
+                                            //| | | | | | | |
+                                            //|x|x|x| | | | |
+                                            //|o|o|x|o| |o|o|
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
 
             int calcValue = test.bestMove;
 
             Assert.AreEqual(expectedInt, calcValue);
 
         }
+        [TestMethod]
+        public void NegaMaxStartTestMinEnd()
+        {
+            NegaTrans test = new NegaTrans(9);
+            int[] moveArray = { 2, 3, 2, 1, 1, 0, 0, 5, 1, 6, 1 };
+
+            foreach (int move in moveArray) // 0 1 2 3 4 5 6
+                test.MakeMove(move);        //| | | | | | | |
+            int expectedInt = 4;            //| | | | | | | |
+                                            //| | | | | | | |
+                                            //| |x| | | | | |
+                                            //|x|x|x| | | | |
+                                            //|o|o|x|o| |o|o|
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
+
+            int calcValue = test.bestMove;
+
+            Assert.AreEqual(expectedInt, calcValue);
+
+        }
+
+            
     }
 }
