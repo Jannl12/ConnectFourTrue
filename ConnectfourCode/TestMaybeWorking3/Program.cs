@@ -15,19 +15,19 @@ namespace TestMaybeWorking3
         static void Main(string[] args)
         {
 
-              /* Application excelApplication = new Application();
-               excelApplication.Visible = true;
-               var excelWorkBook = excelApplication.Workbooks.Add();
-               var xlsxSheet = excelWorkBook.Sheets as Sheets;
-               Worksheet excelWorkSheet;
+            /* Application excelApplication = new Application();
+             excelApplication.Visible = true;
+             var excelWorkBook = excelApplication.Workbooks.Add();
+             var xlsxSheet = excelWorkBook.Sheets as Sheets;
+             Worksheet excelWorkSheet;
 
-               NegaTrans againstOnlineSolver = new NegaTrans(9);
-               Random rnd = new Random();
-               //int count = 2 * 15 * 20;
-               int[] plyDepths = { 5, 6 , 7, 12 };// { 5, 6, 7, 8, 9, 10, 11, 12 };
+             NegaTrans againstOnlineSolver = new NegaTrans(9);
+             Random rnd = new Random();
+             //int count = 2 * 15 * 20;
+             int[] plyDepths = { 5, 6 , 7, 12 };// { 5, 6, 7, 8, 9, 10, 11, 12 };
 
-               //foreach (int ply in plyDeths)
-               //{*/
+             //foreach (int ply in plyDeths)
+             //{*/
 
             /* for (int threeRow = 95; threeRow < 105; threeRow += 5)
              {
@@ -64,70 +64,70 @@ namespace TestMaybeWorking3
                                   excelWorkSheet.Cells[++row, 1] = threeRow.ToString() + "," + twoRow.ToString() + "," + oneRow.ToString();
                                   excelWorkSheet.Cells[row, 2] = againstOnlineSolver.MoveCount;
                               }*/
-                 /*   url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
-                    color *= -1;
-                }
-                else
-                {
-                    driver.Url = url;
-                    driver.Navigate();
+            /*   url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
+               color *= -1;
+           }
+           else
+           {
+               driver.Url = url;
+               driver.Navigate();
 
-                    Thread.Sleep(1000);
-                    var source = driver.PageSource;
-                    //fully navigate the dom
-                    int[] solutionValues = new int[7];
-                    for (int i = 0; i < 7; i++)
-                    {
-                        var classElement = driver.FindElementByClassName("col" + i.ToString());
-                        if (classElement.Text != "")
-                            solutionValues[i] = Convert.ToInt32(classElement.Text);
-                        else
-                            solutionValues[i] = -100;
-                    }
-                    //var pathElement = driver.FindElementById("solution");
+               Thread.Sleep(1000);
+               var source = driver.PageSource;
+               //fully navigate the dom
+               int[] solutionValues = new int[7];
+               for (int i = 0; i < 7; i++)
+               {
+                   var classElement = driver.FindElementByClassName("col" + i.ToString());
+                   if (classElement.Text != "")
+                       solutionValues[i] = Convert.ToInt32(classElement.Text);
+                   else
+                       solutionValues[i] = -100;
+               }
+               //var pathElement = driver.FindElementById("solution");
 
 
-                    //string[] solutionStringValues = Regex.Split(pathElement.Text, Environment.NewLine);
-                    //int[] solutionValues = Array.ConvertAll(solutionStringValues, new Converter<string, int>(ConvertStringArray.StringToInt));
-                    int maxValue = solutionValues.Max();
-                    if (maxValue > 0)
-                    {
-                        color *= -1;
-                        break;
-                    }
-                    List<int> maxIndexes = new List<int>();
-                    for (int i = 0; i < solutionValues.Length; i++)
-                        if (solutionValues[i] == maxValue)
-                            maxIndexes.Add(i);
+               //string[] solutionStringValues = Regex.Split(pathElement.Text, Environment.NewLine);
+               //int[] solutionValues = Array.ConvertAll(solutionStringValues, new Converter<string, int>(ConvertStringArray.StringToInt));
+               int maxValue = solutionValues.Max();
+               if (maxValue > 0)
+               {
+                   color *= -1;
+                   break;
+               }
+               List<int> maxIndexes = new List<int>();
+               for (int i = 0; i < solutionValues.Length; i++)
+                   if (solutionValues[i] == maxValue)
+                       maxIndexes.Add(i);
 
-                    int r = rnd.Next(maxIndexes.Count);
-                    //int maxIndex = solutionValues.ToList().IndexOf(maxValue);
-                    againstOnlineSolver.MakeMove(maxIndexes[r]);
-                    url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
-                    color *= -1;
-                }
-            }
-            driver.Close();
-            string result;
-            if (againstOnlineSolver.IsDraw())
-            {
-                result = "Draw";
-            }
-            else if (color == -1)
-            {
-                result = "Computer Won";
-            }
-            else
-            {
-                result = "Online Won";
-            }
+               int r = rnd.Next(maxIndexes.Count);
+               //int maxIndex = solutionValues.ToList().IndexOf(maxValue);
+               againstOnlineSolver.MakeMove(maxIndexes[r]);
+               url += (againstOnlineSolver.moveHistory.Peek() + 1).ToString();
+               color *= -1;
+           }
+       }
+       driver.Close();
+       string result;
+       if (againstOnlineSolver.IsDraw())
+       {
+           result = "Draw";
+       }
+       else if (color == -1)
+       {
+           result = "Computer Won";
+       }
+       else
+       {
+           result = "Online Won";
+       }
 
-            excelWorkSheet.Cells[++row, 1] = result;
-        }
-    }
-    excelWorkBook.SaveAs("AlgoritmVsOnlineSolverply10.xlsx");
-    GC.Collect();
-    GC.WaitForPendingFinalizers(); 
+       excelWorkSheet.Cells[++row, 1] = result;
+   }
+}
+excelWorkBook.SaveAs("AlgoritmVsOnlineSolverply10.xlsx");
+GC.Collect();
+GC.WaitForPendingFinalizers(); 
 //Console.WriteLine($"Number of simulations missing: {--count}");
 //    }
 // }
@@ -209,16 +209,18 @@ namespace TestMaybeWorking3
                 testTime.CreateSheet("Run" + i.ToString());
             }
             testTime.WriteToExcel("NoAlphaBeta.xlsx");*/
-           NegaTrans test = new NegaTrans(9);
-            int[] moveArray = { 2,3,2,1,1,0,0,5,1,6 };
+            NegaTrans test = new NegaTrans(9);
 
+            int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6 };
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
-                test.MakeMove(move);        //|o| |x|o| |x|o|
-            int expectedInt = 1;            //|x| |o|x| |o|x|
-                                            //|o| |x|o| |x|o|
-                                            //|x|x|o|x| |o|x|
-                                            //|o|o|x|o| |x|o|
-                                            //|x|x|o|x| |x|o|
+                test.MakeMove(move);        //| | |x|x| |o| |
+            int wrongMove1 = 4;             //|x| |x|x| |x| |
+            int wrongMove2 = 1;             //|o| |o|o| |o| |
+                                            //|x| |o|x| |o| |
+                                            //|o|x|x|o|o|x| |
+                                            //|o|x|x|x|o|o|o|    
+
+            //Act
             test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
             Console.WriteLine(test.bestMove);
             Console.ReadKey();
