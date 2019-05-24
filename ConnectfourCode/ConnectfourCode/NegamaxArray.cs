@@ -36,12 +36,14 @@ namespace ConnectfourCode
 
             int lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
-            if (IsWin()) 
-                return (GetPreviousPlayer() == initalPlayer ? 1000 - moveCount : -2 * 1000 + moveCount) * color;
-        
-            else if (IsDraw()) 
+            if (IsWin())
+            {
+                int factor = GetPreviousPlayer() == initalPlayer ? 1 : 2;
+                return (-10000 + moveCount) * factor;
+            }
+            else if (IsDraw())
                 return 0;
-            
+
             else if (depth == 0)
             {
                 if (TranspositionTable.TryGetValue(lookUpBoardKey, out evalBuffer))

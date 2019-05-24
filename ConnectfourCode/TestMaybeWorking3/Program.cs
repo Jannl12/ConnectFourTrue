@@ -201,7 +201,7 @@ GC.WaitForPendingFinalizers();
             }
             excelWorkBook.SaveAs("testParameterNew.xlsx");
         }*/
-            /*TestPlyEffect testTime = new TestPlyEffect();
+           /* TestPlyEffect testTime = new TestPlyEffect();
             for (int i = 0; i < 10; i++)
             {             
                 testTime.setPlyDepth(9, 9);
@@ -209,19 +209,19 @@ GC.WaitForPendingFinalizers();
                 testTime.CreateSheet("Run" + i.ToString());
             }
             testTime.WriteToExcel("NoAlphaBeta.xlsx");*/
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
 
-            int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6 };
+            int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6, 4 };
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
                 test.MakeMove(move);        //| | |x|x| |o| |
-            int wrongMove1 = 4;             //|x| |x|x| |x| |
+            int wrongMove1 = 6;             //|x| |x|x| |x| |
             int wrongMove2 = 1;             //|o| |o|o| |o| |
                                             //|x| |o|x| |o| |
                                             //|o|x|x|o|o|x| |
                                             //|o|x|x|x|o|o|o|    
 
             //Act
-            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, 1, true);
+            test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
             Console.WriteLine(test.bestMove);
             Console.ReadKey();
         }

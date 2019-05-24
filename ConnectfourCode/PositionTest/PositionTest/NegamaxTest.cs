@@ -52,7 +52,7 @@ namespace PositionTest
         {
 
             //Arrange
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
 
             int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6};
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -76,7 +76,7 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxStartTest()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
           
             int expectedInt = 3;
 
@@ -89,7 +89,7 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxEndMinPlayer()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
             int[] moveArray = {3, 3, 3, 3, 3, 6, 4, 5, 1, 2, 5, 5, 5, 1, 2, 6, 2, 1, 1, 1, 5, 1, 4, 6, 6, 6, 6, 0, 0, 0, 0, 5, 4, 4, 4, 4};
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
                 test.MakeMove(move);        //| |o| | |o|o|x|
@@ -108,7 +108,7 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxDrawMinPlayer()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
             int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -141,7 +141,7 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxStartTestMaxEnd()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
             int[] moveArray = { 2, 3, 2, 1, 1, 0, 0, 5, 1, 6 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -161,7 +161,7 @@ namespace PositionTest
         [TestMethod]
         public void NegaMaxStartTestMinEnd()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegamaxArray test = new NegamaxArray(9);
             int[] moveArray = { 2, 3, 2, 1, 1, 0, 0, 5, 1, 6, 1 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
