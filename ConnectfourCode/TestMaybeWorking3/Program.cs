@@ -201,15 +201,15 @@ GC.WaitForPendingFinalizers();
             }
             excelWorkBook.SaveAs("testParameterNew.xlsx");
         }*/
-           /* TestPlyEffect testTime = new TestPlyEffect();
-            for (int i = 0; i < 10; i++)
+            TestPlyEffect testTime = new TestPlyEffect();
+            for (int i = 0; i < 1; i++)
             {             
                 testTime.setPlyDepth(9, 9);
                 testTime.PlayConnectFour();
                 testTime.CreateSheet("Run" + i.ToString());
             }
-            testTime.WriteToExcel("NoAlphaBeta.xlsx");*/
-            NegamaxArray test = new NegamaxArray(9);
+            testTime.WriteToExcel("NoAlphaBeta.xlsx");
+            /*NegamaxArray test = new NegamaxArray(9);
 
             int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6, 4 };
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -223,7 +223,7 @@ GC.WaitForPendingFinalizers();
             //Act
             test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
             Console.WriteLine(test.bestMove);
-            Console.ReadKey();
+            Console.ReadKey();*/
         }
     }
 
@@ -245,7 +245,7 @@ GC.WaitForPendingFinalizers();
         private int plyDepth;
         private string[] headers = { "MoveCount", "Color", "PlyDepth", "BestMove", "Time (ms)", "Result" };
         private string result = "No result";
-        private NegaTrans plyNega = new NegaTrans(1);
+        private NegamaxArray plyNega = new NegamaxArray(1);
         Application excelApplication = new Application();
         private Workbook excelWorkbook;
         Sheets xlsxSheet;

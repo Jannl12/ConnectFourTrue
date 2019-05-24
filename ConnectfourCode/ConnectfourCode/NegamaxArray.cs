@@ -31,15 +31,12 @@ namespace ConnectfourCode
 
         public int NegaMax(int alpha, int beta, int depth, int color, bool rootNode)
         {
-            if (rootNode)
-                initalPlayer = GetCurrentPlayer();
-
             int lookUpBoardKey = GetBoardKey();
             int evalBuffer = 0;
             if (IsWin())
             {
                 int factor = GetPreviousPlayer() == initalPlayer ? 1 : 2;
-                return (-10000 + moveCount) * factor;
+                return (-10000 + moveCount);// * factor;
             }
             else if (IsDraw())
                 return 0;
