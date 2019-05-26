@@ -21,9 +21,10 @@ namespace ConnectfourCode
             this.PlyDepth = plyDepth;
         }
 
-        public int GetBestMove(int player)
+        public int GetBestMove()
         {
-            NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, player, true);
+            int playerNegamaxValue = GetCurrentPlayer() == 0 ? 1 : -1;
+            NegaMax(int.MinValue + 1, int.MaxValue, PlyDepth, playerNegamaxValue, true);
             int bufferBestMove = bestMove;
             return bufferBestMove;
         }

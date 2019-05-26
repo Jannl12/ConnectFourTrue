@@ -32,16 +32,7 @@ namespace ConnectfourCode
         Button startButton, exitButton, playerOneModeButton, playerTwoModeButton;
         Label title = new Label(), plyDepthTitle = new Label();
         Thickness buttonThickness = new Thickness(10, 20, 10, 20);
-        private bool playerOneIsComputerControlled = true, playerTwoIsComputerControlled = false;
-        public bool PlayerOneIsComputerControlled
-        {
-            get { return playerOneIsComputerControlled; }
-        }
-
-        public bool PlayerTwoIsComputerControlled
-        {
-            get { return playerTwoIsComputerControlled; }
-        }
+        public int playerOneIsComputerControlled = 1, playerTwoIsComputerControlled = 0;
 
         public int GetPlyDepthValue
         {
@@ -54,18 +45,23 @@ namespace ConnectfourCode
 
             windowContent.Orientation = Orientation.Vertical;
             //Adding Title
+            {
                 title.Content = "Welcome to ConnectFour!";
                 title.FontSize = 30;
                 title.Margin = new Thickness(0, 20, 0, 20);
                 title.HorizontalAlignment = HorizontalAlignment.Center;
-            windowContent.Children.Add(title);
+                windowContent.Children.Add(title);
+            }
             //Ading PlyDepth Slider Label
+            {
                 plyDepthTitle.Content = "Select Plydepth: " + 10;
                 plyDepthTitle.FontSize = 16;
                 plyDepthTitle.Margin = new Thickness(0, 20, 0, 20);
                 plyDepthTitle.HorizontalAlignment = HorizontalAlignment.Center;
-            windowContent.Children.Add(plyDepthTitle);
+                windowContent.Children.Add(plyDepthTitle);
+            }
             //Adding Plydepth Slider
+            {
                 plyDepth.Minimum = 1;
                 plyDepth.Maximum = 20;
                 plyDepth.Width = 300;
@@ -79,46 +75,101 @@ namespace ConnectfourCode
                 {
                     plyDepthTitle.Content = "Select Plydepth: " + plyDepth.Value;
                 };
-            windowContent.Children.Add(plyDepth);
+                windowContent.Children.Add(plyDepth);
+            }
 
-                //Adding Two buttons in Stackpanel for Choosing AI players vs Human players
+
+            //Adding Two buttons in Stackpanel for Choosing AI players vs Human players
+            {
                 playerTypes.Orientation = Orientation.Horizontal;
                 playerTypes.HorizontalAlignment = HorizontalAlignment.Center;
-                    //Player One
+                //Player One
+                {
                     playerOneModeButton = new Button();
                     playerOneModeButton.HorizontalAlignment = HorizontalAlignment.Center;
-                    playerOneModeButton.Content = PlayerOneIsComputerControlled ? "AI Player" : "Human Player" ;
+                    playerOneModeButton.Content = "AI(ArrayBoard)";
                     playerOneModeButton.Margin = buttonThickness;
-                    
+
                     playerOneModeButton.Width = 150;
                     playerOneModeButton.Height = 100;
                     playerOneModeButton.Click += (sender, e) =>
                     {
-                        playerOneIsComputerControlled = !playerOneIsComputerControlled;
-                        playerOneModeButton.Content = playerOneIsComputerControlled ? "AI Player" : "Human Player";
-                        
+                        playerOneIsComputerControlled = (playerOneIsComputerControlled + 1) % 3;
+                        switch (playerOneIsComputerControlled)
+                        {
+                            case 0:
+                                playerOneModeButton.Content = "Human Player";
+                                break;
+                            case 1:
+                                playerOneModeButton.Content = "AI(ArrayBoard)";
+                                break;
+                            case 2:
+                                playerOneModeButton.Content = "AI(BitBoard)";
+                                break;
+                            default:
+                                playerOneModeButton.Content = "Error";
+                                playerOneModeButton.Background = new SolidColorBrush(Colors.Red);
+                                break;
+                        }
+                        if(playerOneIsComputerControlled != 0 && playerTwoIsComputerControlled != 0)
+                        {
+                            startButton.IsEnabled = false;
+                        }
+                        else
+                        {
+                            startButton.IsEnabled = true;
+                        }
+
                     };
-                playerTypes.Children.Add(playerOneModeButton);
-                    //Player Two
+                    playerTypes.Children.Add(playerOneModeButton);
+                }
+                //Player Two
+                {
                     playerTwoModeButton = new Button();
                     playerTwoModeButton.HorizontalAlignment = HorizontalAlignment.Center;
-                    playerTwoModeButton.Content = playerTwoModeButton.Content = PlayerTwoIsComputerControlled ? "AI Player" : "Human Player"; ;
+                    playerTwoModeButton.Content = playerTwoModeButton.Content = "Human Player";
                     playerTwoModeButton.Margin = buttonThickness;
                     playerTwoModeButton.Width = 150;
                     playerTwoModeButton.Height = 100;
                     playerTwoModeButton.Click += (sender, e) =>
                     {
-                        playerTwoIsComputerControlled = !playerTwoIsComputerControlled;
-                        playerTwoModeButton.Content = playerTwoIsComputerControlled ? "AI Player" : "Human Player";
+                        playerTwoIsComputerControlled = (playerTwoIsComputerControlled + 1) % 3;
+                        switch (playerTwoIsComputerControlled)
+                        {
+                            case 0:
+                                playerTwoModeButton.Content = "Human Player";
+                                break;
+                            case 1:
+                                playerTwoModeButton.Content = "AI(ArrayBoard)";
+                                break;
+                            case 2:
+                                playerTwoModeButton.Content = "AI(BitBoard)";
+                                break;
+                            default:
+                                playerTwoModeButton.Content = "Error";
+                                break;
+                        }
+                        if (playerOneIsComputerControlled != 0 && playerTwoIsComputerControlled != 0)
+                        {
+                            startButton.IsEnabled = false;
+                        }
+                        else
+                        {
+                            startButton.IsEnabled = true;
+                        }
 
                     };
-                playerTypes.Children.Add(playerTwoModeButton);
+                    playerTypes.Children.Add(playerTwoModeButton);
+                }
+            }
 
             windowContent.Children.Add(playerTypes);
-                //Adding two buttons for exit and start game.
+            //Adding two buttons for exit and start game.
+            {
                 exitAndStartButton.Orientation = Orientation.Horizontal;
                 exitAndStartButton.HorizontalAlignment = HorizontalAlignment.Center;
-                    //Start Button
+                //Start Button
+                {
                     startButton = new Button();
                     startButton.HorizontalAlignment = HorizontalAlignment.Center;
                     startButton.Content = "Start Game";
@@ -129,8 +180,10 @@ namespace ConnectfourCode
                     {
                         this.Close();
                     };
-                exitAndStartButton.Children.Add(startButton);
-                    //Exit Button
+                    exitAndStartButton.Children.Add(startButton);
+                }
+                //Exit Button
+                {
                     exitButton = new Button();
                     exitButton.HorizontalAlignment = HorizontalAlignment.Center;
                     exitButton.Content = "Exit";
@@ -141,9 +194,12 @@ namespace ConnectfourCode
                     {
                         System.Windows.Application.Current.Shutdown();
                     };
-                exitAndStartButton.Children.Add(exitButton);
+                    exitAndStartButton.Children.Add(exitButton);
+                }
 
-            windowContent.Children.Add(exitAndStartButton);
+                windowContent.Children.Add(exitAndStartButton);
+
+            }
 
             this.Title = "New Game";
             this.Width = 400;
@@ -166,31 +222,47 @@ namespace ConnectfourCode
         int gridElementSize = 100;
 
         startMenu newGameMenu;
-        NegaMaxAGB negaMaxBoard;
-        NegamaxArray test = new NegamaxArray(1);
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
 
-        IterativDeepening negaTest = new IterativDeepening();
+        int[] playerModes = new int[2];
 
-        bool[] playerModes = new bool[2];
+        dynamic AIGameBoard;
 
 
 
         public MainWindow()
         {
             InitializeComponent();
-            newGameMenu = new startMenu(this);
-            newGameMenu.ShowDialog();
-            this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
-            this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
-            negaMaxBoard = new NegaMaxAGB(newGameMenu.GetPlyDepthValue);
+
+
+            void newGame()
+            {
+                newGameMenu = new startMenu(this);
+                newGameMenu.ShowDialog();
+                this.playerModes[0] = newGameMenu.playerOneIsComputerControlled;
+                this.playerModes[1] = newGameMenu.playerTwoIsComputerControlled;
+
+                if(playerModes[0] == 1 || playerModes[1] == 1)
+                {
+                    AIGameBoard = new NegaMaxAGB(newGameMenu.GetPlyDepthValue);
+                } 
+                else if (playerModes[0] == 2 || playerModes[1] == 2)
+                {
+                    AIGameBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
+                }
+                else
+                {
+                    AIGameBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
+                }
+            }
+
+            newGame();
 
 
             Grid gameGrid = new Grid();
             this.Title = "Connect Four Motherfucker!";
             this.Width = 740; this.Height = 760;
-            newGameMenu = new startMenu(this);
 
             gameGrid.Height = rowCount * gridElementSize + 100;
             gameGrid.Width = columnCount * gridElementSize;
@@ -250,7 +322,7 @@ namespace ConnectfourCode
 
                     bufferEllipse.MouseDown += (sender, e) =>
                     {
-                        ColumnClick(g, true);
+                        ColumnClick(g, playerModes[AIGameBoard.GetPreviousPlayer()] != 0);
                     };
                     ellipseGameBoard[i, j] = bufferEllipse;
                     gameGrid.Children.Add(bufferEllipse);
@@ -263,13 +335,7 @@ namespace ConnectfourCode
 
 
             //Setup resetButton
-            resetButton = new Button();
-            resetButton.Content = "Reset";
-            resetButton.Height = gridElementSize - gridElementSize / 5;
-            resetButton.Width = gridElementSize - gridElementSize / 5;
-            resetButton.Margin = new Thickness(gridElementSize / 5 / 2);
-            Grid.SetRow(resetButton, rowCount + 1);
-            Grid.SetColumn(resetButton, 1);
+            resetButton = new gameBoardInteraktionButton(gridElementSize, 1, rowCount + 1, "Reset");
             gameGrid.Children.Add(resetButton);
             resetButton.Click += (sender, e) =>
             {
@@ -279,38 +345,52 @@ namespace ConnectfourCode
 
 
             //Setup undoButton
-            undoMove = new Button();
-            undoMove.Content = "Undo Last \r\n    Move";
-            undoMove.Height = gridElementSize - gridElementSize / 5;
-            undoMove.Width = gridElementSize - gridElementSize / 5;
-            resetButton.Margin = new Thickness(gridElementSize / 5 / 2);
-            Grid.SetRow(undoMove, rowCount + 2);
-            Grid.SetColumn(undoMove, 3);
+            undoMove = new gameBoardInteraktionButton(gridElementSize, 3, rowCount + 1, "Undo Move");
+            gameGrid.Children.Add(undoMove);
             undoMove.Click += (sender, e) =>
             {
-                negaMaxBoard.UndoMove();
-                Tuple<int, int> bufferTuple = moveHistory.Pop();
-                ellipseGameBoard[bufferTuple.Item1, bufferTuple.Item2].Fill = emptyColor;
+                if (playerModes[0] != 0 || playerModes[1] != 0)
+                {
+                    if (moveHistory.Count() >= playerModes.Count())
+                    {
+                        for (int i = 0; i < playerModes.Count(); i++)
+                        {
+                            AIGameBoard.UndoMove();
+                            Tuple<int, int> bufferTuple = moveHistory.Pop();
+                            ellipseGameBoard[bufferTuple.Item1, bufferTuple.Item2].Fill = emptyColor;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Not enough moves to Undo!");
+                    }
+
+                }
+                else
+                {
+                    if (moveHistory.Count() > 0)
+                    {
+                        AIGameBoard.UndoMove();
+                        Tuple<int, int> bufferTuple = moveHistory.Pop();
+                        ellipseGameBoard[bufferTuple.Item1, bufferTuple.Item2].Fill = emptyColor;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Not enough moves to Undo!");
+                    }
+                }
+                
             };
-            gameGrid.Children.Add(undoMove);
 
 
             //New Game
-            newGameButton = new Button();
-            newGameButton.Content = "New Game";
-            newGameButton.Height = gridElementSize - gridElementSize / 5;
-            newGameButton.Width = gridElementSize - gridElementSize / 5;
-            newGameButton.Margin = new Thickness(gridElementSize / 5 / 2);
-            Grid.SetRow(newGameButton, rowCount + 1);
-            Grid.SetColumn(newGameButton, 5);
+            newGameButton = new gameBoardInteraktionButton(gridElementSize, 5, rowCount + 1, "New Game");
             gameGrid.Children.Add(newGameButton);
             newGameButton.Click += (sender, e) =>
             {
+                
+                newGame();
                 ResetGame();
-                newGameMenu.ShowDialog();
-                this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
-                this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
-                negaMaxBoard = new NegaMaxAGB(newGameMenu.GetPlyDepthValue);
             };
 
             this.Closed += (sender, e) =>
@@ -319,9 +399,9 @@ namespace ConnectfourCode
             };
             this.Content = gameGrid;
 
-            if (playerModes[0])
+            if (playerModes[AIGameBoard.GetCurrentPlayer()] != 0)
             {
-                ColumnClick(negaMaxBoard.GetBestMove(1), false);
+                ColumnClick(AIGameBoard.GetBestMove(), playerModes[AIGameBoard.GetPreviousPlayer()] != 0);
             }
 
         }
@@ -331,7 +411,7 @@ namespace ConnectfourCode
         {
             for (int ellipseRowCounter = 0; ellipseRowCounter < rowCount; ellipseRowCounter++)
             {
-                ellipseGameBoard[ellipseRowCounter, targetColumn].Stroke = playerColors[negaMaxBoard.GetCurrentPlayer()];
+                ellipseGameBoard[ellipseRowCounter, targetColumn].Stroke = playerColors[AIGameBoard.GetCurrentPlayer()];
             }
         }
 
@@ -347,29 +427,34 @@ namespace ConnectfourCode
          * the current players color. Also makes a move on the bitboard.
          */
         private void ColumnClick(int targetColumn, bool nextMoveAI)
-        {    
+        {
             for (int i = rowCount - 1; i >= 0; i--)
             {
                 if (ellipseGameBoard[i, targetColumn].Fill == emptyColor)
                 {
 
-                    ellipseGameBoard[i, targetColumn].Fill = playerColors[negaMaxBoard.GetCurrentPlayer()];
-                    moveHistory.Push(new Tuple<int, int> ( i, targetColumn));
-                    negaMaxBoard.MakeMove(targetColumn);
+                    ellipseGameBoard[i, targetColumn].Fill = playerColors[AIGameBoard.GetCurrentPlayer()];
+                    moveHistory.Push(new Tuple<int, int>(i, targetColumn));
+                    AIGameBoard.MakeMove(targetColumn);
 
-                    if (negaMaxBoard.IsWin())
+                    if (AIGameBoard.IsWin())
                     {
-                        MessageBox.Show("Player " + (negaMaxBoard.GetPreviousPlayer() + 1).ToString() + " won!");
+                        MessageBox.Show("Player " + (AIGameBoard.GetPreviousPlayer() + 1).ToString() + " won!");
+                        ResetGame();
+                    }
+                    if (AIGameBoard.IsDraw())
+                    {
+                        MessageBox.Show("The Game Is A Draw!");
                         ResetGame();
                     }
                     else if (nextMoveAI)
                     {
-                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1), false);
+                        ColumnClick(AIGameBoard.GetBestMove(), playerModes[AIGameBoard.GetPreviousPlayer()] != 0);
                     }
                     break;
                 }
             }
-            
+
         }
 
         private void ResetGame()
@@ -378,8 +463,27 @@ namespace ConnectfourCode
             {
                 ellipse.Fill = emptyColor;
             }
-
-            negaMaxBoard.ResetGame();
+            moveHistory = new Stack<Tuple<int, int>>();
+            AIGameBoard.ResetGame();
+            if (playerModes[AIGameBoard.GetCurrentPlayer()] != 0)
+            {
+                ColumnClick(AIGameBoard.GetBestMove(), (playerModes[AIGameBoard.GetPreviousPlayer()] != 0));
+            }
         }
     }
+
+    public class gameBoardInteraktionButton : Button
+    {
+        public gameBoardInteraktionButton(int diameter, int columnPlacement, int rowPlacement, string content)
+        {
+            this.Height = diameter * 0.8;
+            this.Width = diameter * 0.8;
+            this.Margin = new Thickness(diameter * 0.1);
+            Grid.SetColumn(this, columnPlacement);
+            Grid.SetRow(this, rowPlacement);
+            this.Content = content;
+        }
+
+    }
 }
+

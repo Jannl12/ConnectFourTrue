@@ -91,9 +91,12 @@ namespace ConnectfourCode
 
         public void UndoMove()
         {
+            if (moveHistory.Count() != 0)
+            {
                 Tuple<int, int> latestTuple = moveHistory.Pop();
                 gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
                 columnHeight[latestTuple.Item2]--;
+            }
         }
 
         protected List<int> PossibleMoves()

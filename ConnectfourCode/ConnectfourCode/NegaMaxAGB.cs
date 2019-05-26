@@ -17,17 +17,13 @@ namespace ConnectfourCode
         {
             this.plyDepth = plyDepth;
         }
-        public int GetBestMove(int playerColor)
+        public int GetBestMove()
         {
-            Negamax(int.MinValue + 1, int.MaxValue, plyDepth, playerColor, true);
+            int playerNegamaxValue = GetCurrentPlayer() == 0 ? 1 : -1;
+            Negamax(int.MinValue + 1, int.MaxValue, plyDepth, playerNegamaxValue, true);
             KeyValuePair<int, int> bestMoveBuffer = new KeyValuePair<int, int> ( 7, int.MinValue );
             foreach (KeyValuePair<int, int> move in rootMoves)
             {
-                //if (bestMoveBuffer.Equals(default))
-                //{
-                //    bestMoveBuffer = move;
-                //}
-                //else 
                 if (move.Value > bestMoveBuffer.Value)
                 {
                     bestMoveBuffer = move;
@@ -45,8 +41,6 @@ namespace ConnectfourCode
         {
 
             int boardEvaluationBuffer, boardKeyBuffer = GetBoardKey();
-
-            
             if(transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
             {
                 if (boardEvaluationBuffer == 1000)
@@ -75,10 +69,7 @@ namespace ConnectfourCode
                     return boardEvaluationBuffer;
                 }
             }
-            
-            
-            
-            
+                        
 
             int value = int.MinValue + 1;
             foreach (int move in PossibleMoves())
