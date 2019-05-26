@@ -26,7 +26,7 @@ namespace ConnectfourCode
         private int boardHeight = 6 - 1, boardWidth = 7;
         private int[] boardScores = { 0, 1, 4};
         private int[] directions = { 1, 7, 6, 8 };
-        protected int initalPlayer = 0;
+  
 
 
 
