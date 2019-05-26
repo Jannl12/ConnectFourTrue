@@ -4,7 +4,7 @@ using System.Diagnostics;
 using ConnectfourCode;
 using System.Collections.Generic;
 
-namespace BitBoradTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
+namespace BitBoradTest 
 {
     [TestClass]
     public class EvaluateBoardTest

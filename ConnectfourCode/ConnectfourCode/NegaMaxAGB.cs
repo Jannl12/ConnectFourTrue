@@ -44,9 +44,9 @@ namespace ConnectfourCode
             int boardEvaluationBuffer, boardKeyBuffer = GetBoardKey();
             if(transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
             {
-                if (boardEvaluationBuffer == 1000)
+                if (boardEvaluationBuffer == winValue)
                 {
-                    return -10000 + moveCount;
+                    return -winValue + moveCount;
                 }
                 else if(depth == 0)
                 {
@@ -62,7 +62,7 @@ namespace ConnectfourCode
                 if (IsWin(out boardEvaluationBuffer))
                 {
                     transpositionTabel.Add(boardKeyBuffer, boardEvaluationBuffer);
-                    return -10000 + moveCount;
+                    return -winValue + moveCount;
                 }
                 else if (depth == 0)
                 {

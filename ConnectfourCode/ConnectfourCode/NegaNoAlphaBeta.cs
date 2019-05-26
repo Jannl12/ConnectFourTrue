@@ -21,8 +21,6 @@ namespace NegamaxTest
         }
 
         public int NegaMax(int depth, int color, bool firstCall)
-
-        //TODO: Skal med i implementeringen
         {
             if (IsWin() || depth == 0 || IsDraw())
             {

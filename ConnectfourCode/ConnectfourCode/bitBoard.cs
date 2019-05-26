@@ -33,9 +33,10 @@ namespace ConnectfourCode
         public int moveCount
         {
             get { return moveHistory.Count(); }
-        }/**<summary><c>BitBoard</c> Constructor for the BitBoard class that calls the <paramref name="ResetGame"/> method.</summary>
-        */
+        }
         
+        /**<summary><c>BitBoard</c> Constructor for the BitBoard class that calls the <paramref name="ResetGame"/> method.</summary>
+        */
         public BitBoard()
         {
             ResetGame();

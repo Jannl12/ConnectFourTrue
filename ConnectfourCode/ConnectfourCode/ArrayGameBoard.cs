@@ -18,7 +18,7 @@ namespace ConnectfourCode
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         public List<List<Tuple<int, int>>> boardCheckLocations;
-
+        protected int winValue = 10000;
         Dictionary<int, int> knownScores;
 
         public int moveCount
@@ -35,7 +35,7 @@ namespace ConnectfourCode
         {
             ResetGame();
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
-                new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, 1000 } },
+                new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, winValue } },
                 new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '1');
 
             boardCheckLocations = GetSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
@@ -142,7 +142,7 @@ namespace ConnectfourCode
          */
         public bool IsWin()
         {
-            return EvaluateBoard() == 1000;
+            return EvaluateBoard() == winValue;
         }
 
         /**<summary><c>IsWin(int)</c> checks if the previuos player won the game.</summary>
@@ -151,7 +151,7 @@ namespace ConnectfourCode
         protected bool IsWin(out int returnBoardEvaluation)
         {
             returnBoardEvaluation = EvaluateBoard();
-            return returnBoardEvaluation == 1000;
+            return returnBoardEvaluation == winValue;
         }
 
         /**<summary><c>IsDraw</c> tests if the gameboard is full, by testing if the sum of the columns is 42 (6*7).</summary>
@@ -177,8 +177,8 @@ namespace ConnectfourCode
                     lookupKeyBuffer += gameboard[coordinate.Item1, coordinate.Item2] * Math.Pow(10 , i--);
                 }
                 returnValue += knownScores.TryGetValue(Convert.ToInt32(lookupKeyBuffer), out lookupValueBuffer) ? lookupValueBuffer : 0;
-                if (lookupValueBuffer == 1000 || lookupValueBuffer == -1000)
-                    return 1000; //TODO: Make "Global" win value
+                if (lookupValueBuffer == winValue || lookupValueBuffer == -winValue)
+                    return winValue; 
             }
             return GetCurrentPlayer() == 0 ?  returnValue : returnValue * -1;
         }
