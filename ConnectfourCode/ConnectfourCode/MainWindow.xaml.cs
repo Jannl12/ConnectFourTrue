@@ -23,6 +23,19 @@ namespace ConnectfourCode
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     /// //test
+    /// 
+    /** <summary>The startMenu is used for intalisation of the game with the desired specifications. 
+     * While it does not have direct return values, the values, which are desired to be returned noted
+     * as return values. It should also be noted, that it is made so, that the two players 
+     * cannot both be marked as AI, atleasy one has to be human. </summary>
+     * <returns>
+    *   <list type="bullet">
+    *    <item><paramref>playerOneIsComputerControlled</paramref> which dicates if the first player is a AI.</item>
+    *    <item><paramref>playerTwoIsComputerControlled</paramref> which dicates if the second player is a AI.</item>
+    *    <item><paramref>plyDepth</paramref> which tells how deep, it is desired for the AI to run the searchdepth.</item>
+    *   </list>
+     * </returns>
+     */
     public partial class startMenu : Window
     {
         StackPanel windowContent = new StackPanel();
@@ -208,6 +221,11 @@ namespace ConnectfourCode
         }
 
     }
+
+    /** <summary><c>MainWindow</c> is the main window, which controls the gameboard of the program. It is based around having
+     * an Grid element, which holds all the content of the board, which mainly consists of 42 ellipses, which can
+     * be pressed. Here is also found a "Reset"-, "Undo"- and "New Game"-buttons. </summary>
+     */
     public partial class MainWindow : Window
     {
         Ellipse[,] ellipseGameBoard;

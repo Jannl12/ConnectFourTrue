@@ -36,7 +36,7 @@ namespace ConnectfourCode
             ResetGame();
             knownScores = ControlFile.ScoreCombinations.GetDictionaryOfCombinationsAndScoresOfMoreSpanSizes(
                 new Dictionary<int, int> { { 0, 0 }, { 1, 0 }, { 2, 1 }, { 3, 4 }, { 4, winValue } },
-                new int[] { 4, 5, 6, 7 }, 4, new char[] { '0', '1', '2' }, '0', '1');
+                4, new int[] { 4, 5, 6, 7 }, new char[] { '0', '1', '2' }, '0', '1');
 
             boardCheckLocations = GetSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
@@ -138,6 +138,7 @@ namespace ConnectfourCode
             return hashCode;
         }
         /**<summary><c>IsWin</c> checks if the previuos player won the game.</summary>
+         * <overloads><see cref="IsWin(out int)"/></overloads>
          * <returns>A bool showing if rhe previuos player one.</returns>
          */
         public bool IsWin()
