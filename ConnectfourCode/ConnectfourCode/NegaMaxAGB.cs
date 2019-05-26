@@ -42,8 +42,6 @@ namespace ConnectfourCode
         {
 
             int boardEvaluationBuffer, boardKeyBuffer = GetBoardKey();
-
-            
             if(transpositionTabel.TryGetValue(boardKeyBuffer, out boardEvaluationBuffer))
             {
                 if (boardEvaluationBuffer == 1000)

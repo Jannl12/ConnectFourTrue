@@ -86,9 +86,12 @@ namespace ConnectfourCode
          */
         public void UndoMove()
         {
+            if (moveHistory.Count() != 0)
+            {
                 Tuple<int, int> latestTuple = moveHistory.Pop();
                 gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
                 columnHeight[latestTuple.Item2]--;
+            }
         }
         /**<summary><c>possibleMoves</c> creates a list of possible moves, based on which columns in <paramref name="gameboard"> that are not full.</paramref></summary>
          * <returns><c>List<int></c>A list of possible moves in the current state of the game.</returns>

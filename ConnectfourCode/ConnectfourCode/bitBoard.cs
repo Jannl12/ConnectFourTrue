@@ -66,10 +66,11 @@ namespace ConnectfourCode
          */
         public void UndoMove()
         {
-            ulong moveBuffer = 1UL << --columnHeight[moveHistory.Pop()];
-
-            bitGameBoard[GetCurrentPlayer()] ^= moveBuffer;
-
+            if (moveHistory.Count != 0)
+            {
+                ulong moveBuffer = 1UL << --columnHeight[moveHistory.Pop()];
+                bitGameBoard[GetCurrentPlayer()] ^= moveBuffer;
+            }
         }
 
 
@@ -174,7 +175,7 @@ namespace ConnectfourCode
 
             if (IsWin())
             {
-                return GetPrevoiusPlayer() == 0 ? win - moveCount : -win + moveCount;
+                return GetPreviousPlayer() == 0 ? win - moveCount : -win + moveCount;
             }
             else if (IsDraw())
             {
