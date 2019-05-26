@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-/* The following, is based on information we learned through:
+/* The following, is based on information obtained through:
  * https://github.com/denkspuren/BitboardC4/blob/master/BitboardDesign.md
  */
 
@@ -22,22 +22,26 @@ namespace ConnectfourCode
         protected int[] columnHeight;
 
 
-        protected Stack<int> moveHistory = new Stack<int>();
+        public Stack<int> moveHistory = new Stack<int>();
         private int boardHeight = 6 - 1, boardWidth = 7;
-        private int[] boardScores = { 0, 0, 1, 4, 1000 };
+        private int[] boardScores = { 0, 1, 4};
         private int[] directions = { 1, 7, 6, 8 };
+  
 
 
 
-        protected int moveCount
+        public int moveCount
         {
             get { return moveHistory.Count(); }
-        }
-
+        }/**<summary><c>BitBoard</c> Constructor for the BitBoard class that calls the <paramref name="ResetGame"/> method.</summary>
+        */
+        
         public BitBoard()
         {
             ResetGame();
         }
+        /**<summary><c>MakeMove</c> Makes a move for the given player based on <paramref name="columnInput"/> and saves the value in <paramref name="moveHistory"/>.</summary>
+        */
         public void MakeMove(int columnInput)
         {
             ulong moveBuffer = 1UL << columnHeight[columnInput]++;
@@ -45,13 +49,15 @@ namespace ConnectfourCode
             moveHistory.Push(columnInput);
         }
 
-
+        /**<summary><c>GetCurrentPlayer</c> Finds out which player is performing the current move</summary>
+         */
         public int GetCurrentPlayer()
         {
-            return (moveCount) % 2;
+            return moveCount % 2;
         }
-
-        public int GetPrevoiusPlayer()
+        /**<summary><c>GetPrevoiusPlayer</c> Finds out which player is performing the current move</summary>
+          */
+        public int GetPreviousPlayer()
         {
             return (moveCount + 1) % 2;
         }
@@ -60,14 +66,15 @@ namespace ConnectfourCode
          */
         public void UndoMove()
         {
-            ulong moveBuffer = 1UL << --columnHeight[moveHistory.Pop()];
-
-            bitGameBoard[(moveCount + 1) % 2] ^= moveBuffer;
-
+            if (moveHistory.Count != 0)
+            {
+                ulong moveBuffer = 1UL << --columnHeight[moveHistory.Pop()];
+                bitGameBoard[GetCurrentPlayer()] ^= moveBuffer;
+            }
         }
 
 
-        /**<summary>Reset the state of the board by:
+        /**<summary><c>ResetGame</c>Resets the state of the board by:
          * <list type="bullet">
          *  <item>Setting values of <paramref name="bitGameBoard"/> to 0</item>
          *  <item>Setting the values of <paramref name="columnHeight"/> to values equal of the coloumn bottom integers of the ulongs.</item>
@@ -88,12 +95,12 @@ namespace ConnectfourCode
             moveHistory.Clear();
         }
 
-        /**<summary><c>IsWin</c> checks if the current player has won the game.</summary>
-         * <returns>A bool if the current player has won the game.</returns>
+        /**<summary><c>IsWin</c> checks if the previuos player won the game.</summary>
+         * <returns>A bool showing if rhe previuos player one.</returns>
          */
         public bool IsWin()
-        { //TODO: Should be described in Implemention, use figur
-            ulong bitboard = bitGameBoard[GetPrevoiusPlayer()]; //MoveCount +1, since the opposit player is desired.
+        { 
+            ulong bitboard = bitGameBoard[GetPreviousPlayer()]; 
 
 
             for (int i = 0; i < directions.Length; i++)
@@ -128,10 +135,6 @@ namespace ConnectfourCode
             return returnList;
         }
 
-        public bool CanPlay(int i)
-        {
-            return (((bitGameBoard[0] ^ bitGameBoard[1]) >> ((i * boardWidth) + boardHeight)) & 1UL) != 1UL;
-        }
 
         /**<summary>Creates a unique key based on the current state of the ulongs in <paramref name="bitGameBoard"/>.</summary>
          * <returns>A hashcode based on the two hashcodes</returns>
@@ -172,7 +175,7 @@ namespace ConnectfourCode
 
             if (IsWin())
             {
-                return (moveCount + 1) % 2 == 0 ? win - moveCount : -2 * win + moveCount;
+                return GetPreviousPlayer() == 0 ? win - moveCount : -win + moveCount;
             }
             else if (IsDraw())
             {
@@ -183,25 +186,23 @@ namespace ConnectfourCode
                 int returnValue = 0;
                 for (int playerIterator = 0; playerIterator < bitGameBoard.Count(); playerIterator++)
                 {
-                    ulong[,] allCombinations = {//{bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //4
-				                            { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //3
-                                            { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //3
-                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //3
-                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //3
-							                { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //2
-                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //2
-                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //2
-                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //2 
-                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //2
-                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]} };//,  //2
-							                //{ bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             emptySlotsBitBoard},            //1
-                                            //{ emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //1 
-                                            //{ emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //1
-                                            //{ emptySlotsBitBoard,           emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]} };//1
-                    int[] numberOfboardsInSpan = { 3, 3, 3, 3, 2, 2, 2, 2, 2, 2 };//, 1, 1, 1, 1 };
+                    //Shows all combinations of 2 or 3 discs in a posible four in a row
+                    ulong[,] allCombinations = {
+				                            { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //111x
+                                            { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //11x1
+                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //1x11
+                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   bitGameBoard[playerIterator]},  //x111
+							                { bitGameBoard[playerIterator], bitGameBoard[playerIterator],   emptySlotsBitBoard,             emptySlotsBitBoard},            //11xx
+                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             bitGameBoard[playerIterator],   emptySlotsBitBoard},            //1x1x
+                                            { bitGameBoard[playerIterator], emptySlotsBitBoard,             emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //1xx1
+                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   bitGameBoard[playerIterator],   emptySlotsBitBoard},            //x11x 
+                                            { emptySlotsBitBoard,           bitGameBoard[playerIterator],   emptySlotsBitBoard,             bitGameBoard[playerIterator]},  //x1x1
+                                            { emptySlotsBitBoard,           emptySlotsBitBoard,             bitGameBoard[playerIterator],   bitGameBoard[playerIterator]} };//xx11
+							          
+                    int[] numberOfboardsInSpan = { 2, 2, 2, 2, 1, 1, 1, 1, 1, 1 };
                     for (int combination = 0; combination < allCombinations.GetLength(0); combination++)
                     {
-                        int evaluationBuffer = findCombinationAndGiveScore(allCombinations[combination, 0],
+                        int evaluationBuffer = FindCombinationAndGiveScore(allCombinations[combination, 0],
                                                             allCombinations[combination, 1],
                                                             allCombinations[combination, 2],
                                                             allCombinations[combination, 3],
@@ -213,11 +214,11 @@ namespace ConnectfourCode
             }
         }
 
-        /** <summary><c>evalDirection</c> takes in four boards(ulongs) and calculates how many cases of the given
+        /** <summary><c>FindCombinationAndGiveScore</c> takes in four boards(ulongs) and calculates how many cases of the given
          * combination that exists. </summary>
          * <retuns>The score of the board for that given combination, based on a given score and found combinations.</retuns>
          */
-        private int findCombinationAndGiveScore(ulong firstBoard, ulong secondBoard, ulong thirdBoard, ulong fourthBoard, int score)
+        private int FindCombinationAndGiveScore(ulong firstBoard, ulong secondBoard, ulong thirdBoard, ulong fourthBoard, int score)
         {
             int returnValue = 0;
             for (int i = 0; i < directions.Count(); i++)
