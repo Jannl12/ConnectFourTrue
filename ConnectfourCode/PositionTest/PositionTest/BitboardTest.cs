@@ -4,7 +4,7 @@ using System.Diagnostics;
 using ConnectfourCode;
 using System.Collections.Generic;
 
-namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
+namespace BitBoradTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 {
     [TestClass]
     public class EvaluateBoardTest
@@ -84,7 +84,7 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
 
 
 
-       
+
 
         [TestMethod]
         public void EvaluateBoardOnlyMiddle()
@@ -154,7 +154,28 @@ namespace PositionTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             int expectedValue = 4;                      // | | | |x|x| | | 5
             int calcValue = test.EvaluateBoard();       // | | | |o|x| | | 4
                                                         // | | | |x|o| | | 3
-                                                        //Assert                                    // | | | |o|x| | | 2
+            //Assert                                    // | | | |o|x| | | 2
+            Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|o| |o| 1
+        }
+    }
+    [TestClass]
+    public class BitBoardMethodTest
+    {
+        [TestMethod]
+        public void GetPreviousPlayerTest()
+        {
+            //Arrange
+            BitBoard test = new BitBoard();
+            int[] moveArray = { 3, 3, 3, 3, 3, 4, 4, 4, 4, 6, 4, 0, 1 };
+            foreach (int move in moveArray)
+                test.MakeMove(move);
+
+            //  1 2 3 4 5 6 7
+            //Act                                       // | | | | | | | | 6
+            int expectedValue = 0;                      // | | | |x|x| | | 5
+            int calcValue = test.GetPrevoiusPlayer();   // | | | |o|x| | | 4
+                                                        // | | | |x|o| | | 3
+            //Assert                                    // | | | |o|x| | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|o| |o| 1
         }
     }

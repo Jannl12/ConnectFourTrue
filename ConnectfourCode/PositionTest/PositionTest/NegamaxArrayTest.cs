@@ -1,22 +1,18 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ConnectfourCode;
-using NegamaxTest;
-using System.Collections.Generic;
 
-namespace BitBoradTest
+namespace ArrayGameBoardEvaluateTest
 {
-
     [TestClass]
-    public class NegamaxTest
+    public class NegamaxArrayTest
     {
-
         [TestMethod]
         public void NegaMaxFinishTest()
         {
 
             //Arrange
-            NegaTrans test = new NegaTrans(9);
+            NegaMaxAGB test = new NegaMaxAGB(9);
 
             int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6 };
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -27,8 +23,9 @@ namespace BitBoradTest
                                             //|o|x|x|o|o|x| |
                                             //|o|x|x|x|o|o|o|    
 
-            //Act;
-            int calcValue = test.GetBestMove();
+            //Act
+            int calcValue= test.GetBestMove();
+
 
             //Assert
             Assert.AreNotEqual(wrongMove1, calcValue);
@@ -39,7 +36,7 @@ namespace BitBoradTest
         [TestMethod]
         public void NegaMaxStartTest()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegaMaxAGB test = new NegaMaxAGB(9);
 
             int expectedInt = 3;
 
@@ -51,7 +48,7 @@ namespace BitBoradTest
         [TestMethod]
         public void NegaMaxEndMinPlayer()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegaMaxAGB test = new NegaMaxAGB(9);
             int[] moveArray = { 3, 3, 3, 3, 3, 6, 4, 5, 1, 2, 5, 5, 5, 1, 2, 6, 2, 1, 1, 1, 5, 1, 4, 6, 6, 6, 6, 0, 0, 0, 0, 5, 4, 4, 4, 4 };
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
                 test.MakeMove(move);        //| |o| | |o|o|x|
@@ -69,7 +66,7 @@ namespace BitBoradTest
         [TestMethod]
         public void NegaMaxDrawMinPlayer()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegaMaxAGB test = new NegaMaxAGB(9);
             int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -89,7 +86,7 @@ namespace BitBoradTest
         [TestMethod]
         public void NegaMaxStartTestMaxEnd()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegaMaxAGB test = new NegaMaxAGB(9);
             int[] moveArray = { 2, 3, 2, 1, 1, 0, 0, 5, 1, 6 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -99,7 +96,7 @@ namespace BitBoradTest
                                             //| | | | | | | |
                                             //|x|x|x| | | | |
                                             //|o|o|x|o| |o|o|
-
+  
             int calcValue = test.GetBestMove();
 
             Assert.AreEqual(expectedInt, calcValue);
@@ -108,7 +105,7 @@ namespace BitBoradTest
         [TestMethod]
         public void NegaMaxStartTestMinEnd()
         {
-            NegaTrans test = new NegaTrans(9);
+            NegaMaxAGB test = new NegaMaxAGB(9);
             int[] moveArray = { 2, 3, 2, 1, 1, 0, 0, 5, 1, 6, 1 };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
@@ -119,12 +116,9 @@ namespace BitBoradTest
                                             //|x|x|x| | | | |
                                             //|o|o|x|o| |o|o|
 
-
             int calcValue = test.GetBestMove();
 
             Assert.AreEqual(expectedInt, calcValue);
         }
     }
-
-
 }

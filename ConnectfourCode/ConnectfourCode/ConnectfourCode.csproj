@@ -98,7 +98,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="IterativDeepening.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -116,9 +115,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NegaMax.cs" />
     <Compile Include="NegaMaxAGB.cs" />
-    <Compile Include="NegamaxArray.cs" />
     <Compile Include="NegaNoAlphaBeta.cs" />
     <Compile Include="NegaTrans.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

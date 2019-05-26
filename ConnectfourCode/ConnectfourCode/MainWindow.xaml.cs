@@ -166,12 +166,10 @@ namespace ConnectfourCode
         int gridElementSize = 100;
 
         startMenu newGameMenu;
-        NegaMaxAGB negaMaxBoard;
-        NegamaxArray test = new NegamaxArray(1);
+        NegaTrans negaMaxBoard;
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
 
-        IterativDeepening negaTest = new IterativDeepening();
 
         bool[] playerModes = new bool[2];
 
@@ -184,7 +182,7 @@ namespace ConnectfourCode
             newGameMenu.ShowDialog();
             this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
             this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
-            negaMaxBoard = new NegaMaxAGB(newGameMenu.GetPlyDepthValue);
+            negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
 
 
             Grid gameGrid = new Grid();
@@ -310,7 +308,7 @@ namespace ConnectfourCode
                 newGameMenu.ShowDialog();
                 this.playerModes[0] = newGameMenu.PlayerOneIsComputerControlled;
                 this.playerModes[1] = newGameMenu.PlayerTwoIsComputerControlled;
-                negaMaxBoard = new NegaMaxAGB(newGameMenu.GetPlyDepthValue);
+                negaMaxBoard = new NegaTrans(newGameMenu.GetPlyDepthValue);
             };
 
             this.Closed += (sender, e) =>
@@ -321,7 +319,7 @@ namespace ConnectfourCode
 
             if (playerModes[0])
             {
-                ColumnClick(negaMaxBoard.GetBestMove(1), false);
+                ColumnClick(negaMaxBoard.GetBestMove(), false);
             }
 
         }
@@ -359,12 +357,12 @@ namespace ConnectfourCode
 
                     if (negaMaxBoard.IsWin())
                     {
-                        MessageBox.Show("Player " + (negaMaxBoard.GetPreviousPlayer() + 1).ToString() + " won!");
+                        MessageBox.Show("Player " + (negaMaxBoard.GetPrevoiusPlayer() + 1).ToString() + " won!");
                         ResetGame();
                     }
                     else if (nextMoveAI)
                     {
-                        ColumnClick(negaMaxBoard.GetBestMove(negaMaxBoard.GetCurrentPlayer() == 0 ? 1 : -1), false);
+                        ColumnClick(negaMaxBoard.GetBestMove(), false);
                     }
                     break;
                 }

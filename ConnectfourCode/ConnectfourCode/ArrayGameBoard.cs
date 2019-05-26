@@ -18,7 +18,6 @@ namespace ConnectfourCode
 
         Stack<Tuple<int, int>> moveHistory = new Stack<Tuple<int, int>>();
         public List<List<Tuple<int, int>>> boardCheckLocations;
-        ulong hashCode = 0;
 
         Dictionary<int, int> knownScores;
 
@@ -27,6 +26,11 @@ namespace ConnectfourCode
             get { return moveHistory.Count(); }
         }
 
+        /**<summary><c>ArrayGameBoard</c> Constructor for the ArrayGameBoard class that calls the <paramref name="ResetGame"/> method. Furtmore it 
+         * contains the variable <paramref name="knownScores"/> that is a dict of board values for different possible boardstates. Finally
+         * the variable <paramref name="boardCheckLocations"/> is set, 
+         * so it containes alle neassecary search coordinates.</summary>
+    */
         public ArrayGameBoard()
         {
             ResetGame();
@@ -37,22 +41,10 @@ namespace ConnectfourCode
             boardCheckLocations = GetSearchCoordinates(Properties.Resources.gameboardDirectionConfig);
         }
 
-        public int MoveCount()
-        {
-            return moveHistory.Count();
-
-        }
-        private Dictionary<int, int> openScoreFileAndAddEntriesToDictionary(string inputFile)
-        {
-            Dictionary<int, int> returnDictionary = new Dictionary<int, int>();
-            foreach (string line in inputFile.Split(new string[] { "\r\n" }, System.StringSplitOptions.RemoveEmptyEntries))
-            {
-                string[] splitStringBuffer = line.Split(' ');
-                returnDictionary.Add(int.Parse(splitStringBuffer[0]), int.Parse(splitStringBuffer[1]));
-            }
-            return returnDictionary;
-        }
-
+        /**<summary><c>GetSearchCoordinates</c> Takes the string <paramref name="searchLocation"/> as an input and creates a list of lists of tuples
+         * where each tuple is a coordinate in the array, each list of tuples is the direction search the array, and each list of lists of tuples
+         * are the row and directions to search .</summary>
+        */
         private List<List<Tuple<int, int>>> GetSearchCoordinates(string searchLocation)
         {
             List<List<Tuple<int, int>>> returnList = new List<List<Tuple<int, int>>>();
@@ -69,33 +61,38 @@ namespace ConnectfourCode
 
             return returnList;
         }
+        /**<summary><c>GetCurrentPlayer</c> Finds out which player is performing the current move</summary>
+         */        public int GetCurrentPlayer()
 
-        public int GetCurrentPlayer()
         {
             return moveCount % 2;
         }
-
+        /**<summary><c>GetPreviousPlayerol</c> Finds out which player is performing the current move</summary>
+          */
         public int GetPreviousPlayer()
         {
             return (moveCount + 1) % 2;
         }
-
+        /**<summary><c>MakeMove</c> Makes a move for the given player based on <paramref name="columnInput"/> and saves the value in <paramref name="moveHistory"/>.</summary>
+        */
         public void MakeMove(int coloumnInput)
         {
-            Tuple<int, int> latestTuple = new Tuple<int, int>((columnHeight[coloumnInput]), coloumnInput);
+            Tuple<int, int> latestTuple = new Tuple<int, int>((columnHeight[coloumnInput]++), coloumnInput);
             gameboard[latestTuple.Item1, latestTuple.Item2] = GetCurrentPlayer() + 1;
             moveHistory.Push(latestTuple);    
-            columnHeight[latestTuple.Item2]++;
-
         }
 
+        /**<summary><c>UndoMove</c> undoes the move that the player did based on <paramref name="movehistory"/>.</summary>
+         */
         public void UndoMove()
         {
                 Tuple<int, int> latestTuple = moveHistory.Pop();
                 gameboard[latestTuple.Item1, latestTuple.Item2] = 0;
                 columnHeight[latestTuple.Item2]--;
         }
-
+        /**<summary><c>possibleMoves</c> creates a list of possible moves, based on which columns in <paramref name="gameboard"> that are not full.</paramref></summary>
+         * <returns><c>List<int></c>A list of possible moves in the current state of the game.</returns>
+         */
         protected List<int> PossibleMoves()
         {
             List<int> returnList = new List<int>();
@@ -109,14 +106,24 @@ namespace ConnectfourCode
             }
             return returnList;
         }
-
+        /**<summary><c>ResetGame</c>Resets the state of the board by:
+         * <list type="bullet">
+         *  <item>Creating a new instance of <paramref name="gameboard"/> where all values are zero</item>
+         *  <item>Setting the values of <paramref name="columnHeight"/> to vzero.</item>
+         *  <item>Clearing the values of <paramref name="moveHistory"/> .</list>
+         * </list>
+         * </summary>
+         */
         public void ResetGame()
         {
             gameboard = new int[6, 7];
-            moveHistory = new Stack<Tuple<int, int>>();
             columnHeight = new int[7];
+            moveHistory = new Stack<Tuple<int, int>>();
+ 
         }
-
+        /**<summary>Creates a unique key based on the current state of the array in <paramref name="gameboard"/>.</summary>
+         * <returns>A hashcode based the board state</returns>
+         */
         public int GetBoardKey()
         {
             int hashCode = gameboard.Length;
@@ -127,45 +134,34 @@ namespace ConnectfourCode
             }
             return hashCode;
         }
-
-        override public int GetHashCode()
-        {
-            int buffer = 0;
-            foreach (int i in gameboard)
-            {
-                buffer += i.GetHashCode();
-            }
-            return buffer;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null || this.GetType().Equals(obj.GetType()))
-            {
-                return false;
-            }
-            else
-            {
-                return this.GetHashCode() == obj.GetHashCode();
-            }
-        }
-
-        protected bool IsWin(out int returnBoardEvaluation)
-        {
-            returnBoardEvaluation = EvaluateBoard();
-            return returnBoardEvaluation >= 1000;
-        }
-
+        /**<summary><c>IsWin</c> checks if the previuos player won the game.</summary>
+         * <returns>A bool showing if rhe previuos player one.</returns>
+         */
         public bool IsWin()
         {
             return EvaluateBoard() == 1000;
         }
 
+        /**<summary><c>IsWin(int)</c> checks if the previuos player won the game.</summary>
+         * <returns>A bool showing if rhe previuos player one, and the evaluation of the board in the argument <paramref name="returnBoardEvaluation"/>.</returns>
+         */
+        protected bool IsWin(out int returnBoardEvaluation)
+        {
+            returnBoardEvaluation = EvaluateBoard();
+            return returnBoardEvaluation == 1000;
+        }
+
+        /**<summary><c>IsDraw</c> tests if the gameboard is full, by testing if the sum of the columns is 42 (6*7).</summary>
+         * <retuns>A bool which describes if the board is full, and the game therefor is a draw.</retuns>
+         */
         public bool IsDraw()
         {
             return columnHeight.Sum() == 42;
         }
-
+        /** <summary> Function <c>int EvaluateBoard() </c> takes the current state of the board, and creates 
+         * an value which represents a score of the board, for the computerplayer. </summary>
+         * <returns> Returns the score of the given board as integer value. </returns>
+         */
         public int EvaluateBoard()
         {
             int returnValue = 0, lookupValueBuffer;

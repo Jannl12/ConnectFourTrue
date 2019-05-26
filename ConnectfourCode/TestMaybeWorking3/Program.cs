@@ -202,13 +202,13 @@ GC.WaitForPendingFinalizers();
             excelWorkBook.SaveAs("testParameterNew.xlsx");
         }*/
             TestPlyEffect testTime = new TestPlyEffect();
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {             
                 testTime.setPlyDepth(9, 9);
                 testTime.PlayConnectFour();
-                testTime.CreateSheet("Run" + i.ToString());
+                testTime.CreateSheet("Run" + (i+1).ToString());
             }
-            testTime.WriteToExcel("NoAlphaBeta.xlsx");
+            testTime.WriteToExcel("ArrayGameBoard.xlsx");
             /*NegamaxArray test = new NegamaxArray(9);
 
             int[] moveArray = { 3, 3, 3, 3, 3, 0, 2, 5, 5, 5, 1, 4, 2, 2, 1, 5, 5, 2, 2, 0, 3, 5, 2, 4, 0, 0, 0, 6, 4 };
@@ -245,7 +245,7 @@ GC.WaitForPendingFinalizers();
         private int plyDepth;
         private string[] headers = { "MoveCount", "Color", "PlyDepth", "BestMove", "Time (ms)", "Result" };
         private string result = "No result";
-        private NegamaxArray plyNega = new NegamaxArray(1);
+        private NegaMaxAGB plyNega = new NegaMaxAGB(1);
         Application excelApplication = new Application();
         private Workbook excelWorkbook;
         Sheets xlsxSheet;
@@ -277,7 +277,7 @@ GC.WaitForPendingFinalizers();
                 else if (plyNega.IsDraw())
                     result = "Draw Game";
             }
-            //plyNega.ResetTranspositionTable();
+            plyNega.ResetTranspositionTable();
             plyNega.ResetGame();
         }
 
@@ -301,7 +301,7 @@ GC.WaitForPendingFinalizers();
             List<long> tempData = new List<long>();
 
             Watch.Start();
-            plyNega.NegaMax(alpha, beta, plyDepth, color, true);
+            plyNega.NegaMax(alpha, beta, plyDepth,/* color,*/ true);
             Watch.Stop();
             tempData.Add(plyNega.moveCount);
             tempData.Add(color);
@@ -338,70 +338,3 @@ GC.WaitForPendingFinalizers();
     }
 }
 
-
-/*//TODO: Add a loop to this and make it write the moves in console
-           Negamax test = new Negamax();
-           Stopwatch watch = new Stopwatch();
-           string[] headers = { "MoveCount", "BestMove", "Time (ms)", "Color" };
-           Dictionary<string, string> keyMoves = new Dictionary<string, string>();
-           Application excelApplication = new Application();
-           //excelApplication.Visible = true;
-
-
-           var excelWorkBook = excelApplication.Workbooks.Add();
-           var xlsxSheet = excelWorkBook.Sheets as Sheets;
-
-           for (int threeRow = 5; threeRow < 100; threeRow += 5)
-           {
-               test.Three1 = threeRow;//threeRow
-
-               for (int twoRow = 3; twoRow < 60; twoRow += 3)
-               {
-                   test.Two1 = twoRow;// twoRow;
-                   for (int oneRow = 1; oneRow < 30; oneRow++)
-                   {
-                       long[,] dataArray = new long[44, 4];
-                       test.ResetBitBoard();
-                       string Moves = "";
-                       test.One1 = oneRow;// oneRow;
-
-
-                       int color = -1;
-                       while (!test.IsWin() && !test.IsDraw())
-                       {
-                           color = -color;
-                           //watch.Start();
-                           test.NegaMax(int.MinValue + 1, int.MaxValue, 7, color, true);
-                           //watch.Stop();
-                           Moves += test.bestMove.ToString();
-                           test.MakeMove(test.bestMove);
-                           //dataArray[test.MoveCount - 1, 0] = test.MoveCount;
-                           //dataArray[test.MoveCount - 1, 1] = test.bestMove;
-                           //dataArray[test.MoveCount - 1, 2] = watch.ElapsedMilliseconds;
-                           //dataArray[test.MoveCount - 1, 3] = color;
-                           //watch.Reset();
-                       }
-
-                       if (test.IsWin() && color == 1)
-                       {
-                           keyMoves.Add(test.Three1.ToString() + "," + test.Two1.ToString() + "," + test.One1.ToString(), Moves);
-
-                       }
-                       else
-                           continue;
-
-
-
-                   }
-               }
-           }
-           var excelWorkSheet1 = (Worksheet)xlsxSheet.Add(xlsxSheet[1]);
-           excelWorkSheet1.Name = "Overview";
-           int row = 1;
-           foreach(string key in keyMoves.Keys)
-           {
-               excelWorkSheet1.Cells[row, 1] = key;
-               excelWorkSheet1.Cells[row++, 2] = keyMoves[key];
-           }
-           excelWorkBook.SaveAs("testParametersply9.xlsx");
-       }*/
