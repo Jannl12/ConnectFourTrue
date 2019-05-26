@@ -57,7 +57,7 @@ namespace ConnectfourCode
         }
         /**<summary><c>GetPrevoiusPlayer</c> Finds out which player is performing the current move</summary>
           */
-        public int GetPrevoiusPlayer()
+        public int GetPreviousPlayer()
         {
             return (moveCount + 1) % 2;
         }
@@ -100,7 +100,7 @@ namespace ConnectfourCode
          */
         public bool IsWin()
         { 
-            ulong bitboard = bitGameBoard[GetPrevoiusPlayer()]; 
+            ulong bitboard = bitGameBoard[GetPreviousPlayer()]; 
 
 
             for (int i = 0; i < directions.Length; i++)

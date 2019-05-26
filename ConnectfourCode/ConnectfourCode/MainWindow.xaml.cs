@@ -62,8 +62,8 @@ namespace ConnectfourCode
             }
             //Adding Plydepth Slider
             {
-                plyDepth.Minimum = 1;
-                plyDepth.Maximum = 20;
+                plyDepth.Minimum = 3;
+                plyDepth.Maximum = 11;
                 plyDepth.Width = 300;
                 plyDepth.Value = 10;
                 plyDepth.Height = 100;

@@ -173,7 +173,7 @@ namespace BitBoradTest //TODO: MAKE THIS TEST GREAT AGAIN!!!!!!!!
             //  1 2 3 4 5 6 7
             //Act                                       // | | | | | | | | 6
             int expectedValue = 0;                      // | | | |x|x| | | 5
-            int calcValue = test.GetPrevoiusPlayer();   // | | | |o|x| | | 4
+            int calcValue = test.GetPreviousPlayer();   // | | | |o|x| | | 4
                                                         // | | | |x|o| | | 3
             //Assert                                    // | | | |o|x| | | 2
             Assert.AreEqual(expectedValue, calcValue);  // |o|x| |x|o| |o| 1
