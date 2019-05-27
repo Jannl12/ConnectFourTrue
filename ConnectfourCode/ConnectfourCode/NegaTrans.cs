@@ -10,6 +10,8 @@ namespace ConnectfourCode
         Dictionary<int, int> bestMoves = new Dictionary<int, int>();
         public int PlyDepth;
         Dictionary<ulong, int> TranspositionTable = new Dictionary<ulong, int>();
+        public int count = 0;
+        public int testDepth = 0;
 
         public void ResetTranspositionTable()
         {
@@ -60,27 +62,20 @@ namespace ConnectfourCode
                 MakeMove(move);
                 int value = -NegaMax(-beta, -alpha, depth - 1, -color, false);
 
+                if (value >= beta)
+                {
+                    UndoMove();
+                    count++;
+                    testDepth += depth;
+                    return value;
+                }
+
                 if (value > alpha)
                 {
                     alpha = value;
 
-                }
-                if (alpha >= beta)
-                {
-                    if (value > alpha)
-                    {
-                        alpha = value;
-
-                        if (rootNode)
-                            bestMove = move;
-                    }
-                    UndoMove();
-                    return value;
-                }
-                
-                if(rootNode)
-                {
-                    bestMoves.Add(move, value);
+                    if (rootNode)
+                        bestMove = move;
                 }
                 UndoMove();
             }

@@ -200,16 +200,16 @@ namespace TestMaybeWorking3
             }
             excelWorkBook.SaveAs("testParameterNew.xlsx");
         }*/
-            /*TestPlyEffect testTime = new TestPlyEffect();
-            for (int i = 0; i < 10; i++)
+            TestPlyEffect testTime = new TestPlyEffect();
+            for (int i = 0; i < 1; i++)
             {             
                 testTime.setPlyDepth(9, 9);
                 testTime.PlayConnectFour();
                 testTime.CreateSheet("run number" + i.ToString());
             }
-            testTime.WriteToExcel("NegaArrayTime.xlsx");*/
-            NegamaxArray test = new NegamaxArray(9);
-            int[] moveArray = { 3, 3, 3, 3, 3, 3, 1, 2, 2, 2, 2, 2, 2, 1, 0, 0, 0, 0, 0, 0, 5, 6, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1 };
+            testTime.WriteToExcel("NegaArrayTime.xlsx");
+            /*NegamaxArray test = new NegamaxArray(9);
+            int[] moveArray = { };
 
             foreach (int move in moveArray) // 0 1 2 3 4 5 6
                 test.MakeMove(move);        //|o| |x|o| |x|o|
@@ -220,7 +220,7 @@ namespace TestMaybeWorking3
                                             //|x|x|o|x| |x|o|
             test.NegaMax(int.MinValue + 1, int.MaxValue, 9, -1, true);
             Console.WriteLine(test.bestMove);
-            Console.ReadKey();
+            Console.ReadKey();*/
         }
     }
 
@@ -240,9 +240,9 @@ namespace TestMaybeWorking3
         private int beta = int.MaxValue;
         private int color;
         private int plyDepth;
-        private string[] headers = { "MoveCount", "Color", "PlyDepth", "BestMove", "Time (ms)", "Result" };
+        private string[] headers = { "MoveCount", "Color", "PlyDepth", "BestMove", "Time (ms)", "Prunes", "depth", "Result" };
         private string result = "No result";
-        private NegamaxArray plyNega = new NegamaxArray(1);
+        private NegaTrans plyNega = new NegaTrans(1);
         Application excelApplication = new Application();
         private Workbook excelWorkbook;
         Sheets xlsxSheet;
@@ -299,12 +299,16 @@ namespace TestMaybeWorking3
             Watch.Start();
             plyNega.NegaMax(alpha, beta, plyDepth, color, true);
             Watch.Stop();
-            //plyNega.ResetTranspositionTable();
+            plyNega.ResetTranspositionTable();
             tempData.Add(plyNega.moveCount);
             tempData.Add(color);
             tempData.Add(plyDepth);
             tempData.Add(plyNega.bestMove);
             tempData.Add(Watch.ElapsedMilliseconds);
+            tempData.Add(plyNega.count);
+            tempData.Add(plyNega.testDepth);
+            plyNega.count = 0;
+            plyNega.testDepth = 0;
             data.Add(tempData);
             plyNega.MakeMove(plyNega.bestMove);
         }
